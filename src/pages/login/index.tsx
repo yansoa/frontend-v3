@@ -1,11 +1,13 @@
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
-export const LoginPage = () => {
+
+const LoginPage = () => {
   const dispatch = useDispatch();
   const loginState = useSelector((state: any) => {
     return state.loginUser.value;
   });
+  
   return (
     <>
       <Button
@@ -34,3 +36,5 @@ export const LoginPage = () => {
     </>
   );
 };
+
+export default LoginPage;

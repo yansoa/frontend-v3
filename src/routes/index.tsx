@@ -1,6 +1,9 @@
+import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 
-import { LoginPage, LayoutPage } from "../pages";
+import { LayoutPage } from "../pages";
+
+const LoginPage = lazy(() => import('../pages/login'))
 
 const routes: RouteObject[] = [
   {
