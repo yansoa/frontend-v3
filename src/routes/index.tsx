@@ -3,6 +3,7 @@ import { RouteObject } from "react-router-dom";
 
 import { LayoutPage } from "../pages";
 
+// 懒加载
 const LoginPage = lazy(() => import('../pages/login'))
 
 const routes: RouteObject[] = [
