@@ -1,9 +1,13 @@
 import client from "./internal/httpClient";
 
 export function config() {
-  return client.post("/api/v1/system/config", {});
+  return client.post("/api/v2/other/config", {});
+}
+
+export function sendSms(params: any) {
+  return client.post("/api/v2/captcha/sms", params);
 }
 
 export function imageCaptcha() {
-  return client.post("/api/v1/system/image-captcha", {});
+  return client.get("/api/v2/captcha/image", {});
 }

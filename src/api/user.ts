@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function detail() {
-  return client.get("/api/v1/user/detail", {});
+  return client.get("/api/v2/member/detail", {});
 }
 
 // 修改密码

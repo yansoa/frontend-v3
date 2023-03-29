@@ -10,18 +10,16 @@ import App from "./App";
 import "./index.scss"; //全局样式
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ConfigProvider
-        locale={zhCN}
-        theme={{ token: { colorPrimary: "#ff4d4f" } }}
-      >
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ConfigProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <ConfigProvider
+      locale={zhCN}
+      theme={{ token: { colorPrimary: "#3ca7fa" } }}
+    >
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ConfigProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

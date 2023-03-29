@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type UserStoreInterface = {
-  user: any;
+  user: null;
   isLogin: boolean;
 };
 
@@ -17,7 +17,7 @@ const loginUserSlice = createSlice({
   },
   reducers: {
     loginAction(stage, e) {
-      stage.value.user = e.payload.user;
+      stage.value.user = e.payload;
       stage.value.isLogin = true;
     },
     logoutAction(stage) {

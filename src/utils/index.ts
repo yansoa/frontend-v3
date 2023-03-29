@@ -1,15 +1,39 @@
 import moment from "moment";
 
 export function getToken(): string {
-  return window.localStorage.getItem("playedu-backend-token") || "";
+  return window.localStorage.getItem("meedu-user-token") || "";
 }
 
 export function setToken(token: string) {
-  window.localStorage.setItem("playedu-backend-token", token);
+  window.localStorage.setItem("meedu-user-token", token);
 }
 
 export function clearToken() {
-  window.localStorage.removeItem("playedu-backend-token");
+  window.localStorage.removeItem("meedu-user-token");
+}
+
+export function getPlayId(): string {
+  return window.localStorage.getItem("meedu-play-id") || "";
+}
+
+export function savePlayId(id: string) {
+  window.localStorage.setItem("meedu-play-id", id);
+}
+
+export function clearPlayId() {
+  window.localStorage.removeItem("meedu-play-id");
+}
+
+export function getMsv(): string {
+  return window.localStorage.getItem("meedu-msv") || "";
+}
+
+export function saveMsv(msv: string) {
+  window.localStorage.setItem("meedu-msv", msv);
+}
+
+export function clearMsv() {
+  window.localStorage.removeItem("meedu-msv");
 }
 
 export function dateFormat(dateStr: string) {
