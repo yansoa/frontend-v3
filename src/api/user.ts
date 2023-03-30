@@ -18,3 +18,13 @@ export function courses(depId: number) {
     dep_id: depId,
   });
 }
+
+//微信登录二维码获取
+export function wechatLogin() {
+  return client.get("/api/v3/auth/login/wechat/scan", {});
+}
+
+//检测微信二维码登录
+export function checkWechatLogin(params: any) {
+  return client.get("/api/v3/auth/login/wechat/scan/query", params);
+}

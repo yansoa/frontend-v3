@@ -9,6 +9,7 @@ import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { LoginDialog } from "../login-dailog";
+import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { login } from "../../api/index";
 import { clearToken } from "../../utils/index";
 const { confirm } = Modal;
@@ -24,6 +25,8 @@ export const Header = () => {
     (state: any) => state.systemConfig.value.configFunc
   );
   const [visiale, setVisiale] = useState<boolean>(false);
+
+  const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
 
   const onSearch = (value: string) => {
     console.log(value);
@@ -97,7 +100,12 @@ export const Header = () => {
   const goForget = () => {
     console.log(333);
   };
-  const goWeixinLogin = () => {};
+
+  const goWeixinLogin = () => {
+    setWeixinVisiale(true);
+  };
+
+  const bindMobile = () => {};
 
   return (
     <div className={styles["app-header"]}>
@@ -117,6 +125,20 @@ export const Header = () => {
         changeWeixin={() => {
           setVisiale(false);
           goWeixinLogin();
+        }}
+      />
+      <WeixinLoginDialog
+        open={weixinVisiale}
+        onCancel={() => {
+          setWeixinVisiale(false);
+        }}
+        changeLogin={() => {
+          setWeixinVisiale(false);
+          setVisiale(true);
+        }}
+        bindMobile={() => {
+          setWeixinVisiale(false);
+          bindMobile();
         }}
       />
       <div className={styles["main-header"]}>

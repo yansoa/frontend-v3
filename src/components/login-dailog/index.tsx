@@ -17,6 +17,8 @@ interface PropInterface {
   changeWeixin: () => void;
 }
 
+var interval: any = null;
+
 export const LoginDialog: React.FC<PropInterface> = ({
   open,
   onCancel,
@@ -71,11 +73,11 @@ export const LoginDialog: React.FC<PropInterface> = ({
       .then((res: any) => {
         setSmsLoading(!smsLoading);
         let time = 120;
-        let interval = setInterval(() => {
+        interval = setInterval(() => {
           time--;
           setCurrent(time);
           if (time === 0) {
-            clearInterval(interval);
+            interval && clearInterval(interval);
             setCurrent(0);
             setSmsLoading(false);
           }
@@ -134,6 +136,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
   };
 
   const redirectHandler = () => {
+    interval && clearInterval(interval);
     onCancel();
     if (pathname === "/login") {
       if (params.redirect) {
@@ -191,7 +194,10 @@ export const LoginDialog: React.FC<PropInterface> = ({
         open={open}
         width={500}
         footer={null}
-        onCancel={() => onCancel()}
+        onCancel={() => {
+          interval && clearInterval(interval);
+          onCancel();
+        }}
         maskClosable={false}
       >
         <div className={styles["tabs"]}>
@@ -211,7 +217,13 @@ export const LoginDialog: React.FC<PropInterface> = ({
               {item.key === tabKey && <div className={styles["actline"]}></div>}
             </div>
           ))}
-          <a className={styles["linkTab"]} onClick={() => changeRegister()}>
+          <a
+            className={styles["linkTab"]}
+            onClick={() => {
+              interval && clearInterval(interval);
+              changeRegister();
+            }}
+          >
             新用户注册&gt;&gt;
           </a>
         </div>
@@ -334,14 +346,20 @@ export const LoginDialog: React.FC<PropInterface> = ({
               <div className={styles["tab-icon"]}>
                 {config.socialites.qq === 1 && (
                   <img
-                    onClick={() => changeQQ()}
+                    onClick={() => {
+                      interval && clearInterval(interval);
+                      changeQQ();
+                    }}
                     className={styles["btn-others"]}
                     src={iconQQ}
                   />
                 )}
                 {config.socialites.wechat_scan === 1 && (
                   <img
-                    onClick={() => changeWeixin()}
+                    onClick={() => {
+                      interval && clearInterval(interval);
+                      changeWeixin();
+                    }}
                     className={styles["btn-others"]}
                     src={iconWeixin}
                   />

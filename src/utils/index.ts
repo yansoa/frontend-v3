@@ -36,6 +36,26 @@ export function clearMsv() {
   window.localStorage.removeItem("meedu-msv");
 }
 
+export function saveLoginCode(code: string) {
+  window.localStorage.setItem("login_code", code);
+}
+
+export function getLoginCode() {
+  return window.localStorage.getItem("login_code");
+}
+
+export function clearLoginCode() {
+  window.localStorage.removeItem("login_code");
+}
+
+export function saveSessionLoginCode(code: string) {
+  window.sessionStorage.setItem("login_code:" + code, code);
+}
+
+export function getSessionLoginCode(code: string) {
+  return window.sessionStorage.getItem("login_code:" + code);
+}
+
 export function dateFormat(dateStr: string) {
   return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
