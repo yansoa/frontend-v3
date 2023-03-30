@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Button, Space, Image } from "antd";
-import urlencode from "urlencode";
 import styles from "./index.module.scss";
 import { login, system, user } from "../../api/index";
 import { setToken, getMsv, getAppUrl } from "../../utils/index";
@@ -177,9 +176,9 @@ export const LoginDialog: React.FC<PropInterface> = ({
     window.location.href =
       config.url +
       "/api/v3/auth/login/socialite/qq?s_url=" +
-      urlencode(successRedirectUrl) +
+      encodeURIComponent(successRedirectUrl) +
       "&f_url=" +
-      urlencode(getAppUrl() + "/error") +
+      encodeURIComponent(getAppUrl() + "/error") +
       "&action=login";
   };
 
