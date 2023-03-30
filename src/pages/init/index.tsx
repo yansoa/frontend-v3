@@ -6,7 +6,7 @@ import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
-import { Header } from "../../components";
+import { Header , Footer} from "../../components";
 import { useLocation } from "react-router-dom";
 
 interface Props {
@@ -32,6 +32,7 @@ export const InitPage = (props: Props) => {
     <>
       {pathname !== "/login" && <Header></Header>}
       <Outlet />
+      {pathname !== "/login" && <Footer></Footer>}
     </>
   );
 };

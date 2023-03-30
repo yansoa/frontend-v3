@@ -1,19 +1,16 @@
 import client from "./internal/httpClient";
 
-export function login(
-  email: string,
-  password: string,
-  captchaKey: string,
-  captchaVal: string
-) {
-  return client.post("/api/v1/auth/login/password", {
-    email: email,
-    password: password,
-    captcha_key: captchaKey,
-    captcha_value: captchaVal,
-  });
+export function passwordLogin(params: any) {
+  return client.post("/api/v2/login/password", params);
+}
+export function smsLogin(params: any) {
+  return client.post("/api/v2/login/mobile", params);
+}
+
+export function smsRegister(params: any) {
+  return client.post(`/api/v2/register/sms`, params);
 }
 
 export function logout() {
-  return client.post("/api/v1/auth/logout", {});
+  return client.post("/api/v2/logout", {});
 }

@@ -8,6 +8,9 @@ import { logoutAction } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { LoginDialog } from "../login-dailog";
+import { login } from "../../api/index";
+import { clearToken } from "../../utils/index";
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -20,6 +23,7 @@ export const Header = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const [visiale, setVisiale] = useState<boolean>(false);
 
   const onSearch = (value: string) => {
     console.log(value);
@@ -40,8 +44,11 @@ export const Header = () => {
         okText: "确认",
         cancelText: "取消",
         onOk() {
-          dispatch(logoutAction());
-          navigate("/login");
+          login.logout().then((res: any) => {
+            dispatch(logoutAction());
+            clearToken();
+            navigate("/login");
+          });
         },
         onCancel() {
           console.log("Cancel");
@@ -58,17 +65,15 @@ export const Header = () => {
     {
       label: "用户中心",
       key: "user_info",
-      icon: <i className="iconfont icon-icon-12 c-red" />,
     },
     {
       label: "我的消息",
       key: "user_messsage",
-      icon: <i className="iconfont icon-icon-password text-sm" />,
+      icon: "",
     },
     {
       label: "安全退出",
       key: "login_out",
-      icon: <i className="iconfont icon-a-icon-logout text-sm" />,
     },
   ];
 
@@ -81,7 +86,7 @@ export const Header = () => {
   };
 
   const goLogin = () => {
-    console.log(111);
+    setVisiale(true);
   };
 
   const goRegister = () => {
@@ -90,6 +95,16 @@ export const Header = () => {
 
   return (
     <div className={styles["app-header"]}>
+      <LoginDialog
+        open={visiale}
+        onCancel={() => {
+          setVisiale(false);
+        }}
+        changeRegister={() => {
+          setVisiale(false);
+          goRegister();
+        }}
+      />
       <div className={styles["main-header"]}>
         <div className={styles["top-header"]}>
           <Link to="/" className={styles["App-logo"]}>
@@ -152,7 +167,7 @@ export const Header = () => {
                 <Dropdown menu={{ items, onClick }} placement="bottomRight">
                   <div className="d-flex" style={{ cursor: "pointer" }}>
                     <img
-                      style={{ width: 36, height: 36, borderRadius: "50%" }}
+                      style={{ width: 40, height: 40, borderRadius: "50%" }}
                       src={user.avatar}
                     />
                     <span className="ml-8 c-admin">{user.name}</span>

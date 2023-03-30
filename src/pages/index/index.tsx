@@ -4,9 +4,9 @@ import { Modal, Button } from "antd";
 
 const IndexPage = () => {
   return (
-    <>
+    <div className="container">
       <div>我是首页</div>
-    </>
+    </div>
   );
 };
 
