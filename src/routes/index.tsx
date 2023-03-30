@@ -2,6 +2,8 @@ import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import { system, user } from "../api";
 import { getToken } from "../utils/index";
+
+// 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
 import IndexPage from "../pages/index";

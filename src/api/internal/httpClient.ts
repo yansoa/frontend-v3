@@ -1,9 +1,6 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
-import { useDispatch } from "react-redux";
 import { getToken, clearToken } from "../../utils/index";
-import { logoutAction } from "../../store/user/loginUserSlice";
-const dispatch = useDispatch();
 
 const GoLogin = () => {
   clearToken();
@@ -45,7 +42,6 @@ export class HttpClient {
           return Promise.resolve(response);
         } else if (code === 401) {
           message.error("请重新登录");
-          dispatch(logoutAction());
           GoLogin();
         } else {
           message.error(msg);
@@ -57,7 +53,6 @@ export class HttpClient {
         let status = error.response.status;
         if (status === 401) {
           message.error("请重新登录");
-          dispatch(logoutAction());
           GoLogin();
         } else if (status === 404) {
           // 跳转到404页面
