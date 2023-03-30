@@ -11,3 +11,7 @@ export function sendSms(params: any) {
 export function imageCaptcha() {
   return client.get("/api/v2/captcha/image", {});
 }
+
+export function footerLink() {
+  return client.get(`/api/v2/links`, {});
+}

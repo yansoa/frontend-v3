@@ -37,9 +37,11 @@ export const LoginDialog: React.FC<PropInterface> = ({
       sms: "",
     });
     setTabKey(0);
-    getCaptcha();
     setSmsLoading(false);
     setCurrent(120);
+    if (open) {
+      getCaptcha();
+    }
   }, [form, open]);
 
   const getCaptcha = () => {
