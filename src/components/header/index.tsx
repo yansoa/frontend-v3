@@ -94,6 +94,11 @@ export const Header = () => {
     console.log(222);
   };
 
+  const goForget = () => {
+    console.log(333);
+  };
+  const goWeixinLogin = () => {};
+
   return (
     <div className={styles["app-header"]}>
       <LoginDialog
@@ -104,6 +109,14 @@ export const Header = () => {
         changeRegister={() => {
           setVisiale(false);
           goRegister();
+        }}
+        changeForget={() => {
+          setVisiale(false);
+          goForget();
+        }}
+        changeWeixin={() => {
+          setVisiale(false);
+          goWeixinLogin();
         }}
       />
       <div className={styles["main-header"]}>

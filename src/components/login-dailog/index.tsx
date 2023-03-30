@@ -1,28 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Button, Space, Image } from "antd";
+import urlencode from "urlencode";
 import styles from "./index.module.scss";
 import { login, system, user } from "../../api/index";
-import { setToken, getMsv } from "../../utils/index";
+import { setToken, getMsv, getAppUrl } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
+import iconQQ from "../../assets/img/commen/icon-qq.png";
+import iconWeixin from "../../assets/img/commen/icon-weixin.png";
 
 interface PropInterface {
   open: boolean;
   onCancel: () => void;
   changeRegister: () => void;
+  changeForget: () => void;
+  changeWeixin: () => void;
 }
 
 export const LoginDialog: React.FC<PropInterface> = ({
   open,
   onCancel,
   changeRegister,
+  changeForget,
+  changeWeixin,
 }) => {
   const params = useParams();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
+  const config = useSelector((state: any) => state.systemConfig.value.config);
   const [loading, setLoading] = useState<boolean>(false);
   const [tabKey, setTabKey] = useState(0);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
@@ -156,6 +164,25 @@ export const LoginDialog: React.FC<PropInterface> = ({
     setTabKey(key);
   };
 
+  const changeQQ = () => {
+    let successRedirectUrl = window.document.location.href;
+    if (pathname === "/login") {
+      let appUrl = getAppUrl();
+      if (params.redirect) {
+        successRedirectUrl = appUrl + params.redirect;
+      } else {
+        successRedirectUrl = appUrl;
+      }
+    }
+    window.location.href =
+      config.url +
+      "/api/v3/auth/login/socialite/qq?s_url=" +
+      urlencode(successRedirectUrl) +
+      "&f_url=" +
+      urlencode(getAppUrl() + "/error") +
+      "&action=login";
+  };
+
   return (
     <>
       <Modal
@@ -231,7 +258,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
                     rules={[{ required: true, message: "请输入图形验证码!" }]}
                   >
                     <Input
-                      style={{ width: 310, height: 54, marginRight: 12 }}
+                      style={{ width: 310, height: 54, marginRight: 10 }}
                       autoComplete="off"
                       placeholder="请输入图形验证码"
                     />
@@ -254,7 +281,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
                     rules={[{ required: true, message: "请输入手机验证码!" }]}
                   >
                     <Input
-                      style={{ width: 310, height: 54, marginRight: 33 }}
+                      style={{ width: 310, height: 54, marginRight: 30 }}
                       autoComplete="off"
                       placeholder="请输入手机验证码"
                     />
@@ -288,6 +315,41 @@ export const LoginDialog: React.FC<PropInterface> = ({
               立即登录
             </Button>
           </Form.Item>
+          {tabKey == 0 && (
+            <div className="flex items-center">
+              <div className="flex-1 flex items-start"></div>
+              <div className="flex-shrink-0 text-right">
+                <a
+                  className="text-gray-normal text-sm hover:text-blue-600"
+                  onClick={() => changeForget()}
+                >
+                  忘记密码
+                </a>
+              </div>
+            </div>
+          )}
+          {(config.socialites.qq === 1 ||
+            config.socialites.wechat_scan === 1) && (
+            <div className={styles["others"]}>
+              <div className={styles["tit"]}>第三方快捷登录</div>
+              <div className={styles["tab-icon"]}>
+                {config.socialites.qq === 1 && (
+                  <img
+                    onClick={() => changeQQ()}
+                    className={styles["btn-others"]}
+                    src={iconQQ}
+                  />
+                )}
+                {config.socialites.wechat_scan === 1 && (
+                  <img
+                    onClick={() => changeWeixin()}
+                    className={styles["btn-others"]}
+                    src={iconWeixin}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </Form>
       </Modal>
     </>

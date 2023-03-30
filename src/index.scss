@@ -45,6 +45,26 @@ button:focus-visible {
   line-height: 20px;
 }
 
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
 .text-gray-300 {
   --tw-text-opacity: 1;
   color: rgba(209, 213, 219, var(--tw-text-opacity));
@@ -104,6 +124,10 @@ button:focus-visible {
   &:hover {
     opacity: 0.8;
   }
+}
+
+.ant-modal-content {
+  padding: 30px !important;
 }
 
 .main-body {

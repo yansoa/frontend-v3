@@ -77,3 +77,12 @@ export function inStrArray(array: string[], value: string): boolean {
   }
   return false;
 }
+
+export function getAppUrl() {
+  let host = window.location.protocol + "//" + window.location.host;
+  let pathname = window.location.pathname;
+  if (pathname && pathname !== "/") {
+    host += pathname;
+  }
+  return host + "/#";
+}

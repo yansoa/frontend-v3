@@ -73,3 +73,35 @@
     }
   }
 }
+
+.others {
+  width: 100%;
+  margin-top: 50px;
+  .tit {
+    width: 100%;
+    text-align: center;
+    height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
+    line-height: 14px;
+    margin-bottom: 30px;
+  }
+  .tab-icon {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .btn-others {
+      margin-right: 64px;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+  }
+}
