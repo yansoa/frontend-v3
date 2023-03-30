@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function config() {
-  return client.post("/api/v2/other/config", {});
+  return client.get("/api/v2/other/config", {});
 }
 
 export function sendSms(params: any) {

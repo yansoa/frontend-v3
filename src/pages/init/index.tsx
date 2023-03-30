@@ -2,11 +2,17 @@ import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 // import styles from "./index.module.scss";
 import { loginAction } from "../../store/user/loginUserSlice";
+import {
+  saveConfigAction,
+  saveConfigFuncAction,
+} from "../../store/system/systemConfigSlice";
 import { Header } from "../../components";
 import { useLocation } from "react-router-dom";
 
 interface Props {
   loginData: any;
+  config: any;
+  configFunc: any;
 }
 
 export const InitPage = (props: Props) => {
@@ -14,15 +20,18 @@ export const InitPage = (props: Props) => {
   if (props.loginData) {
     dispatch(loginAction(props.loginData));
   }
-
+  if (props.config) {
+    dispatch(saveConfigAction(props.config));
+  }
+  if (props.configFunc) {
+    dispatch(saveConfigFuncAction(props.configFunc));
+  }
   const pathname = useLocation().pathname;
 
   return (
     <>
-      <div>
-        {pathname !== "/login" && <Header></Header>}
-        <Outlet />
-      </div>
+      {pathname !== "/login" && <Header></Header>}
+      <Outlet />
     </>
   );
 };
