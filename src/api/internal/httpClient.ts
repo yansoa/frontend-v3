@@ -40,6 +40,12 @@ export class HttpClient {
 
         if (code === 0) {
           return Promise.resolve(response);
+<<<<<<< HEAD
+=======
+        } else if (code === 401) {
+          message.error("请重新登录");
+          GoLogin();
+>>>>>>> 8a1a935b2b8b5266a6175eeec3f7fcd88cb60b09
         } else {
           message.error(msg);
         }
