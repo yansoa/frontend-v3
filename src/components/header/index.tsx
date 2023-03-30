@@ -47,7 +47,7 @@ export const Header = () => {
           login.logout().then((res: any) => {
             dispatch(logoutAction());
             clearToken();
-            navigate("/login");
+            navigate("/");
           });
         },
         onCancel() {
