@@ -45,6 +45,7 @@ export const Header = () => {
         cancelText: "取消",
         onOk() {
           login.logout().then((res: any) => {
+            message.success("安全退出成功");
             dispatch(logoutAction());
             clearToken();
             navigate("/");
