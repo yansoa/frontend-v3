@@ -1,12 +1,13 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import { system, user, share } from "../api";
-import { getToken, getMsv, clearMsv } from "../utils/index";
+import { system, user } from "../api";
+import { getToken } from "../utils/index";
 
 // 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
 import IndexPage from "../pages/index";
+
 let RootPage: any = null;
 let configFunc = {
   vip: true,
@@ -30,21 +31,6 @@ let configFunc = {
   cert: false,
 };
 
-const msvBind = () => {
-  let msv = getMsv();
-  if (!msv) {
-    return;
-  }
-  share
-    .bind({ msv: msv })
-    .then((res) => {
-      clearMsv();
-    })
-    .catch((e) => {
-      console.log(e.message);
-      clearMsv();
-    });
-};
 if (getToken()) {
   RootPage = lazy(async () => {
     return new Promise<any>((resolve) => {
@@ -130,7 +116,6 @@ if (getToken()) {
             ),
           });
         });
-        msvBind();
       });
     });
   });

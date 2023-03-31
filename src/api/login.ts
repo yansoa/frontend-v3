@@ -14,3 +14,7 @@ export function smsRegister(params: any) {
 export function logout() {
   return client.post("/api/v2/logout", {});
 }
+
+export function codeLogin(params: any) {
+  return client.post(`/api/v3/auth/login/code`, params);
+}

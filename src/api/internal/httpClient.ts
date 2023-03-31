@@ -36,7 +36,7 @@ export class HttpClient {
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
         let code = response.data.code; //业务返回代码
-        let msg = response.data.msg; //错误消息
+        let msg = response.data.message; //错误消息
 
         if (code === 0) {
           return Promise.resolve(response);
