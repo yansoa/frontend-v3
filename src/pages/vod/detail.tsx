@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Modal, Spin, Button, Pagination } from "antd";
+import { Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { course as vod } from "../../api/index";
-import { HistoryRecord } from "../../components";
+import { HistoryRecord, ThumbBar } from "../../components";
+import collectIcon from "../../assets/img/commen/icon-collect-h.png";
+import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 
 export const VodDetailPage = () => {
   const navigate = useNavigate();
@@ -19,12 +21,12 @@ export const VodDetailPage = () => {
   const [isCollect, setIsCollect] = useState<boolean>(false);
   const [videos, setVideos] = useState<any>([]);
   const [buyVideos, setBuyVideos] = useState<any>([]);
-
   const [comments, setComments] = useState<any>([]);
   const [commentUsers, setCommentUsers] = useState<any>([]);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
     getDetail();
@@ -71,6 +73,27 @@ export const VodDetailPage = () => {
     });
   };
 
+  const collectCourse = () => {
+    if (isLogin) {
+      vod
+        .collect(cid)
+        .then(() => {
+          setIsCollect(!isCollect);
+          if (isCollect) {
+            message.success("已收藏");
+          } else {
+            message.success("取消收藏");
+          }
+        })
+        .catch((e) => {
+          message.error(e.message);
+        });
+    } else {
+      goLogin();
+    }
+  };
+
+  const goLogin = () => {};
   const getMsDetail = () => {};
   const getTgDetail = () => {};
 
@@ -90,11 +113,45 @@ export const VodDetailPage = () => {
             navigate("/courses");
           }}
         >
-          点播课
+          录播课
         </a>{" "}
         /<span>{course.title}</span>
       </div>
       <HistoryRecord id={course.id} title={course.title} type="vod" />
+      <div className={styles["course-info"]}>
+        <div className={styles["course-info-box"]}>
+          <div className={styles["course-thumb"]}>
+            <ThumbBar
+              value={course.thumb}
+              width={320}
+              height={240}
+              border={null}
+            />
+          </div>
+          <div className={styles["info"]}>
+            <div className={styles["course-info-title"]}>{course.title}</div>
+            {isCollect && (
+              <img
+                onClick={() => {
+                  collectCourse();
+                }}
+                className={styles["collect-button"]}
+                src={collectIcon}
+              />
+            )}
+            {!isCollect && (
+              <img
+                onClick={() => {
+                  collectCourse();
+                }}
+                className={styles["collect-button"]}
+                src={noCollectIcon}
+              />
+            )}
+            <p className={styles["desc"]}>{course.short_description}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
