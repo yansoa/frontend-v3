@@ -145,7 +145,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>请绑定手机号</div>
-          <a
+          {/* <a
             className={styles["linkTab"]}
             onClick={() => {
               interval && clearInterval(interval);
@@ -153,7 +153,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
             }}
           >
             取消绑定&gt;&gt;
-          </a>
+          </a> */}
         </div>
         <Form
           form={form}
