@@ -1,45 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  Modal,
-  Form,
-  Input,
-  message,
-  Button,
-  Space,
-  Image,
-  Checkbox,
-} from "antd";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useDispatch } from "react-redux";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Modal, Form, Input, message, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
-import { login, system } from "../../api/index";
-import { getMsv } from "../../utils/index";
+import { user, system } from "../../api/index";
+import {
+  getMsv,
+  getLoginCode,
+  clearLoginCode,
+  setToken,
+} from "../../utils/index";
+import { loginAction } from "../../store/user/loginUserSlice";
 
 interface PropInterface {
   open: boolean;
   onCancel: () => void;
-  changeLogin: () => void;
 }
 
 var interval: any = null;
 
-export const RegisterDialog: React.FC<PropInterface> = ({
+export const WexinBindMobileDialog: React.FC<PropInterface> = ({
   open,
   onCancel,
-  changeLogin,
 }) => {
+  const params = useParams();
   const [form] = Form.useForm();
-  const config = useSelector((state: any) => state.systemConfig.value.config);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
-  const [agreeProtocol, setAgreeProtocol] = useState<boolean>(false);
 
   useEffect(() => {
     form.setFieldsValue({
       mobile: "",
-      password: "",
       captcha: "",
       sms: "",
     });
@@ -90,23 +86,25 @@ export const RegisterDialog: React.FC<PropInterface> = ({
     if (loading) {
       return;
     }
-    if (agreeProtocol !== true) {
-      message.error("请同意《用户协议》和《隐私政策》");
-      return;
-    }
     setLoading(true);
-    login
-      .smsRegister({
+    user
+      .wechatCodeBindMobile({
         mobile: values.mobile,
+        code: getLoginCode(),
         mobile_code: values.sms,
-        password: values.password,
         msv: getMsv(),
       })
       .then((res: any) => {
-        message.success("注册成功");
-        setLoading(false);
-        interval && clearInterval(interval);
-        changeLogin();
+        message.success("绑定成功");
+        clearLoginCode();
+        let token = res.data.token;
+        setToken(token);
+        user.detail().then((res: any) => {
+          let loginData = res.data;
+          dispatch(loginAction(loginData));
+          setLoading(false);
+          redirectHandler();
+        });
       })
       .catch((e: any) => {
         setLoading(false);
@@ -118,8 +116,16 @@ export const RegisterDialog: React.FC<PropInterface> = ({
     console.log("Failed:", errorInfo);
   };
 
-  const onChange = (e: CheckboxChangeEvent) => {
-    setAgreeProtocol(e.target.checked);
+  const redirectHandler = () => {
+    interval && clearInterval(interval);
+    onCancel();
+    if (pathname === "/login") {
+      if (params.redirect) {
+        navigate(params.redirect);
+      } else {
+        navigate("/");
+      }
+    }
   };
 
   return (
@@ -138,15 +144,15 @@ export const RegisterDialog: React.FC<PropInterface> = ({
         maskClosable={false}
       >
         <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>用户注册</div>
+          <div className={styles["tab-active-item"]}>请绑定手机号</div>
           <a
             className={styles["linkTab"]}
             onClick={() => {
               interval && clearInterval(interval);
-              changeLogin();
+              onCancel();
             }}
           >
-            已有账号，立即登录&gt;&gt;
+            取消绑定&gt;&gt;
           </a>
         </div>
         <Form
@@ -220,43 +226,6 @@ export const RegisterDialog: React.FC<PropInterface> = ({
               </div>
             </Space>
           </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "请设置账号密码!" }]}
-          >
-            <Input.Password
-              style={{ width: 440, height: 54 }}
-              autoComplete="off"
-              placeholder="请设置账号密码"
-            />
-          </Form.Item>
-          <div className="mb-50 flex items-center">
-            <div className="flex-1 flex items-start">
-              <div className="flex items-center h-5">
-                <Checkbox onChange={onChange} defaultChecked={agreeProtocol} />
-              </div>
-              <div className="ml-10 text-sm">
-                <label className="text-gray-normal">
-                  同意
-                  <a
-                    className="text-blue"
-                    href={config.user_protocol}
-                    target="_blank"
-                  >
-                    《用户协议》
-                  </a>
-                  和
-                  <a
-                    className="text-blue"
-                    href={config.user_private_protocol}
-                    target="_blank"
-                  >
-                    《隐私政策》
-                  </a>
-                </label>
-              </div>
-            </div>
-          </div>
           <Form.Item>
             <Button
               style={{ width: 440, height: 54, outline: "none" }}
@@ -264,7 +233,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
               onClick={() => form.submit()}
               loading={loading}
             >
-              立即注册
+              立即绑定
             </Button>
           </Form.Item>
         </Form>

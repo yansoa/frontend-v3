@@ -11,9 +11,10 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { LoginDialog } from "../login-dailog";
 import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
-
+import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { login } from "../../api/index";
 import { clearToken } from "../../utils/index";
+
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -29,6 +30,8 @@ export const Header = () => {
   const [visiale, setVisiale] = useState<boolean>(false);
   const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
+  const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
+    useState<boolean>(false);
 
   const onSearch = (value: string) => {
     console.log(value);
@@ -107,7 +110,9 @@ export const Header = () => {
     setWeixinVisiale(true);
   };
 
-  const bindMobile = () => {};
+  const bindMobile = () => {
+    setWeixinBindMobileVisiale(true);
+  };
 
   return (
     <div className={styles["app-header"]}>
@@ -151,6 +156,12 @@ export const Header = () => {
         bindMobile={() => {
           setWeixinVisiale(false);
           bindMobile();
+        }}
+      />
+      <WexinBindMobileDialog
+        open={weixinBindMobileVisiale}
+        onCancel={() => {
+          setWeixinBindMobileVisiale(false);
         }}
       />
       <div className={styles["main-header"]}>
