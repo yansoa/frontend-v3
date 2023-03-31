@@ -9,7 +9,9 @@ import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { LoginDialog } from "../login-dailog";
+import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
+
 import { login } from "../../api/index";
 import { clearToken } from "../../utils/index";
 const { confirm } = Modal;
@@ -25,7 +27,7 @@ export const Header = () => {
     (state: any) => state.systemConfig.value.configFunc
   );
   const [visiale, setVisiale] = useState<boolean>(false);
-
+  const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
 
   const onSearch = (value: string) => {
@@ -94,7 +96,7 @@ export const Header = () => {
   };
 
   const goRegister = () => {
-    console.log(222);
+    setRegisterVisiale(true);
   };
 
   const goForget = () => {
@@ -125,6 +127,16 @@ export const Header = () => {
         changeWeixin={() => {
           setVisiale(false);
           goWeixinLogin();
+        }}
+      />
+      <RegisterDialog
+        open={registerVisiale}
+        onCancel={() => {
+          setRegisterVisiale(false);
+        }}
+        changeLogin={() => {
+          setRegisterVisiale(false);
+          setVisiale(true);
         }}
       />
       <WeixinLoginDialog
