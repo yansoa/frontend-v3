@@ -38,6 +38,7 @@ export const InitPage = (props: Props) => {
   };
 
   if (props.loginData) {
+    console.log("自动登录");
     dispatch(loginAction(props.loginData));
     if (props.loginData.isLogin) {
       msvBind();

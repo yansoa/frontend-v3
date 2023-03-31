@@ -157,7 +157,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         </div>
         <Form
           form={form}
-          name="register-dialog"
+          name="weixin-bind-mobile-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
