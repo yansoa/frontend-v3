@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, Modal, Button, Dropdown, message } from "antd";
+import { Input, Button, Dropdown, message } from "antd";
 import type { MenuProps } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import { LoginDialog } from "../login-dailog";
 import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
@@ -15,7 +14,6 @@ import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { login } from "../../api/index";
 import { clearToken } from "../../utils/index";
 
-const { confirm } = Modal;
 const { Search } = Input;
 
 export const Header = () => {
@@ -27,6 +25,7 @@ export const Header = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const [loading, setLoading] = useState<boolean>(false);
   const [visiale, setVisiale] = useState<boolean>(false);
   const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
@@ -34,7 +33,6 @@ export const Header = () => {
     useState<boolean>(false);
 
   const onSearch = (value: string) => {
-    console.log(value);
     if (!value) {
       message.error("请输入关键字后再搜索");
       return;
@@ -44,24 +42,16 @@ export const Header = () => {
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "login_out") {
-      confirm({
-        title: "操作确认",
-        icon: <ExclamationCircleFilled />,
-        content: "确认退出登录？",
-        centered: true,
-        okText: "确认",
-        cancelText: "取消",
-        onOk() {
-          login.logout().then((res: any) => {
-            message.success("安全退出成功");
-            dispatch(logoutAction());
-            clearToken();
-            navigate("/");
-          });
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      login.logout().then((res: any) => {
+        clearToken();
+        message.success("安全退出成功");
+        dispatch(logoutAction());
+        setLoading(false);
+        location.reload();
       });
     } else if (key === "user_info") {
       navigate(`/member`);

@@ -144,6 +144,8 @@ export const LoginDialog: React.FC<PropInterface> = ({
       } else {
         navigate("/");
       }
+    } else {
+      location.reload();
     }
   };
 

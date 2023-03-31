@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 // import styles from "./index.module.scss";
@@ -8,8 +9,6 @@ import {
 } from "../../store/system/systemConfigSlice";
 import { Header, Footer } from "../../components";
 import { useLocation } from "react-router-dom";
-import { share } from "../../api/index";
-import { getMsv, clearMsv } from "../../utils/index";
 
 interface Props {
   loginData: any;
@@ -20,36 +19,29 @@ interface Props {
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
   const dispatch = useDispatch();
-
-  const msvBind = () => {
-    let msv = getMsv();
-    if (!msv) {
-      return;
-    }
-    share
-      .bind({ msv: msv })
-      .then((res) => {
-        clearMsv();
-      })
-      .catch((e) => {
-        console.log(e.message);
-        clearMsv();
-      });
-  };
+  const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
 
   if (props.loginData) {
     console.log("自动登录");
     dispatch(loginAction(props.loginData));
-    if (props.loginData.isLogin) {
-      msvBind();
-    }
   }
   if (props.config) {
     dispatch(saveConfigAction(props.config));
   }
+
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));
   }
+  //强制实名认证
+  // if (
+  //   props.config &&
+  //   props.loginData &&
+  //   props.loginData.is_face_verify === false &&
+  //   props.config.member.enabled_face_verify === true
+  // ) {
+  //   console.log("实名认证");
+  //   setFaceCheckVisible(true);
+  // }
 
   return (
     <>

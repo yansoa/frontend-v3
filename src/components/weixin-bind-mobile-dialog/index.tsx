@@ -125,6 +125,8 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       } else {
         navigate("/");
       }
+    } else {
+      location.reload();
     }
   };
 
