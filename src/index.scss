@@ -229,6 +229,14 @@ button:focus-visible {
   margin-bottom: 30px;
 }
 
+.mt-50 {
+  margin-top: 50px;
+}
+
+.mb-50 {
+  margin-bottom: 50px;
+}
+
 .text-blue {
   color: #3ca7fa;
 }
@@ -241,8 +249,47 @@ button:focus-visible {
   height: 1.25rem;
 }
 
+.float-left {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
 .d-flex {
   display: flex;
+  align-items: center;
+}
+
+.j-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.d-j-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.j-r-flex {
+  display: flex;
+  justify-content: right;
+}
+
+.j-b-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.c-a-flex {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -281,7 +328,7 @@ button:focus-visible {
 .main-body {
   width: 100%;
   height: auto;
-  min-height: 900px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -289,9 +336,45 @@ button:focus-visible {
 
 .container {
   width: 1200px;
-  min-height: 900px;
+  min-height: 600px;
   height: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+}
+
+.messagePoint {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0px;
+}
+.messagePoint:after {
+  content: "";
+  margin: 3px;
+  display: table;
+  width: 6px;
+  height: 6px;
+  background-color: #ff4d4f;
+  border-radius: 50%;
+}
+
+.header-menu {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  .ant-menu-horizontal {
+    border-bottom: none;
+  }
+  .ant-menu > .ant-menu-submenu {
+    &:first-child {
+      margin-left: -16px;
+    }
+    .ant-menu-submenu-title {
+      font-size: 16px !important;
+    }
+  }
+  .ant-menu > .ant-menu-item {
+    font-size: 16px !important;
+  }
 }

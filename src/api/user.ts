@@ -33,3 +33,7 @@ export function checkWechatLogin(params: any) {
 export function wechatCodeBindMobile(params: any) {
   return client.post("/api/v3/auth/register/withWechatScan", params);
 }
+//未读消息
+export function unReadNum() {
+  return client.get("/api/v2/member/unreadNotificationCount", {});
+}

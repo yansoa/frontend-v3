@@ -3,3 +3,7 @@ export * from "./footer";
 export * from "./login-dailog";
 export * from "./register-dialog";
 export * from "./weixin-login-dailog";
+export * from "./empty";
+export * from "./vod-course-item";
+export * from "./thumb-bar";
+export * from "./filter-scenes";

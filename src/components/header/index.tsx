@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, Button, Dropdown, message } from "antd";
+import { Input, Button, Dropdown, message, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAction } from "../../store/user/loginUserSlice";
+import { logoutAction, saveUnread } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { LoginDialog } from "../login-dailog";
 import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
-import { login } from "../../api/index";
+import { login, home, user as member } from "../../api/index";
 import { clearToken } from "../../utils/index";
 
 const { Search } = Input;
@@ -21,16 +21,76 @@ export const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const freshUnread = useSelector(
+    (state: any) => state.loginUser.value.freshUnread
+  );
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [visiale, setVisiale] = useState<boolean>(false);
   const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
   const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
     useState<boolean>(false);
+  const [hasMessage, setHasMessage] = useState<boolean>(false);
+  const [list, setList] = useState<MenuProps["items"]>([]);
+  const [current, setCurrent] = useState("/");
+
+  useEffect(() => {
+    getHeaderNav();
+  }, []);
+  useEffect(() => {
+    getUnread();
+  }, [freshUnread]);
+
+  const getHeaderNav = () => {
+    setCurrent(pathname);
+    home.headerNav().then((res: any) => {
+      let list = res.data;
+      const arr: MenuProps["items"] = [];
+      list.map((item: any) => {
+        if (item.children.length > 0) {
+          arr.push({
+            label: item.name,
+            key: item.url,
+            children: checkArr(item.children),
+          });
+        } else {
+          arr.push({
+            label: item.name,
+            key: item.url,
+          });
+        }
+      });
+      setList(arr);
+    });
+  };
+
+  const checkArr = (children: any) => {
+    const arr: MenuProps["items"] = [];
+    children.map((item: any) => {
+      arr.push({
+        label: item.name,
+        key: item.url,
+      });
+    });
+    return arr;
+  };
+
+  const getUnread = () => {
+    member.unReadNum().then((res: any) => {
+      let num = res.data;
+      if (num === 0) {
+        setHasMessage(false);
+      } else {
+        setHasMessage(true);
+      }
+      saveUnread(false);
+    });
+  };
 
   const onSearch = (value: string) => {
     if (!value) {
@@ -68,7 +128,7 @@ export const Header = () => {
     {
       label: "我的消息",
       key: "user_messsage",
-      icon: "",
+      icon: hasMessage ? <i className="messagePoint"></i> : "",
     },
     {
       label: "安全退出",
@@ -102,6 +162,11 @@ export const Header = () => {
 
   const bindMobile = () => {
     setWeixinBindMobileVisiale(true);
+  };
+
+  const checkNav: MenuProps["onClick"] = (e) => {
+    setCurrent(e.key);
+    navigate(e.key);
   };
 
   return (
@@ -226,7 +291,14 @@ export const Header = () => {
             )}
           </div>
         </div>
-        <div className={styles["bottom-header"]}></div>
+        <div className="header-menu">
+          <Menu
+            onClick={checkNav}
+            selectedKeys={[current]}
+            mode="horizontal"
+            items={list}
+          />
+        </div>
       </div>
     </div>
   );

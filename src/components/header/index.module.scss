@@ -4,13 +4,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 139px;
+  height: auto;
   background: #ffffff;
   border-bottom: 1px solid #f1f2fa;
   z-index: 100;
   .main-header {
     width: 1200px;
-    height: 139px;
+    height: auto;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -70,10 +70,6 @@
           }
         }
       }
-    }
-    .bottom-header {
-      width: 100%;
-      height: 64px;
     }
   }
 }
