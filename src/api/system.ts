@@ -15,3 +15,11 @@ export function imageCaptcha() {
 export function footerLink() {
   return client.get(`/api/v2/links`, {});
 }
+
+export function historyRecord(type: string, id: number, title: string) {
+  return client.post("/addons/templateOne/api/v1/history/record", {
+    type: type,
+    id: id,
+    title: title,
+  });
+}

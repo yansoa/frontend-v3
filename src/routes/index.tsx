@@ -7,7 +7,8 @@ import { getToken } from "../utils/index";
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
 import IndexPage from "../pages/index";
-import VodPage from "../pages/vod";
+import VodPage from "../pages/vod/index";
+import { VodDetailPage } from "../pages/vod/detail";
 
 let RootPage: any = null;
 let configFunc = {
@@ -183,6 +184,7 @@ const routes: RouteObject[] = [
         element: <LoginPage />,
       },
       { path: "/courses", element: <VodPage /> },
+      { path: "/courses/detail", element: <VodDetailPage /> },
     ],
   },
 ];

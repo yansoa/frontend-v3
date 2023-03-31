@@ -8,3 +8,4 @@ export * from "./vod-course-item";
 export * from "./thumb-bar";
 export * from "./filter-scenes";
 export * from "./filter-categories";
+export * from "./history-record";
