@@ -366,7 +366,7 @@ button:focus-visible {
   .ant-menu-horizontal {
     border-bottom: none;
   }
-  .ant-menu > .ant-menu-submenu {
+  .ant-menu > .ant-menu-item {
     &:first-child {
       margin-left: -16px;
     }

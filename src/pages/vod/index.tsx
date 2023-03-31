@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Row, Col, Modal, Spin, Button, Pagination } from "antd";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { course } from "../../api/index";
-import { Empty, VodCourseItem, FilterScenes } from "../../components";
+import {
+  Empty,
+  VodCourseItem,
+  FilterScenes,
+  FilterCategories,
+} from "../../components";
 
 const VodPage = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
-  const [category_id, setCategoryId] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(16);
   const [total, setTotal] = useState(0);
   const result = new URLSearchParams(useLocation().search);
   const [scene, setScene] = useState(result.get("scene") || "");
+  const [cid, setCid] = useState(Number(result.get("cid")) || 0);
+  const [child, setChild] = useState(Number(result.get("child")) || 0);
 
   useEffect(() => {
     getCategories();
@@ -23,7 +30,7 @@ const VodPage = () => {
 
   useEffect(() => {
     getList();
-  }, [refresh, page, size, scene, category_id]);
+  }, [refresh, page, size]);
 
   const resetList = () => {
     setPage(1);
@@ -57,6 +64,12 @@ const VodPage = () => {
       return;
     }
     setLoading(true);
+    let category_id = 0;
+    if (child === 0) {
+      category_id = cid;
+    } else {
+      category_id = child;
+    }
     course
       .list({
         page: page,
@@ -72,12 +85,37 @@ const VodPage = () => {
   };
   return (
     <>
+      <FilterCategories
+        categories={categories}
+        defaultKey={cid}
+        defaultChild={child}
+        onSelected={(id: number, child: number) => {
+          setCid(id);
+          setChild(id);
+          if (id === 0) {
+            navigate("/courses?scene=" + scene);
+          } else {
+            navigate(
+              "/courses?cid=" + cid + "&child=" + child + "&scene=" + scene
+            );
+          }
+          resetList();
+        }}
+      />
       <div className="container">
         <FilterScenes
           scenes={scenes}
           defaultKey={""}
           onSelected={(id: string) => {
             setScene(id);
+            if (cid === 0) {
+              navigate("/courses?scene=" + id);
+            } else {
+              navigate(
+                "/courses?cid=" + cid + "&child=" + child + "&scene=" + id
+              );
+            }
+            resetList();
           }}
         />
         {loading && (

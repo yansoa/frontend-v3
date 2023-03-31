@@ -28,10 +28,9 @@
   .vod-course-body {
     box-sizing: border-box;
     width: 100%;
-    height: auto;
+    height: 90px;
     background-color: #fff;
     border-radius: 0px 0px 8px 8px;
-    flex: 1;
     padding: 15px 15px 15px 10px;
 
     .vod-course-title {
@@ -46,6 +45,7 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-bottom: 20px;
+      text-align: left;
     }
 
     .vod-course-info {

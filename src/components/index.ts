@@ -7,3 +7,4 @@ export * from "./empty";
 export * from "./vod-course-item";
 export * from "./thumb-bar";
 export * from "./filter-scenes";
+export * from "./filter-categories";
