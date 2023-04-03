@@ -11,4 +11,5 @@ export * from "./filter-categories";
 export * from "./history-record";
 export * from "./miaosha-dialog";
 export * from "./miaosha-list";
+export * from "./tuangou-list";
 export * from "./count-down";

@@ -9,6 +9,7 @@ import {
   ThumbBar,
   MiaoshaDialog,
   MiaoshaList,
+  TuangouList,
 } from "../../components";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
@@ -286,7 +287,7 @@ export const VodDetailPage = () => {
                       {hideButton && (
                         <div className={styles["has-button"]}>正在拼团中</div>
                       )}
-                      {hideButton && (
+                      {!hideButton && course.charge > 0 && (
                         <div
                           className={styles["buy-button"]}
                           onClick={() => buyCourse()}
@@ -324,6 +325,7 @@ export const VodDetailPage = () => {
           </div>
         </div>
         {!isBuy && msData && <MiaoshaList msData={msData} />}
+        {!isBuy && msData && <TuangouList tgData={tgData} />}
       </div>
     </div>
   );
