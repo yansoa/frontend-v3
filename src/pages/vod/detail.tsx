@@ -33,15 +33,38 @@ export const VodDetailPage = () => {
   const [msVisible, setMsVisible] = useState<boolean>(false);
   const [tgData, setTgData] = useState<any>({});
   const [hideButton, setHideButton] = useState<boolean>(false);
+  const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const tabs = [
+    {
+      name: "课程详情",
+      id: 2,
+    },
+    {
+      name: "课程目录",
+      id: 3,
+    },
+    {
+      name: "课程评论",
+      id: 4,
+    },
+    {
+      name: "课程附件",
+      id: 5,
+    },
+  ];
 
   useEffect(() => {
     getDetail();
     getComments();
   }, [cid]);
+
+  const tabChange = (id: number) => {
+    setCurrentTab(id);
+  };
 
   const getDetail = () => {
     if (loading) {
@@ -200,6 +223,8 @@ export const VodDetailPage = () => {
     setMsVisible(true);
   };
 
+  const goPlay = (item: any) => {};
+
   return (
     <div className="container">
       <div className="bread-nav">
@@ -326,7 +351,52 @@ export const VodDetailPage = () => {
         </div>
         {!isBuy && msData && <MiaoshaList msData={msData} />}
         {!isBuy && msData && <TuangouList tgData={tgData} />}
+        <div className="course-tabs">
+          {tabs.map((item: any) => (
+            <div
+              key={item.id}
+              className={
+                currentTab === item.id ? "active item-tab" : "item-tab"
+              }
+              onClick={() => tabChange(item.id)}
+            >
+              {item.name}
+              {currentTab === item.id && <div className="actline"></div>}
+            </div>
+          ))}
+        </div>
       </div>
+      {currentTab === 2 && (
+        <div className={styles["coursr-desc"]}>
+          <div
+            className="u-content md-content"
+            dangerouslySetInnerHTML={{ __html: course.render_desc }}
+          ></div>
+        </div>
+      )}
+      {currentTab === 2 && (
+        <div className={styles["course-chapter-box"]}>
+          {/* {chapters.length > 0 && (
+            <VideoChapterListComp
+              chapters={chapters}
+              course={course}
+              videos={videos}
+              isBuy={isBuy}
+              buyVideos={buyVideos}
+              switchVideo={(item: any) => goPlay(item)}
+            />
+          )}
+          {chapters.length === 0 && (
+            <VideoListComp
+              course={course}
+              videos={videos[0]}
+              isBuy={isBuy}
+              buyVideos={buyVideos}
+              switchVideo={(item: any) => goPlay(item)}
+            />
+          )} */}
+        </div>
+      )}
     </div>
   );
 };
