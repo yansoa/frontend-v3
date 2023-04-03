@@ -10,11 +10,13 @@ import {
   MiaoshaDialog,
   MiaoshaList,
   TuangouList,
+  Empty,
 } from "../../components";
 import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
+import { getToken } from "../../utils/index";
 
 export const VodDetailPage = () => {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ export const VodDetailPage = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const tabs = [
     {
@@ -233,6 +236,21 @@ export const VodDetailPage = () => {
     navigate("/courses/video?id=" + item.id);
   };
 
+  const download = (id: number) => {
+    let token = getToken();
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    if (!isBuy) {
+      message.error("请购买课程后下载");
+      return;
+    }
+    window.open(
+      `${config.url}/api/v2/course/attach/${id}/download?token=${token}`
+    );
+  };
+
   return (
     <div className="container">
       <div className="bread-nav">
@@ -403,6 +421,23 @@ export const VodDetailPage = () => {
               switchVideo={(item: any) => goPlay(item)}
             />
           )}
+        </div>
+      )}
+      {currentTab === 5 && (
+        <div className={styles["attach-list-box"]}>
+          {attach.length === 0 && <Empty></Empty>}
+          {attach.length > 0 &&
+            attach.map((item: any) => (
+              <div className={styles["attach-item"]} key={item.id}>
+                <div className={styles["attach-name"]}>{item.name}</div>
+                <a
+                  onClick={() => download(item.id)}
+                  className={styles["download-attach"]}
+                >
+                  下载附件
+                </a>
+              </div>
+            ))}
         </div>
       )}
     </div>
