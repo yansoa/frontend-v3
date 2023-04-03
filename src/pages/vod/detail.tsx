@@ -11,6 +11,7 @@ import {
   MiaoshaList,
   TuangouList,
   Empty,
+  CourseComments,
 } from "../../components";
 import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
@@ -32,7 +33,7 @@ export const VodDetailPage = () => {
   const [videos, setVideos] = useState<any>({});
   const [buyVideos, setBuyVideos] = useState<any>([]);
   const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>([]);
+  const [commentUsers, setCommentUsers] = useState<any>({});
   const [msData, setMsData] = useState<any>({});
   const [msVisible, setMsVisible] = useState<boolean>(false);
   const [tgData, setTgData] = useState<any>({});
@@ -109,6 +110,12 @@ export const VodDetailPage = () => {
       setCommentUsers(res.data.users);
       setCommentLoading(false);
     });
+  };
+
+  const resetComments = () => {
+    setCommentLoading(false);
+    setComments([]);
+    setCommentUsers({});
   };
 
   const collectCourse = () => {
@@ -422,6 +429,18 @@ export const VodDetailPage = () => {
             />
           )}
         </div>
+      )}
+      {currentTab === 4 && (
+        <CourseComments
+          cid={cid}
+          isBuy={isBuy}
+          comments={comments}
+          commentUsers={commentUsers}
+          success={() => {
+            resetComments();
+            getComments();
+          }}
+        />
       )}
       {currentTab === 5 && (
         <div className={styles["attach-list-box"]}>

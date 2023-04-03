@@ -15,3 +15,4 @@ export * from "./tuangou-list";
 export * from "./count-down";
 export * from "./tencent-face-check";
 export * from "./duration";
+export * from "./course-comments";

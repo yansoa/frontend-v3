@@ -56,6 +56,26 @@ export function getSessionLoginCode(code: string) {
   return window.sessionStorage.getItem("login_code:" + code);
 }
 
+export function getCommentTime(dateStr: string) {
+  const interval = moment().diff(moment(dateStr), "seconds");
+  if (interval < 60) {
+    return "刚刚";
+  } else if (interval < 60 * 60) {
+    let tempTime = Math.floor(interval / 60);
+    return `${tempTime}分钟前`;
+  } else if (interval < 60 * 60 * 24) {
+    let tempTime = Math.floor(interval / (60 * 60));
+    return `${tempTime}小时前`;
+  } else if (interval < 60 * 60 * 24 * 7) {
+    let tempTime = Math.floor(interval / (60 * 60 * 24));
+    return `${tempTime}天前`;
+  } else if (interval < 60 * 60 * 24 * 365) {
+    return moment(interval).format("MM-DD");
+  } else {
+    return moment(interval).format("YYYY-MM-DD");
+  }
+}
+
 export function dateFormat(dateStr: string) {
   return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
