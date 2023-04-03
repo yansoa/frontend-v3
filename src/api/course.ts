@@ -35,7 +35,7 @@ export function submitVideoComment(id: number, params: any) {
 
 // 获取播放地址
 export function playInfo(id: number, params: any) {
-  return client.get(`/api/v2/video/${id}/playinfo}`, params);
+  return client.get(`/api/v2/video/${id}/playinfo`, params);
 }
 
 // 记录学员观看时长

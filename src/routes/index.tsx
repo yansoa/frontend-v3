@@ -9,6 +9,7 @@ import LoginPage from "../pages/login";
 import IndexPage from "../pages/index";
 import VodPage from "../pages/vod/index";
 import { VodDetailPage } from "../pages/vod/detail";
+import { VodPlayPage } from "../pages/vod/video";
 
 let RootPage: any = null;
 let configFunc = {
@@ -185,6 +186,7 @@ const routes: RouteObject[] = [
       },
       { path: "/courses", element: <VodPage /> },
       { path: "/courses/detail", element: <VodDetailPage /> },
+      { path: "/courses/video", element: <VodPlayPage /> },
     ],
   },
 ];

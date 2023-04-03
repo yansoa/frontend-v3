@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Button, message } from "antd";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { DurationText } from "../../../../../components";
 import lockIcon from "../../../../../assets/img/commen/icon-lock.png";
 
 interface PropInterface {
   videos: any;
   course: any;
+  video: any;
   chapters: any[];
   isBuy: boolean;
   buyVideos: any[];
@@ -18,6 +15,7 @@ interface PropInterface {
 export const VideoChapterListComp: React.FC<PropInterface> = ({
   chapters,
   course,
+  video,
   videos,
   isBuy,
   buyVideos,
@@ -35,21 +33,31 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                 <div
                   key={item.id}
                   className={styles["video-item"]}
-                  onClick={() => switchVideo(item)}
+                  onClick={() => {
+                    if (video.id === item.id) {
+                      return;
+                    }
+                    switchVideo(item);
+                  }}
                 >
                   {!isBuy && course.is_free !== 1 && (
                     <img className={styles["play-icon"]} src={lockIcon} />
                   )}
                   <div className={styles["video-title"]}>
-                    <div className={styles["text"]}>{item.title}</div>
+                    <div
+                      className={
+                        item.id === video.id
+                          ? styles["active-text"]
+                          : styles["text"]
+                      }
+                    >
+                      {item.title}
+                    </div>
                     {isBuy === false &&
                       course.is_free !== 1 &&
                       item.free_seconds > 0 && (
                         <div className={styles["free"]}>试看</div>
                       )}
-                  </div>
-                  <div className={styles["video-duration"]}>
-                    <DurationText seconds={item.duration} />
                   </div>
                 </div>
               ))}
@@ -64,21 +72,31 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
               <div
                 key={item.id}
                 className={styles["video-item"]}
-                onClick={() => switchVideo(item)}
+                onClick={() => {
+                  if (video.id === item.id) {
+                    return;
+                  }
+                  switchVideo(item);
+                }}
               >
                 {!isBuy && course.is_free !== 1 && (
                   <img className={styles["play-icon"]} src={lockIcon} />
                 )}
                 <div className={styles["video-title"]}>
-                  <div className={styles["text"]}>{item.title}</div>
+                  <div
+                    className={
+                      item.id === video.id
+                        ? styles["active-text"]
+                        : styles["text"]
+                    }
+                  >
+                    {item.title}
+                  </div>
                   {isBuy === false &&
                     course.is_free !== 1 &&
                     item.free_seconds > 0 && (
                       <div className={styles["free"]}>试看</div>
                     )}
-                </div>
-                <div className={styles["video-duration"]}>
-                  <DurationText seconds={item.duration} />
                 </div>
               </div>
             ))}
