@@ -125,7 +125,7 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
             status={verifyLoading ? "loading" : "active"}
           />
         </div>
-        <p>学习前请用微信扫码完成实名认证</p>
+        <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
       </Modal>
     </>
   );
