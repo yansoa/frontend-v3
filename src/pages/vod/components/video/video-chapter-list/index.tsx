@@ -29,28 +29,30 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
         <div key={chapter.id} className={styles["chapter-item"]}>
           <div className={styles["chapter-name"]}>{chapter.title}</div>
           <div className={styles["chapter-videos-box"]}>
-            {videos[chapter.id].map((item: any) => (
-              <div
-                key={item.id}
-                className={styles["video-item"]}
-                onClick={() => switchVideo(item)}
-              >
-                {!isBuy && course.is_free !== 1 && (
-                  <img className={styles["play-icon"]} src={lockIcon} />
-                )}
-                <div className={styles["video-title"]}>
-                  <div className={styles["text"]}>{item.title}</div>
-                  {isBuy === false &&
-                    course.is_free !== 1 &&
-                    item.free_seconds > 0 && (
-                      <div className={styles["free"]}>试看</div>
-                    )}
+            {videos[chapter.id] &&
+              videos[chapter.id].length > 0 &&
+              videos[chapter.id].map((item: any) => (
+                <div
+                  key={item.id}
+                  className={styles["video-item"]}
+                  onClick={() => switchVideo(item)}
+                >
+                  {!isBuy && course.is_free !== 1 && (
+                    <img className={styles["play-icon"]} src={lockIcon} />
+                  )}
+                  <div className={styles["video-title"]}>
+                    <div className={styles["text"]}>{item.title}</div>
+                    {isBuy === false &&
+                      course.is_free !== 1 &&
+                      item.free_seconds > 0 && (
+                        <div className={styles["free"]}>试看</div>
+                      )}
+                  </div>
+                  <div className={styles["video-duration"]}>
+                    <DurationText seconds={item.duration} />
+                  </div>
                 </div>
-                <div className={styles["video-duration"]}>
-                  <DurationText seconds={item.duration} />
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       ))}
