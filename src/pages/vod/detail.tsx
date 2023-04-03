@@ -3,8 +3,13 @@ import styles from "./detail.module.scss";
 import { Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { course as vod } from "../../api/index";
-import { HistoryRecord, ThumbBar } from "../../components";
+import { course as vod, miaosha, tuangou } from "../../api/index";
+import {
+  HistoryRecord,
+  ThumbBar,
+  MiaoshaDialog,
+  MiaoshaList,
+} from "../../components";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 
@@ -23,6 +28,10 @@ export const VodDetailPage = () => {
   const [buyVideos, setBuyVideos] = useState<any>([]);
   const [comments, setComments] = useState<any>([]);
   const [commentUsers, setCommentUsers] = useState<any>([]);
+  const [msData, setMsData] = useState<any>({});
+  const [msVisible, setMsVisible] = useState<boolean>(false);
+  const [tgData, setTgData] = useState<any>({});
+  const [hideButton, setHideButton] = useState<boolean>(false);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
@@ -94,8 +103,101 @@ export const VodDetailPage = () => {
   };
 
   const goLogin = () => {};
-  const getMsDetail = () => {};
-  const getTgDetail = () => {};
+  const getMsDetail = () => {
+    if (course.is_free === 1) {
+      return;
+    }
+    miaosha
+      .detail(0, {
+        course_id: cid,
+        course_type: "course",
+      })
+      .then((res: any) => {
+        setMsData(res.data);
+        if (!res.data.data && !isBuy && configFunc["tuangou"]) {
+          getTgDetail();
+        }
+      });
+  };
+  const getTgDetail = () => {
+    if (course.is_free === 1) {
+      return;
+    }
+    tuangou
+      .detail(0, {
+        course_id: cid,
+        course_type: "course",
+      })
+      .then((res: any) => {
+        setTgData(res.data);
+        setHideButton(res.data.join_item && res.data.join_item.length !== 0);
+      });
+  };
+
+  const goRole = () => {
+    navigate("/vip");
+  };
+
+  const buyCourse = () => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    navigate(
+      "/order?goods_id=" +
+        cid +
+        "&goods_type=vod&goods_charge=" +
+        course.charge +
+        "&goods_label=点播课程&goods_name=" +
+        course.title +
+        "&goods_thumb=" +
+        course.thumb
+    );
+  };
+
+  const goMsOrder = (id: number) => {
+    navigate(
+      "/order?course_id=" +
+        msData.data.goods_id +
+        "&course_type=" +
+        msData.data.goods_type +
+        "&goods_type=ms&goods_charge=" +
+        msData.data.charge +
+        "&goods_label=秒杀&goods_name=" +
+        msData.data.goods_title +
+        "&goods_id=" +
+        id +
+        "&goods_thumb=" +
+        msData.data.goods_thumb
+    );
+  };
+
+  const goPay = (gid = 0) => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    navigate(
+      "/order?course_id=" +
+        tgData.goods.other_id +
+        "&course_type=" +
+        tgData.goods.goods_type +
+        "&goods_type=tg&goods_charge=" +
+        tgData.goods.charge +
+        "&goods_label=团购&goods_name=" +
+        tgData.goods.goods_title +
+        "&goods_id=" +
+        tgData.goods.id +
+        "&goods_thumb=" +
+        tgData.goods.goods_thumb +
+        "&tg_gid=" +
+        gid
+    );
+  };
+
+  const openMsDialog = () => {
+    setMsVisible(true);
+  };
 
   return (
     <div className="container">
@@ -118,6 +220,13 @@ export const VodDetailPage = () => {
         /<span>{course.title}</span>
       </div>
       <HistoryRecord id={course.id} title={course.title} type="vod" />
+      {!isBuy && msData && (
+        <MiaoshaDialog
+          open={msVisible}
+          msData={msData}
+          onCancel={() => setMsVisible(false)}
+        />
+      )}
       <div className={styles["course-info"]}>
         <div className={styles["course-info-box"]}>
           <div className={styles["course-thumb"]}>
@@ -149,8 +258,72 @@ export const VodDetailPage = () => {
               />
             )}
             <p className={styles["desc"]}>{course.short_description}</p>
+            <div className={styles["btn-box"]}>
+              {!isBuy && course.charge !== 0 && (
+                <>
+                  {msData && msData.data && (
+                    <>
+                      {msData.order && msData.order.status === 0 && (
+                        <div
+                          className={styles["buy-button"]}
+                          onClick={() => goMsOrder(msData.order.id)}
+                        >
+                          已获得秒杀资格，请尽快支付
+                        </div>
+                      )}
+                      {!msData.data.is_over && (
+                        <div
+                          className={styles["buy-button"]}
+                          onClick={() => openMsDialog()}
+                        >
+                          立即秒杀￥{msData.data.charge}
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {(!msData || !msData.data) && (
+                    <>
+                      {hideButton && (
+                        <div className={styles["has-button"]}>正在拼团中</div>
+                      )}
+                      {hideButton && (
+                        <div
+                          className={styles["buy-button"]}
+                          onClick={() => buyCourse()}
+                        >
+                          订阅课程￥{course.charge}
+                        </div>
+                      )}
+                      {course.vip_can_view === 1 && (
+                        <div
+                          className={styles["role-button"]}
+                          onClick={() => goRole()}
+                        >
+                          会员免费看
+                        </div>
+                      )}
+                      {tgData &&
+                        tgData.goods &&
+                        (!tgData.join_item ||
+                          tgData.join_item.length === 0) && (
+                          <div
+                            className={styles["role-button"]}
+                            onClick={() => goPay(0)}
+                          >
+                            单独开团￥{tgData.goods.charge}
+                          </div>
+                        )}
+                    </>
+                  )}
+                  {course.is_free === 1 && (
+                    <div className={styles["has-button"]}>本课程免费</div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
+        {!isBuy && msData && <MiaoshaList msData={msData} />}
       </div>
     </div>
   );

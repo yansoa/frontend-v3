@@ -4,3 +4,5 @@ export * as course from "./course";
 export * as system from "./system";
 export * as share from "./share";
 export * as home from "./home";
+export * as miaosha from "./miaosha";
+export * as tuangou from "./tuangou";

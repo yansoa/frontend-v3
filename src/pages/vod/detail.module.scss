@@ -65,6 +65,56 @@
         overflow: hidden;
         text-align: left;
       }
+      .btn-box {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        float: left;
+        display: flex;
+        flex-direction: row;
+        .has-button {
+          background: #f4fafe;
+          border-radius: 4px;
+          padding: 20px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #999999;
+          line-height: 16px;
+          box-sizing: border-box;
+          cursor: pointer;
+        }
+        .buy-button {
+          background: #ff4d4f;
+          border-radius: 4px;
+          padding: 20px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 16px;
+          box-sizing: border-box;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+        .role-button {
+          background: #e1a500;
+          border-radius: 4px;
+          padding: 20px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 16px;
+          box-sizing: border-box;
+          margin-left: 20px;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
     }
   }
 }
