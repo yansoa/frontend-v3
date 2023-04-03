@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { CountDown } from "../count-down";
 import defaultAvatar from "../../assets/img/commen/icon-member.png";
 
@@ -8,6 +11,8 @@ interface PropInterface {
 }
 
 export const TuangouList: React.FC<PropInterface> = ({ tgData }) => {
+  const navigate = useNavigate();
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const getArr = (num: number) => {
     let arr = [];
     for (let i = 0; i < num; i++) {
@@ -16,9 +21,42 @@ export const TuangouList: React.FC<PropInterface> = ({ tgData }) => {
     return arr;
   };
 
-  const copy = () => {};
+  const copy = () => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    var input = document.createElement("input");
+    input.value = window.location.href;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("Copy");
+    document.body.removeChild(input);
+    message.success("链接已复制，可分享邀请好友参团");
+  };
 
-  const goPay = (id: number) => {};
+  const goPay = (gid = 0) => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    navigate(
+      "/order?course_id=" +
+        tgData.goods.other_id +
+        "&course_type=" +
+        tgData.goods.goods_type +
+        "&goods_type=tg&goods_charge=" +
+        tgData.goods.charge +
+        "&goods_label=团购&goods_name=" +
+        tgData.goods.goods_title +
+        "&goods_id=" +
+        tgData.goods.id +
+        "&goods_thumb=" +
+        tgData.goods.goods_thumb +
+        "&tg_gid=" +
+        gid
+    );
+  };
 
   return (
     <>
