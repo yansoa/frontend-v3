@@ -13,3 +13,4 @@ export * from "./miaosha-dialog";
 export * from "./miaosha-list";
 export * from "./tuangou-list";
 export * from "./count-down";
+export * from "./tencent-face-check";

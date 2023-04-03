@@ -43,6 +43,8 @@ export class HttpClient {
         } else if (code === 401) {
           message.error("请重新登录");
           GoLogin();
+        } else if (code.status === 5) {
+          console.log("查询中");
         } else {
           message.error(msg);
         }

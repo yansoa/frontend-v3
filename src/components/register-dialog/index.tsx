@@ -165,7 +165,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
             rules={[{ required: true, message: "请输入手机号!" }]}
           >
             <Input
-              style={{ width: 440, height: 54 }}
+              style={{ width: 440, height: 54, fontSize: 16 }}
               autoComplete="off"
               placeholder="请输入手机号"
             />
@@ -177,7 +177,12 @@ export const RegisterDialog: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入图形验证码!" }]}
               >
                 <Input
-                  style={{ width: 310, height: 54, marginRight: 10 }}
+                  style={{
+                    width: 310,
+                    height: 54,
+                    marginRight: 10,
+                    fontSize: 16,
+                  }}
                   autoComplete="off"
                   placeholder="请输入图形验证码"
                 />
@@ -200,7 +205,12 @@ export const RegisterDialog: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入手机验证码!" }]}
               >
                 <Input
-                  style={{ width: 310, height: 54, marginRight: 30 }}
+                  style={{
+                    width: 310,
+                    height: 54,
+                    marginRight: 30,
+                    fontSize: 16,
+                  }}
                   autoComplete="off"
                   placeholder="请输入手机验证码"
                 />
@@ -225,7 +235,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
             rules={[{ required: true, message: "请设置账号密码!" }]}
           >
             <Input.Password
-              style={{ width: 440, height: 54 }}
+              style={{ width: 440, height: 54, fontSize: 16 }}
               autoComplete="off"
               placeholder="请设置账号密码"
             />
@@ -259,7 +269,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
           </div>
           <Form.Item>
             <Button
-              style={{ width: 440, height: 54, outline: "none" }}
+              style={{ width: 440, height: 54, outline: "none", fontSize: 16 }}
               type="primary"
               onClick={() => form.submit()}
               loading={loading}

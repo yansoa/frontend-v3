@@ -43,8 +43,10 @@ export const Header = () => {
     getHeaderNav();
   }, []);
   useEffect(() => {
-    getUnread();
-  }, [freshUnread]);
+    if (isLogin) {
+      getUnread();
+    }
+  }, [freshUnread, isLogin]);
 
   const getHeaderNav = () => {
     home.headerNav().then((res: any) => {

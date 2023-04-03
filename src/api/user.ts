@@ -37,3 +37,11 @@ export function wechatCodeBindMobile(params: any) {
 export function unReadNum() {
   return client.get("/api/v2/member/unreadNotificationCount", {});
 }
+//腾讯实人认证
+export function tecentFaceVerify(params: any) {
+  return client.post("/api/v3/member/tencent/faceVerify", params);
+}
+//查询腾讯实人认证结果
+export function tecentFaceVerifyQuery(params: any) {
+  return client.get("/api/v3/member/tencent/faceVerify", params);
+}

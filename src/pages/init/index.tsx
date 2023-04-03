@@ -115,9 +115,9 @@ export const InitPage = (props: Props) => {
 
   return (
     <>
-      {pathname !== "/login" && <Header></Header>}
+      <Header></Header>
       <Outlet />
-      {pathname !== "/login" && <Footer status={true}></Footer>}
+      <Footer status={true}></Footer>
     </>
   );
 };
