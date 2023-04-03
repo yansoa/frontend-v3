@@ -11,6 +11,8 @@ import {
   MiaoshaList,
   TuangouList,
 } from "../../components";
+import { VideoListComp } from "./components/detail/video-list";
+import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 
@@ -25,7 +27,7 @@ export const VodDetailPage = () => {
   const [chapters, setChapters] = useState<any>([]);
   const [isBuy, setIsBuy] = useState<boolean>(false);
   const [isCollect, setIsCollect] = useState<boolean>(false);
-  const [videos, setVideos] = useState<any>([]);
+  const [videos, setVideos] = useState<any>({});
   const [buyVideos, setBuyVideos] = useState<any>([]);
   const [comments, setComments] = useState<any>([]);
   const [commentUsers, setCommentUsers] = useState<any>([]);
@@ -223,7 +225,13 @@ export const VodDetailPage = () => {
     setMsVisible(true);
   };
 
-  const goPlay = (item: any) => {};
+  const goPlay = (item: any) => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+    navigate("/courses/video?id=" + item.id);
+  };
 
   return (
     <div className="container">
@@ -374,9 +382,9 @@ export const VodDetailPage = () => {
           ></div>
         </div>
       )}
-      {currentTab === 2 && (
+      {currentTab === 3 && (
         <div className={styles["course-chapter-box"]}>
-          {/* {chapters.length > 0 && (
+          {chapters.length > 0 && (
             <VideoChapterListComp
               chapters={chapters}
               course={course}
@@ -386,7 +394,7 @@ export const VodDetailPage = () => {
               switchVideo={(item: any) => goPlay(item)}
             />
           )}
-          {chapters.length === 0 && (
+          {chapters.length === 0 && videos[0] && (
             <VideoListComp
               course={course}
               videos={videos[0]}
@@ -394,7 +402,7 @@ export const VodDetailPage = () => {
               buyVideos={buyVideos}
               switchVideo={(item: any) => goPlay(item)}
             />
-          )} */}
+          )}
         </div>
       )}
     </div>
