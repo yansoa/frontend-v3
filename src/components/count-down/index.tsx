@@ -20,6 +20,9 @@ export const CountDown: React.FC<PropInterface> = ({ timestamp, type }) => {
   useEffect(() => {
     setEndTime(timestamp);
     countdown(timestamp);
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [timestamp]);
 
   const countdown = (timestamp: number) => {

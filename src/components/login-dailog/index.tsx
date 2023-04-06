@@ -51,6 +51,9 @@ export const LoginDialog: React.FC<PropInterface> = ({
     if (open) {
       getCaptcha();
     }
+    return () => {
+      interval && clearInterval(interval);
+    };
   }, [form, open]);
 
   const getCaptcha = () => {

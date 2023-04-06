@@ -33,6 +33,9 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     if (open) {
       getQrode();
     }
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [open]);
 
   const getQrode = () => {

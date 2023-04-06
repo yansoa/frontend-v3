@@ -82,6 +82,22 @@
       display: grid;
       gap: 10px;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      .thumb-active-item {
+        width: 90px;
+        height: 68px;
+        cursor: pointer;
+        position: relative;
+        opacity: 0.6;
+        border: 1px solid #04c877;
+        .image-view {
+          width: 100%;
+          height: 66px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center center;
+        }
+      }
       .thumb-item {
         width: 90px;
         height: 68px;
@@ -141,17 +157,6 @@
       cursor: pointer;
       position: relative;
       margin-top: 20px;
-      .input-upload {
-        width: 134px;
-        height: 44px;
-        background: #04c877;
-        border-radius: 4px;
-        opacity: 0;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        position: absolute;
-      }
       &:hover {
         opacity: 0.8;
       }

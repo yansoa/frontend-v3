@@ -76,6 +76,9 @@ export const VodPlayPage = () => {
   useEffect(() => {
     getDetail();
     getComments();
+    return () => {
+      clock && clearInterval(clock);
+    };
   }, [vid]);
 
   useEffect(() => {
@@ -129,16 +132,6 @@ export const VodPlayPage = () => {
           }
         }
       }
-
-      // 自动锁定当前视频位置
-      //   setTimeout(() => {
-      //     if (res.data.chapters.length > 0) {
-      //       let pos = document.querySelector(".selChapter").offsetTop - 289;
-      //       if (pos > 0) {
-      //         document.querySelector(".course-chapter-box").scrollTop = pos;
-      //       }
-      //     }
-      //   }, 200);
 
       // 当前用户已购买 || 可以试看
       if (res.data.is_watch || res.data.video.free_seconds > 0) {
@@ -508,7 +501,7 @@ export const VodPlayPage = () => {
               </>
             )}
           </div>
-          <div className={styles["course-chapter-box"]}>
+          <div className="course-chapter-box">
             {chapters.length > 0 && (
               <VideoChapterListComp
                 chapters={chapters}
@@ -577,7 +570,7 @@ export const VodPlayPage = () => {
         </div>
       )}
       {configFunc.snapshort && isWatch && (
-        <SnaoShotDialog id={vid} duration={myRef.current} resourceType="vod" />
+        <SnaoShotDialog id={vid} duration={playDuration} resourceType="vod" />
       )}
     </div>
   );

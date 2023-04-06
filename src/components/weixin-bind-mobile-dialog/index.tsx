@@ -39,12 +39,15 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       captcha: "",
       sms: "",
     });
-
     setSmsLoading(false);
     setCurrent(120);
     if (open) {
       getCaptcha();
     }
+    
+    return () => {
+      interval && clearInterval(interval);
+    };
   }, [form, open]);
 
   const getCaptcha = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
 import lockIcon from "../../../../../assets/img/commen/icon-lock.png";
 
@@ -21,6 +21,30 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
   buyVideos,
   switchVideo,
 }) => {
+  const myRef = useRef();
+  useEffect(() => {
+    // 自动锁定当前视频位置
+    if (chapters.length > 0) {
+      setTimeout(() => {
+        window.addEventListener("scroll", handler, { passive: true });
+      }, 200);
+    }
+    return () => {
+      window.removeEventListener("scroll", handler);
+    };
+  }, [myRef, chapters]);
+
+  const checkHeight = (ref: any) => {
+    let selItem = ref.current;
+    let pos = selItem.offsetTop - 289;
+    if (pos > 0) {
+      let box = document.querySelector(".course-chapter-box") as HTMLElement;
+      box.scrollTop = pos;
+    }
+  };
+
+  const handler = () => checkHeight(myRef);
+
   return (
     <div>
       {chapters.map((chapter: any) => (
@@ -33,6 +57,7 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                 <div
                   key={item.id}
                   className={styles["video-item"]}
+                  ref={video.id === item.id ? myRef : null}
                   onClick={() => {
                     if (video.id === item.id) {
                       return;
@@ -72,6 +97,7 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
               <div
                 key={item.id}
                 className={styles["video-item"]}
+                ref={video.id === item.id ? myRef : null}
                 onClick={() => {
                   if (video.id === item.id) {
                     return;

@@ -31,6 +31,9 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
     if (open) {
       getQrode();
     }
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [open]);
 
   const getQrode = () => {
