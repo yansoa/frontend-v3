@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, Button, Dropdown, message, Menu } from "antd";
+import { Skeleton, Input, Button, Dropdown, message, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,7 @@ export const Header = () => {
   );
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
+  const [navLoading, setNavLoading] = useState<boolean>(true);
   const [visiale, setVisiale] = useState<boolean>(false);
   const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
@@ -45,6 +46,7 @@ export const Header = () => {
     }
     getHeaderNav();
   }, [pathname]);
+
   useEffect(() => {
     if (isLogin) {
       getUnread();
@@ -74,6 +76,7 @@ export const Header = () => {
         }
       });
       setList(arr);
+      setNavLoading(false);
     });
   };
 
@@ -300,12 +303,25 @@ export const Header = () => {
           </div>
         </div>
         <div className="header-menu">
-          <Menu
-            onClick={checkNav}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={list}
-          />
+          {navLoading && (
+            <Skeleton.Button
+              style={{
+                width: 600,
+                height: 21,
+                marginTop: 12,
+                marginBottom: 12,
+              }}
+              active
+            />
+          )}
+          {!navLoading && (
+            <Menu
+              onClick={checkNav}
+              selectedKeys={[current]}
+              mode="horizontal"
+              items={list}
+            />
+          )}
         </div>
       </div>
     </div>
