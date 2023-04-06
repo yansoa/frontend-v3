@@ -46,11 +46,11 @@
         }
       }
       .iframe-player-box {
-        width: 100%;
+        width: 900px;
         height: 100%;
       }
       .alert-message {
-        width: 100%;
+        width: 900px;
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
         display: flex;
@@ -115,9 +115,57 @@
     .course-chapter-box {
       width: 300px;
       height: 506px;
+      box-sizing: border-box;
       padding: 30px 10px 30px 30px;
       background: #ffffff;
       overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+}
+
+.attach-list-box {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 50px 30px;
+  background: #ffffff;
+  margin-top: 30px;
+  border-radius: 8px;
+  .attach-item {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    &:first-child {
+      margin-top: 0px;
+    }
+
+    .attach-name {
+      height: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333333;
+      line-height: 16px;
+      text-align: left;
+    }
+    .download-attach {
+      margin-left: 30px;
+      width: 104px;
+      height: 40px;
+      background: #3ca7fa;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
     }
   }
 }

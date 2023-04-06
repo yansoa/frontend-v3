@@ -126,3 +126,14 @@ export function getAppUrl() {
   }
   return host + "/#";
 }
+
+export function random(minNum: number, maxNum: number) {
+  switch (arguments.length) {
+    case 1:
+      return Math.random() * minNum + 1, 10;
+    case 2:
+      return Math.random() * (maxNum - minNum + 1) + minNum, 10;
+    default:
+      return 0;
+  }
+}

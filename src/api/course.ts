@@ -30,7 +30,7 @@ export function videoComments(id: number) {
 }
 
 export function submitVideoComment(id: number, params: any) {
-  return client.post(`/api/v2/video/${id}/comments`, params);
+  return client.post(`/api/v2/video/${id}/comment`, params);
 }
 
 // 获取播放地址

@@ -4,7 +4,12 @@ import { Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
-import { HistoryRecord, CourseComments } from "../../components";
+import {
+  HistoryRecord,
+  CourseVideoComments,
+  Empty,
+  SnaoShotDialog,
+} from "../../components";
 import { VideoListComp } from "./components/video/video-list";
 import { VideoChapterListComp } from "./components/video/video-chapter-list";
 import { getToken, getPlayId, savePlayId } from "../../utils/index";
@@ -49,10 +54,24 @@ export const VodPlayPage = () => {
     status: false,
     is_ban_sell: null,
   });
+  const [currentTab, setCurrentTab] = useState(4);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const configFunc = useSelector(
+    (state: any) => state.systemConfig.value.configFunc
+  );
   const myRef = useRef(0);
+  const tabs = [
+    {
+      name: "课时评论",
+      id: 4,
+    },
+    {
+      name: "课程附件",
+      id: 5,
+    },
+  ];
 
   useEffect(() => {
     getDetail();
@@ -315,7 +334,7 @@ export const VodPlayPage = () => {
       return;
     }
     setCommentLoading(true);
-    vod.videoComments(cid).then((res: any) => {
+    vod.videoComments(vid).then((res: any) => {
       setComments(res.data.comments);
       setCommentUsers(res.data.users);
       setCommentLoading(false);
@@ -365,6 +384,10 @@ export const VodPlayPage = () => {
     window.open(
       `${config.url}/api/v2/course/attach/${id}/download?token=${token}`
     );
+  };
+
+  const tabChange = (id: number) => {
+    setCurrentTab(id);
   };
 
   return (
@@ -509,7 +532,53 @@ export const VodPlayPage = () => {
             )}
           </div>
         </div>
+        <div className="course-tabs">
+          {tabs.map((item: any) => (
+            <div
+              key={item.id}
+              className={
+                currentTab === item.id ? "active item-tab" : "item-tab"
+              }
+              onClick={() => tabChange(item.id)}
+            >
+              {item.name}
+              {currentTab === item.id && <div className="actline"></div>}
+            </div>
+          ))}
+        </div>
       </div>
+      {currentTab === 4 && (
+        <CourseVideoComments
+          vid={vid}
+          isBuy={isBuy}
+          comments={comments}
+          commentUsers={commentUsers}
+          success={() => {
+            resetComments();
+            getComments();
+          }}
+        />
+      )}
+      {currentTab === 5 && (
+        <div className={styles["attach-list-box"]}>
+          {attach.length === 0 && <Empty></Empty>}
+          {attach.length > 0 &&
+            attach.map((item: any) => (
+              <div className={styles["attach-item"]} key={item.id}>
+                <div className={styles["attach-name"]}>{item.name}</div>
+                <a
+                  onClick={() => download(item.id)}
+                  className={styles["download-attach"]}
+                >
+                  下载附件
+                </a>
+              </div>
+            ))}
+        </div>
+      )}
+      {configFunc.snapshort && isWatch && (
+        <SnaoShotDialog id={vid} duration={myRef.current} resourceType="vod" />
+      )}
     </div>
   );
 };
