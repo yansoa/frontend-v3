@@ -40,8 +40,11 @@ export const Header = () => {
   const [current, setCurrent] = useState("/");
 
   useEffect(() => {
+    if (pathname === "/") {
+      setCurrent("/");
+    }
     getHeaderNav();
-  }, []);
+  }, [pathname]);
   useEffect(() => {
     if (isLogin) {
       getUnread();
@@ -55,8 +58,6 @@ export const Header = () => {
       list.map((item: any) => {
         if (pathname !== "/" && pathname.indexOf(item.url) !== -1) {
           setCurrent(item.url);
-        } else if (pathname === "/") {
-          setCurrent("/");
         }
 
         if (item.children.length > 0) {
