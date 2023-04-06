@@ -3,41 +3,35 @@ import styles from "./detail.module.scss";
 import { Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { course as vod, miaosha, tuangou } from "../../api/index";
+import { live, miaosha, tuangou } from "../../api/index";
 import {
   HistoryRecord,
-  ThumbBar,
   MiaoshaDialog,
+  ThumbBar,
+  Empty,
   MiaoshaList,
   TuangouList,
-  Empty,
-  CourseComments,
 } from "../../components";
-import { VideoListComp } from "./components/detail/video-list";
-import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 import { getToken } from "../../utils/index";
-
-export const VodDetailPage = () => {
+export const LiveDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
   const [cid, setCid] = useState(Number(result.get("id")));
   const [course, setCourse] = useState<any>({});
-  const [attach, setAttach] = useState<any>([]);
   const [chapters, setChapters] = useState<any>([]);
-  const [isBuy, setIsBuy] = useState<boolean>(false);
-  const [isCollect, setIsCollect] = useState<boolean>(false);
   const [videos, setVideos] = useState<any>({});
-  const [buyVideos, setBuyVideos] = useState<any>([]);
-  const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>({});
+  const [isBuy, setIsBuy] = useState<boolean>(false);
+  const [isLike, setIsLike] = useState<boolean>(false);
   const [msData, setMsData] = useState<any>({});
   const [msVisible, setMsVisible] = useState<boolean>(false);
   const [tgData, setTgData] = useState<any>({});
   const [hideButton, setHideButton] = useState<boolean>(false);
+  const [comments, setComments] = useState<any>([]);
+  const [commentUsers, setCommentUsers] = useState<any>({});
   const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
   const [isfixTab, setIsfixTab] = useState<boolean>(false);
   const configFunc = useSelector(
@@ -47,74 +41,83 @@ export const VodDetailPage = () => {
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const tabs = [
     {
-      name: "课程详情",
+      name: "直播详情",
       id: 2,
     },
     {
-      name: "课程目录",
+      name: "直播排课",
       id: 3,
     },
     {
       name: "课程评论",
       id: 4,
     },
-    {
-      name: "课程附件",
-      id: 5,
-    },
   ];
 
   useEffect(() => {
     getDetail();
     getComments();
+    getLikeStatus();
     window.addEventListener("scroll", handleTabFix, true);
     return () => {
       window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [cid]);
 
-  const tabChange = (id: number) => {
-    setCurrentTab(id);
-  };
-
-  const handleTabFix = () => {
-    let scrollTop =
-      window.pageYOffset ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop;
-    let navbar = document.querySelector("#NavBar") as HTMLElement;
-    if (navbar) {
-      let offsetTop = navbar.offsetTop;
-      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
-    }
-  };
-
   const getDetail = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    vod.detail(cid).then((res: any) => {
+    live.detail(cid).then((res: any) => {
       document.title = res.data.course.title;
       setCourse(res.data.course);
-      setAttach(res.data.attach);
       setChapters(res.data.chapters);
-      setIsBuy(res.data.isBuy);
-      setIsCollect(res.data.isCollect);
+      setIsBuy(res.data.is_buy);
       setVideos(res.data.videos);
-      setBuyVideos(res.data.buyVideos);
-
       //获取秒杀信息
-      if (!res.data.isBuy && configFunc["miaosha"]) {
+      if (!res.data.is_buy && configFunc["miaosha"]) {
         getMsDetail();
       }
 
       //获取团购信息
-      else if (!res.data.isBuy && configFunc["tuangou"]) {
+      else if (!res.data.is_buy && configFunc["tuangou"]) {
         getTgDetail();
       }
+
       setLoading(false);
     });
+  };
+
+  const getMsDetail = () => {
+    if (course.charge === 0) {
+      return;
+    }
+    miaosha
+      .detail(0, {
+        course_id: cid,
+        course_type: "live",
+      })
+      .then((res: any) => {
+        setMsData(res.data);
+        if (!res.data.data && !isBuy && configFunc["tuangou"]) {
+          getTgDetail();
+        }
+      });
+  };
+  const getTgDetail = () => {
+    if (course.charge === 0) {
+      return;
+    }
+    tuangou
+      .detail(0, {
+        course_id: cid,
+        course_type: "live",
+      })
+      .then((res: any) => {
+        setTgData(res.data);
+        setHideButton(res.data.join_item && res.data.join_item.length !== 0);
+      });
   };
 
   const getComments = () => {
@@ -122,7 +125,7 @@ export const VodDetailPage = () => {
       return;
     }
     setCommentLoading(true);
-    vod.comments(cid).then((res: any) => {
+    live.comments(cid).then((res: any) => {
       setComments(res.data.comments);
       setCommentUsers(res.data.users);
       setCommentLoading(false);
@@ -135,20 +138,35 @@ export const VodDetailPage = () => {
     setCommentUsers({});
   };
 
-  const collectCourse = () => {
+  const getLikeStatus = () => {
+    live
+      .likeStatus({
+        id: cid,
+        type: "live",
+      })
+      .then((res: any) => {
+        setIsLike(res.data.like);
+      });
+  };
+
+  const tabChange = (id: number) => {
+    setCurrentTab(id);
+  };
+
+  const likeHit = () => {
     if (isLogin) {
-      vod
-        .collect(cid)
-        .then(() => {
-          setIsCollect(!isCollect);
-          if (isCollect) {
+      live
+        .likeHit({
+          id: cid,
+          type: "live",
+        })
+        .then((res) => {
+          setIsLike(!isLike);
+          if (isLike) {
             message.success("取消收藏");
           } else {
             message.success("已收藏");
           }
-        })
-        .catch((e) => {
-          message.error(e.message);
         });
     } else {
       goLogin();
@@ -156,35 +174,17 @@ export const VodDetailPage = () => {
   };
 
   const goLogin = () => {};
-  const getMsDetail = () => {
-    if (course.is_free === 1) {
-      return;
+
+  const handleTabFix = () => {
+    let scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
+    let navbar = document.querySelector("#NavBar") as HTMLElement;
+    if (navbar) {
+      let offsetTop = navbar.offsetTop;
+      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
     }
-    miaosha
-      .detail(0, {
-        course_id: cid,
-        course_type: "course",
-      })
-      .then((res: any) => {
-        setMsData(res.data);
-        if (!res.data.data && !isBuy && configFunc["tuangou"]) {
-          getTgDetail();
-        }
-      });
-  };
-  const getTgDetail = () => {
-    if (course.is_free === 1) {
-      return;
-    }
-    tuangou
-      .detail(0, {
-        course_id: cid,
-        course_type: "course",
-      })
-      .then((res: any) => {
-        setTgData(res.data);
-        setHideButton(res.data.join_item && res.data.join_item.length !== 0);
-      });
   };
 
   const goRole = () => {
@@ -199,9 +199,9 @@ export const VodDetailPage = () => {
     navigate(
       "/order?goods_id=" +
         cid +
-        "&goods_type=vod&goods_charge=" +
+        "&goods_type=live&goods_charge=" +
         course.charge +
-        "&goods_label=点播课程&goods_name=" +
+        "&goods_label=直播课程&goods_name=" +
         course.title +
         "&goods_thumb=" +
         course.thumb
@@ -252,29 +252,6 @@ export const VodDetailPage = () => {
     setMsVisible(true);
   };
 
-  const goPlay = (item: any) => {
-    if (!isLogin) {
-      message.error("请登录后再操作");
-      return;
-    }
-    navigate("/courses/video?id=" + item.id);
-  };
-
-  const download = (id: number) => {
-    let token = getToken();
-    if (!isLogin) {
-      message.error("请登录后再操作");
-      return;
-    }
-    if (!isBuy) {
-      message.error("请购买课程后下载");
-      return;
-    }
-    window.open(
-      `${config.url}/api/v2/course/attach/${id}/download?token=${token}`
-    );
-  };
-
   return (
     <>
       {isfixTab && (
@@ -307,14 +284,14 @@ export const VodDetailPage = () => {
           /
           <a
             onClick={() => {
-              navigate("/courses");
+              navigate("/live");
             }}
           >
-            录播课
+            直播课
           </a>{" "}
           /<span>{course.title}</span>
         </div>
-        <HistoryRecord id={course.id} title={course.title} type="vod" />
+        <HistoryRecord id={course.id} title={course.title} type="live" />
         {!isBuy && msData && (
           <MiaoshaDialog
             open={msVisible}
@@ -322,6 +299,7 @@ export const VodDetailPage = () => {
             onCancel={() => setMsVisible(false)}
           />
         )}
+
         <div className={styles["course-info"]}>
           <div className={styles["course-info-box"]}>
             <div className={styles["course-thumb"]}>
@@ -331,22 +309,25 @@ export const VodDetailPage = () => {
                 height={240}
                 border={null}
               />
+              <div className={styles["status"]}>
+                <span>{course.status_text}</span>
+              </div>
             </div>
             <div className={styles["info"]}>
               <div className={styles["course-info-title"]}>{course.title}</div>
-              {isCollect && (
+              {isLike && (
                 <img
                   onClick={() => {
-                    collectCourse();
+                    likeHit();
                   }}
                   className={styles["collect-button"]}
                   src={collectIcon}
                 />
               )}
-              {!isCollect && (
+              {!isLike && (
                 <img
                   onClick={() => {
-                    collectCourse();
+                    likeHit();
                   }}
                   className={styles["collect-button"]}
                   src={noCollectIcon}
@@ -412,10 +393,10 @@ export const VodDetailPage = () => {
                     )}
                   </>
                 )}
-                {course.is_free === 1 && (
+                {course.charge === 0 && (
                   <div className={styles["has-button"]}>本课程免费</div>
                 )}
-                {course.is_free !== 1 && isBuy && (
+                {course.charge !== 0 && isBuy && (
                   <div className={styles["has-button"]}>课程已购买</div>
                 )}
               </div>
@@ -439,64 +420,28 @@ export const VodDetailPage = () => {
           </div>
         </div>
         {currentTab === 2 && (
-          <div className={styles["coursr-desc"]}>
-            <div
-              className="u-content md-content"
-              dangerouslySetInnerHTML={{ __html: course.render_desc }}
-            ></div>
-          </div>
-        )}
-        {currentTab === 3 && (
-          <div className={styles["course-chapter-box"]}>
-            {chapters.length > 0 && (
-              <VideoChapterListComp
-                chapters={chapters}
-                course={course}
-                videos={videos}
-                isBuy={isBuy}
-                buyVideos={buyVideos}
-                switchVideo={(item: any) => goPlay(item)}
-              />
-            )}
-            {chapters.length === 0 && videos[0] && (
-              <VideoListComp
-                course={course}
-                videos={videos[0]}
-                isBuy={isBuy}
-                buyVideos={buyVideos}
-                switchVideo={(item: any) => goPlay(item)}
-              />
-            )}
-          </div>
-        )}
-        {currentTab === 4 && (
-          <CourseComments
-            cid={cid}
-            isBuy={isBuy}
-            comments={comments}
-            commentUsers={commentUsers}
-            success={() => {
-              resetComments();
-              getComments();
-            }}
-          />
-        )}
-        {currentTab === 5 && (
-          <div className={styles["attach-list-box"]}>
-            {attach.length === 0 && <Empty></Empty>}
-            {attach.length > 0 &&
-              attach.map((item: any) => (
-                <div className={styles["attach-item"]} key={item.id}>
-                  <div className={styles["attach-name"]}>{item.name}</div>
-                  <a
-                    onClick={() => download(item.id)}
-                    className={styles["download-attach"]}
-                  >
-                    下载附件
-                  </a>
+          <>
+            <div className={styles["course-teacher-box"]}>
+              {course.teacher && (
+                <div className={styles["teacher"]}>
+                  <img
+                    className={styles["avatar"]}
+                    src={course.teacher.avatar}
+                  />
+                  <a>{course.teacher.name}</a>
                 </div>
-              ))}
-          </div>
+              )}
+              <p className={styles["teacher-desc"]}>
+                {course.teacher.short_desc}
+              </p>
+            </div>
+            <div className={styles["coursr-desc"]}>
+              <div
+                className="u-content md-content"
+                dangerouslySetInnerHTML={{ __html: course.render_desc }}
+              ></div>
+            </div>
+          </>
         )}
       </div>
     </>

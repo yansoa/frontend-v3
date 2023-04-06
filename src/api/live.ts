@@ -55,3 +55,11 @@ export function sendMessage(course_id: number, video_id: number, params: any) {
     params
   );
 }
+
+export function likeStatus(params: any) {
+  return client.get(`/addons/templateOne/api/v1/like/status`, params);
+}
+
+export function likeHit(params: any) {
+  return client.get(`/addons/templateOne/api/v1/like/hit`, params);
+}
