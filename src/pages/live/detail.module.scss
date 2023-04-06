@@ -190,7 +190,9 @@
     text-align: left;
   }
 }
+
 .coursr-desc {
+  box-sizing: border-box;
   padding: 30px;
   background: #ffffff;
   margin-top: 30px;
@@ -199,4 +201,13 @@
   font-weight: 400;
   color: #333333;
   line-height: 30px;
+}
+
+.course-chapter-box {
+  box-sizing: border-box;
+  width: 1200px;
+  padding: 50px 30px;
+  background: #ffffff;
+  margin-top: 30px;
+  border-radius: 8px;
 }

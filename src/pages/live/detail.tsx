@@ -11,10 +11,13 @@ import {
   Empty,
   MiaoshaList,
   TuangouList,
+  LiveCourseComments,
 } from "../../components";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
-import { getToken } from "../../utils/index";
+import { VideoListComp } from "./components/detail/video-list";
+import { VideoChapterListComp } from "./components/detail/video-chapter-list";
+
 export const LiveDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -125,11 +128,16 @@ export const LiveDetailPage = () => {
       return;
     }
     setCommentLoading(true);
-    live.comments(cid).then((res: any) => {
-      setComments(res.data.comments);
-      setCommentUsers(res.data.users);
-      setCommentLoading(false);
-    });
+    live
+      .comments(cid, {
+        page: 1,
+        size: 10000,
+      })
+      .then((res: any) => {
+        setComments(res.data.data.data);
+        setCommentUsers(res.data.users);
+        setCommentLoading(false);
+      });
   };
 
   const resetComments = () => {
@@ -250,6 +258,24 @@ export const LiveDetailPage = () => {
 
   const openMsDialog = () => {
     setMsVisible(true);
+  };
+
+  const goPlay = (item: any) => {
+    if (!isLogin) {
+      message.error("请登录后再操作");
+      return;
+    }
+
+    if (isBuy === false) {
+      message.error("请购买课程后观看");
+      return;
+    }
+    if (item.status === 2 && item.duration === 0) {
+      message.error("直播已结束");
+      return;
+    }
+
+    navigate("/live/video?id=" + item.id);
   };
 
   return (
@@ -419,7 +445,7 @@ export const LiveDetailPage = () => {
             ))}
           </div>
         </div>
-        {currentTab === 2 && (
+        {currentTab === 2 && course.teacher && (
           <>
             <div className={styles["course-teacher-box"]}>
               {course.teacher && (
@@ -442,6 +468,39 @@ export const LiveDetailPage = () => {
               ></div>
             </div>
           </>
+        )}
+        {currentTab === 3 && (
+          <div className={styles["course-chapter-box"]}>
+            {chapters.length > 0 && (
+              <VideoChapterListComp
+                chapters={chapters}
+                course={course}
+                videos={videos}
+                isBuy={isBuy}
+                switchVideo={(item: any) => goPlay(item)}
+              />
+            )}
+            {chapters.length === 0 && videos[0] && (
+              <VideoListComp
+                course={course}
+                videos={videos[0]}
+                isBuy={isBuy}
+                switchVideo={(item: any) => goPlay(item)}
+              />
+            )}
+          </div>
+        )}
+        {currentTab === 4 && (
+          <LiveCourseComments
+            cid={cid}
+            isBuy={isBuy}
+            comments={comments}
+            commentUsers={commentUsers}
+            success={() => {
+              resetComments();
+              getComments();
+            }}
+          />
         )}
       </div>
     </>

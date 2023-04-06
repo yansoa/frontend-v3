@@ -8,8 +8,8 @@ export function detail(id: number) {
   return client.get(`/addons/zhibo/api/v1/course/${id}`, {});
 }
 
-export function comments(id: number) {
-  return client.get(`/addons/zhibo/api/v1/course/${id}/comments`, {});
+export function comments(id: number, params: any) {
+  return client.get(`/addons/zhibo/api/v1/course/${id}/comments`, params);
 }
 
 export function submitComment(id: number, params: any) {
