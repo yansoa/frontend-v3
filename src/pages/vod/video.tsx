@@ -45,15 +45,7 @@ export const VodPlayPage = () => {
   const [checkPlayerStatus, setCheckPlayerStatus] = useState<boolean>(false);
   const [totalTime, setTotalTime] = useState(10);
   const [playDuration, setPlayDuration] = useState(0);
-  const [dialog, setDialog] = useState({
-    id: null,
-    courseCharge: null,
-    videoCharge: null,
-    vipFree: null,
-    configText: null,
-    status: false,
-    is_ban_sell: null,
-  });
+  const [dialog, setDialog] = useState(null);
   const [currentTab, setCurrentTab] = useState(4);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
@@ -310,11 +302,11 @@ export const VodPlayPage = () => {
     if (val === 3) {
       navigate(
         "/order?goods_id=" +
-          dialog.id +
+          video.id +
           "&goods_type=video&goods_charge=" +
-          dialog.videoCharge +
+          video.charge +
           "&goods_label=视频&goods_name=" +
-          dialog.configText +
+          video.title +
           "&goods_thumb=" +
           course.thumb
       );
