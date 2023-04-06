@@ -10,6 +10,7 @@ import IndexPage from "../pages/index";
 import VodPage from "../pages/vod/index";
 import { VodDetailPage } from "../pages/vod/detail";
 import { VodPlayPage } from "../pages/vod/video";
+import { LivePage } from "../pages/live/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -187,6 +188,7 @@ const routes: RouteObject[] = [
       { path: "/courses", element: <VodPage /> },
       { path: "/courses/detail", element: <VodDetailPage /> },
       { path: "/courses/video", element: <VodPlayPage /> },
+      { path: "/live", element: <LivePage /> },
     ],
   },
 ];

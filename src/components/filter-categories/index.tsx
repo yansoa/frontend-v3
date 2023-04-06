@@ -58,7 +58,8 @@ export const FilterCategories: React.FC<PropInterface> = ({
             ))}
           </div>
         </div>
-        {categories[cateIndex] &&
+        {cid !== 0 &&
+          categories[cateIndex] &&
           categories[cateIndex].children &&
           categories[cateIndex].children.length > 0 && (
             <div className={styles["box2"]}>

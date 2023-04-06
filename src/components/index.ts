@@ -19,3 +19,4 @@ export * from "./course-comments";
 export * from "./course-video-comments";
 export * from "./snap-shot";
 export * from "./snapshot-preview";
+export * from "./live-course-item";

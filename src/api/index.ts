@@ -7,3 +7,4 @@ export * as home from "./home";
 export * as miaosha from "./miaosha";
 export * as tuangou from "./tuangou";
 export * as snapshot from "./snapshot";
+export * as live from "./live";
