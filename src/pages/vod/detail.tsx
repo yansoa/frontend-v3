@@ -39,6 +39,7 @@ export const VodDetailPage = () => {
   const [tgData, setTgData] = useState<any>({});
   const [hideButton, setHideButton] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
+  const [isfixTab, setIsfixTab] = useState<boolean>(false);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
@@ -66,10 +67,26 @@ export const VodDetailPage = () => {
   useEffect(() => {
     getDetail();
     getComments();
+    window.addEventListener("scroll", handleTabFix, true);
+    return () => {
+      window.removeEventListener("scroll", handleTabFix, true);
+    };
   }, [cid]);
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+  };
+
+  const handleTabFix = () => {
+    let scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
+    let navbar = document.querySelector("#NavBar") as HTMLElement;
+    if (navbar) {
+      let offsetTop = navbar.offsetTop;
+      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
+    }
   };
 
   const getDetail = () => {
@@ -259,206 +276,226 @@ export const VodDetailPage = () => {
   };
 
   return (
-    <div className="container">
-      <div className="bread-nav">
-        <a
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          首页
-        </a>{" "}
-        /
-        <a
-          onClick={() => {
-            navigate("/courses");
-          }}
-        >
-          录播课
-        </a>{" "}
-        /<span>{course.title}</span>
-      </div>
-      <HistoryRecord id={course.id} title={course.title} type="vod" />
-      {!isBuy && msData && (
-        <MiaoshaDialog
-          open={msVisible}
-          msData={msData}
-          onCancel={() => setMsVisible(false)}
-        />
-      )}
-      <div className={styles["course-info"]}>
-        <div className={styles["course-info-box"]}>
-          <div className={styles["course-thumb"]}>
-            <ThumbBar
-              value={course.thumb}
-              width={320}
-              height={240}
-              border={null}
-            />
-          </div>
-          <div className={styles["info"]}>
-            <div className={styles["course-info-title"]}>{course.title}</div>
-            {isCollect && (
-              <img
-                onClick={() => {
-                  collectCourse();
-                }}
-                className={styles["collect-button"]}
-                src={collectIcon}
-              />
-            )}
-            {!isCollect && (
-              <img
-                onClick={() => {
-                  collectCourse();
-                }}
-                className={styles["collect-button"]}
-                src={noCollectIcon}
-              />
-            )}
-            <p className={styles["desc"]}>{course.short_description}</p>
-            <div className={styles["btn-box"]}>
-              {!isBuy && course.charge !== 0 && (
-                <>
-                  {msData && msData.data && (
-                    <>
-                      {msData.order && msData.order.status === 0 && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => goMsOrder(msData.order.id)}
-                        >
-                          已获得秒杀资格，请尽快支付
-                        </div>
-                      )}
-                      {!msData.data.is_over && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => openMsDialog()}
-                        >
-                          立即秒杀￥{msData.data.charge}
-                        </div>
-                      )}
-                    </>
-                  )}
-                  {(!msData || !msData.data) && (
-                    <>
-                      {hideButton && (
-                        <div className={styles["has-button"]}>正在拼团中</div>
-                      )}
-                      {!hideButton && course.charge > 0 && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => buyCourse()}
-                        >
-                          订阅课程￥{course.charge}
-                        </div>
-                      )}
-                      {course.vip_can_view === 1 && (
-                        <div
-                          className={styles["role-button"]}
-                          onClick={() => goRole()}
-                        >
-                          会员免费看
-                        </div>
-                      )}
-                      {tgData &&
-                        tgData.goods &&
-                        (!tgData.join_item ||
-                          tgData.join_item.length === 0) && (
-                          <div
-                            className={styles["role-button"]}
-                            onClick={() => goPay(0)}
-                          >
-                            单独开团￥{tgData.goods.charge}
-                          </div>
-                        )}
-                    </>
-                  )}
-                  {course.is_free === 1 && (
-                    <div className={styles["has-button"]}>本课程免费</div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-        {!isBuy && msData && <MiaoshaList msData={msData} />}
-        {!isBuy && msData && <TuangouList tgData={tgData} />}
-        <div className="course-tabs">
-          {tabs.map((item: any) => (
-            <div
-              key={item.id}
-              className={
-                currentTab === item.id ? "active item-tab" : "item-tab"
-              }
-              onClick={() => tabChange(item.id)}
-            >
-              {item.name}
-              {currentTab === item.id && <div className="actline"></div>}
-            </div>
-          ))}
-        </div>
-      </div>
-      {currentTab === 2 && (
-        <div className={styles["coursr-desc"]}>
-          <div
-            className="u-content md-content"
-            dangerouslySetInnerHTML={{ __html: course.render_desc }}
-          ></div>
-        </div>
-      )}
-      {currentTab === 3 && (
-        <div className={styles["course-chapter-box"]}>
-          {chapters.length > 0 && (
-            <VideoChapterListComp
-              chapters={chapters}
-              course={course}
-              videos={videos}
-              isBuy={isBuy}
-              buyVideos={buyVideos}
-              switchVideo={(item: any) => goPlay(item)}
-            />
-          )}
-          {chapters.length === 0 && videos[0] && (
-            <VideoListComp
-              course={course}
-              videos={videos[0]}
-              isBuy={isBuy}
-              buyVideos={buyVideos}
-              switchVideo={(item: any) => goPlay(item)}
-            />
-          )}
-        </div>
-      )}
-      {currentTab === 4 && (
-        <CourseComments
-          cid={cid}
-          isBuy={isBuy}
-          comments={comments}
-          commentUsers={commentUsers}
-          success={() => {
-            resetComments();
-            getComments();
-          }}
-        />
-      )}
-      {currentTab === 5 && (
-        <div className={styles["attach-list-box"]}>
-          {attach.length === 0 && <Empty></Empty>}
-          {attach.length > 0 &&
-            attach.map((item: any) => (
-              <div className={styles["attach-item"]} key={item.id}>
-                <div className={styles["attach-name"]}>{item.name}</div>
-                <a
-                  onClick={() => download(item.id)}
-                  className={styles["download-attach"]}
-                >
-                  下载附件
-                </a>
+    <>
+      {isfixTab && (
+        <div className="fix-nav">
+          <div className="course-tabs">
+            {tabs.map((item: any) => (
+              <div
+                key={item.id}
+                className={
+                  currentTab === item.id ? "active item-tab" : "item-tab"
+                }
+                onClick={() => tabChange(item.id)}
+              >
+                {item.name}
+                {currentTab === item.id && <div className="actline"></div>}
               </div>
             ))}
+          </div>
         </div>
       )}
-    </div>
+      <div className="container">
+        <div className="bread-nav">
+          <a
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            首页
+          </a>{" "}
+          /
+          <a
+            onClick={() => {
+              navigate("/courses");
+            }}
+          >
+            录播课
+          </a>{" "}
+          /<span>{course.title}</span>
+        </div>
+        <HistoryRecord id={course.id} title={course.title} type="vod" />
+        {!isBuy && msData && (
+          <MiaoshaDialog
+            open={msVisible}
+            msData={msData}
+            onCancel={() => setMsVisible(false)}
+          />
+        )}
+        <div className={styles["course-info"]}>
+          <div className={styles["course-info-box"]}>
+            <div className={styles["course-thumb"]}>
+              <ThumbBar
+                value={course.thumb}
+                width={320}
+                height={240}
+                border={null}
+              />
+            </div>
+            <div className={styles["info"]}>
+              <div className={styles["course-info-title"]}>{course.title}</div>
+              {isCollect && (
+                <img
+                  onClick={() => {
+                    collectCourse();
+                  }}
+                  className={styles["collect-button"]}
+                  src={collectIcon}
+                />
+              )}
+              {!isCollect && (
+                <img
+                  onClick={() => {
+                    collectCourse();
+                  }}
+                  className={styles["collect-button"]}
+                  src={noCollectIcon}
+                />
+              )}
+              <p className={styles["desc"]}>{course.short_description}</p>
+              <div className={styles["btn-box"]}>
+                {!isBuy && course.charge !== 0 && (
+                  <>
+                    {msData && msData.data && (
+                      <>
+                        {msData.order && msData.order.status === 0 && (
+                          <div
+                            className={styles["buy-button"]}
+                            onClick={() => goMsOrder(msData.order.id)}
+                          >
+                            已获得秒杀资格，请尽快支付
+                          </div>
+                        )}
+                        {!msData.data.is_over && (
+                          <div
+                            className={styles["buy-button"]}
+                            onClick={() => openMsDialog()}
+                          >
+                            立即秒杀￥{msData.data.charge}
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {(!msData || !msData.data) && (
+                      <>
+                        {hideButton && (
+                          <div className={styles["has-button"]}>正在拼团中</div>
+                        )}
+                        {!hideButton && course.charge > 0 && (
+                          <div
+                            className={styles["buy-button"]}
+                            onClick={() => buyCourse()}
+                          >
+                            订阅课程￥{course.charge}
+                          </div>
+                        )}
+                        {course.vip_can_view === 1 && (
+                          <div
+                            className={styles["role-button"]}
+                            onClick={() => goRole()}
+                          >
+                            会员免费看
+                          </div>
+                        )}
+                        {tgData &&
+                          tgData.goods &&
+                          (!tgData.join_item ||
+                            tgData.join_item.length === 0) && (
+                            <div
+                              className={styles["role-button"]}
+                              onClick={() => goPay(0)}
+                            >
+                              单独开团￥{tgData.goods.charge}
+                            </div>
+                          )}
+                      </>
+                    )}
+                    {course.is_free === 1 && (
+                      <div className={styles["has-button"]}>本课程免费</div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          {!isBuy && msData && <MiaoshaList msData={msData} />}
+          {!isBuy && msData && <TuangouList tgData={tgData} />}
+          <div className="course-tabs" id="NavBar">
+            {tabs.map((item: any) => (
+              <div
+                key={item.id}
+                className={
+                  currentTab === item.id ? "active item-tab" : "item-tab"
+                }
+                onClick={() => tabChange(item.id)}
+              >
+                {item.name}
+                {currentTab === item.id && <div className="actline"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+        {currentTab === 2 && (
+          <div className={styles["coursr-desc"]}>
+            <div
+              className="u-content md-content"
+              dangerouslySetInnerHTML={{ __html: course.render_desc }}
+            ></div>
+          </div>
+        )}
+        {currentTab === 3 && (
+          <div className={styles["course-chapter-box"]}>
+            {chapters.length > 0 && (
+              <VideoChapterListComp
+                chapters={chapters}
+                course={course}
+                videos={videos}
+                isBuy={isBuy}
+                buyVideos={buyVideos}
+                switchVideo={(item: any) => goPlay(item)}
+              />
+            )}
+            {chapters.length === 0 && videos[0] && (
+              <VideoListComp
+                course={course}
+                videos={videos[0]}
+                isBuy={isBuy}
+                buyVideos={buyVideos}
+                switchVideo={(item: any) => goPlay(item)}
+              />
+            )}
+          </div>
+        )}
+        {currentTab === 4 && (
+          <CourseComments
+            cid={cid}
+            isBuy={isBuy}
+            comments={comments}
+            commentUsers={commentUsers}
+            success={() => {
+              resetComments();
+              getComments();
+            }}
+          />
+        )}
+        {currentTab === 5 && (
+          <div className={styles["attach-list-box"]}>
+            {attach.length === 0 && <Empty></Empty>}
+            {attach.length > 0 &&
+              attach.map((item: any) => (
+                <div className={styles["attach-item"]} key={item.id}>
+                  <div className={styles["attach-name"]}>{item.name}</div>
+                  <a
+                    onClick={() => download(item.id)}
+                    className={styles["download-attach"]}
+                  >
+                    下载附件
+                  </a>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };

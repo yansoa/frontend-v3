@@ -47,6 +47,7 @@ export const VodPlayPage = () => {
   const [playDuration, setPlayDuration] = useState(0);
   const [dialog, setDialog] = useState(null);
   const [currentTab, setCurrentTab] = useState(4);
+  const [isfixTab, setIsfixTab] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -68,8 +69,10 @@ export const VodPlayPage = () => {
   useEffect(() => {
     getDetail();
     getComments();
+    window.addEventListener("scroll", handleTabFix, true);
     return () => {
       clock && clearInterval(clock);
+      window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [vid]);
 
@@ -82,6 +85,18 @@ export const VodPlayPage = () => {
   useEffect(() => {
     myRef.current = playDuration;
   }, [playDuration]);
+
+  const handleTabFix = () => {
+    let scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
+    let navbar = document.querySelector("#NavBar") as HTMLElement;
+    if (navbar) {
+      let offsetTop = navbar.offsetTop;
+      scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
+    }
+  };
 
   const getDetail = () => {
     if (loading) {
@@ -376,194 +391,214 @@ export const VodPlayPage = () => {
   };
 
   return (
-    <div className="container">
-      <div className="bread-nav">
-        <a
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          首页
-        </a>{" "}
-        /
-        <a
-          onClick={() => {
-            navigate("/courses");
-          }}
-        >
-          录播课
-        </a>{" "}
-        /
-        <a
-          onClick={() => {
-            navigate("/courses/detail?id=" + course.id);
-          }}
-        >
-          {course.title}
-        </a>{" "}
-        /<span>{video.title}</span>
-      </div>
-      <HistoryRecord id={video.id} title={video.title} type="video" />
-      <div className={styles["course-info"]}>
-        <div className={styles["video-box"]}>
-          <div
-            className={styles["play-box"]}
-            style={{
-              backgroundImage: "url(" + config.player.cover + ")",
-              backgroundSize: "cover",
-            }}
-          >
-            {checkPlayerStatus && (
-              <div className={styles["des-video"]}>
-                您已打开新视频，暂停本视频播放
-              </div>
-            )}
-            {!playendedStatus && (isWatch || video.free_seconds > 0) && (
-              <>
-                {isIframe && (
-                  <div
-                    className="iframe-player-box"
-                    dangerouslySetInnerHTML={{ __html: playUrl }}
-                  ></div>
-                )}
-                {!isIframe && (
-                  <div
-                    className="meedu-player-container"
-                    id="meedu-player-container"
-                  ></div>
-                )}
-              </>
-            )}
-            {(playendedStatus || (!isWatch && video.free_seconds <= 0)) && (
-              <>
-                {isLogin && (
-                  <div className={styles["alert-message"]}>
-                    {playendedStatus && (
-                      <>
-                        {!isWatch && (
-                          <div className={styles["subscribe-info"]}>
-                            试看结束，购买课程观看所有视频
-                          </div>
-                        )}
-                        {isWatch && !isLastpage && (
-                          <>
-                            <div
-                              className={styles["next-page"]}
-                              onClick={() => goNextVideo(lastVideoId)}
-                            >
-                              播放下一节课程
-                            </div>
-                            <div className={styles["last-video"]}>
-                              {totalTime}秒后开始自动播放下一节
-                            </div>
-                          </>
-                        )}
-                        {isWatch && isLastpage && (
-                          <div className={styles["last-video"]}>
-                            恭喜你看完本套课程！
-                          </div>
-                        )}
-                      </>
-                    )}
-                    {course.charge > 0 && isWatch === false && (
-                      <div
-                        className={styles["subscribe-button"]}
-                        onClick={() => paySelect(1)}
-                      >
-                        <span>订阅课程 ￥{course.charge}</span>
-                      </div>
-                    )}
-                    {video.charge > 0 &&
-                      video.is_ban_sell === 0 &&
-                      isWatch === false && (
-                        <div
-                          className={styles["subscribe-button2"]}
-                          onClick={() => paySelect(3)}
-                        >
-                          <span>
-                            或点击此处单独购买本节视频￥{video.charge}
-                          </span>
-                        </div>
-                      )}
-                  </div>
-                )}
-                {!isLogin && (
-                  <div className={styles["alert-message"]}>登录后观看</div>
-                )}
-              </>
-            )}
-          </div>
-          <div className="course-chapter-box">
-            {chapters.length > 0 && (
-              <VideoChapterListComp
-                chapters={chapters}
-                course={course}
-                video={video}
-                videos={videos}
-                isBuy={isBuy}
-                buyVideos={buyVideos}
-                switchVideo={(item: any) => goPlay(item)}
-              />
-            )}
-            {chapters.length === 0 && videos[0] && (
-              <VideoListComp
-                course={course}
-                video={video}
-                videos={videos[0]}
-                isBuy={isBuy}
-                buyVideos={buyVideos}
-                switchVideo={(item: any) => goPlay(item)}
-              />
-            )}
-          </div>
-        </div>
-        <div className="course-tabs">
-          {tabs.map((item: any) => (
-            <div
-              key={item.id}
-              className={
-                currentTab === item.id ? "active item-tab" : "item-tab"
-              }
-              onClick={() => tabChange(item.id)}
-            >
-              {item.name}
-              {currentTab === item.id && <div className="actline"></div>}
-            </div>
-          ))}
-        </div>
-      </div>
-      {currentTab === 4 && (
-        <CourseVideoComments
-          vid={vid}
-          isBuy={isBuy}
-          comments={comments}
-          commentUsers={commentUsers}
-          success={() => {
-            resetComments();
-            getComments();
-          }}
-        />
-      )}
-      {currentTab === 5 && (
-        <div className={styles["attach-list-box"]}>
-          {attach.length === 0 && <Empty></Empty>}
-          {attach.length > 0 &&
-            attach.map((item: any) => (
-              <div className={styles["attach-item"]} key={item.id}>
-                <div className={styles["attach-name"]}>{item.name}</div>
-                <a
-                  onClick={() => download(item.id)}
-                  className={styles["download-attach"]}
-                >
-                  下载附件
-                </a>
+    <>
+      {isfixTab && (
+        <div className="fix-nav">
+          <div className="course-tabs">
+            {tabs.map((item: any) => (
+              <div
+                key={item.id}
+                className={
+                  currentTab === item.id ? "active item-tab" : "item-tab"
+                }
+                onClick={() => tabChange(item.id)}
+              >
+                {item.name}
+                {currentTab === item.id && <div className="actline"></div>}
               </div>
             ))}
+          </div>
         </div>
       )}
-      {configFunc.snapshort && isWatch && (
-        <SnaoShotDialog id={vid} duration={playDuration} resourceType="vod" />
-      )}
-    </div>
+      <div className="container">
+        <div className="bread-nav">
+          <a
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            首页
+          </a>{" "}
+          /
+          <a
+            onClick={() => {
+              navigate("/courses");
+            }}
+          >
+            录播课
+          </a>{" "}
+          /
+          <a
+            onClick={() => {
+              navigate("/courses/detail?id=" + course.id);
+            }}
+          >
+            {course.title}
+          </a>{" "}
+          /<span>{video.title}</span>
+        </div>
+        <HistoryRecord id={video.id} title={video.title} type="video" />
+        <div className={styles["course-info"]}>
+          <div className={styles["video-box"]}>
+            <div
+              className={styles["play-box"]}
+              style={{
+                backgroundImage: "url(" + config.player.cover + ")",
+                backgroundSize: "cover",
+              }}
+            >
+              {checkPlayerStatus && (
+                <div className={styles["des-video"]}>
+                  您已打开新视频，暂停本视频播放
+                </div>
+              )}
+              {!playendedStatus && (isWatch || video.free_seconds > 0) && (
+                <>
+                  {isIframe && (
+                    <div
+                      className="iframe-player-box"
+                      dangerouslySetInnerHTML={{ __html: playUrl }}
+                    ></div>
+                  )}
+                  {!isIframe && (
+                    <div
+                      className="meedu-player-container"
+                      id="meedu-player-container"
+                    ></div>
+                  )}
+                </>
+              )}
+              {(playendedStatus || (!isWatch && video.free_seconds <= 0)) && (
+                <>
+                  {isLogin && (
+                    <div className={styles["alert-message"]}>
+                      {playendedStatus && (
+                        <>
+                          {!isWatch && (
+                            <div className={styles["subscribe-info"]}>
+                              试看结束，购买课程观看所有视频
+                            </div>
+                          )}
+                          {isWatch && !isLastpage && (
+                            <>
+                              <div
+                                className={styles["next-page"]}
+                                onClick={() => goNextVideo(lastVideoId)}
+                              >
+                                播放下一节课程
+                              </div>
+                              <div className={styles["last-video"]}>
+                                {totalTime}秒后开始自动播放下一节
+                              </div>
+                            </>
+                          )}
+                          {isWatch && isLastpage && (
+                            <div className={styles["last-video"]}>
+                              恭喜你看完本套课程！
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {course.charge > 0 && isWatch === false && (
+                        <div
+                          className={styles["subscribe-button"]}
+                          onClick={() => paySelect(1)}
+                        >
+                          <span>订阅课程 ￥{course.charge}</span>
+                        </div>
+                      )}
+                      {video.charge > 0 &&
+                        video.is_ban_sell === 0 &&
+                        isWatch === false && (
+                          <div
+                            className={styles["subscribe-button2"]}
+                            onClick={() => paySelect(3)}
+                          >
+                            <span>
+                              或点击此处单独购买本节视频￥{video.charge}
+                            </span>
+                          </div>
+                        )}
+                    </div>
+                  )}
+                  {!isLogin && (
+                    <div className={styles["alert-message"]}>登录后观看</div>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="course-chapter-box">
+              {chapters.length > 0 && (
+                <VideoChapterListComp
+                  chapters={chapters}
+                  course={course}
+                  video={video}
+                  videos={videos}
+                  isBuy={isBuy}
+                  buyVideos={buyVideos}
+                  switchVideo={(item: any) => goPlay(item)}
+                />
+              )}
+              {chapters.length === 0 && videos[0] && (
+                <VideoListComp
+                  course={course}
+                  video={video}
+                  videos={videos[0]}
+                  isBuy={isBuy}
+                  buyVideos={buyVideos}
+                  switchVideo={(item: any) => goPlay(item)}
+                />
+              )}
+            </div>
+          </div>
+          <div className="course-tabs" id="NavBar">
+            {tabs.map((item: any) => (
+              <div
+                key={item.id}
+                className={
+                  currentTab === item.id ? "active item-tab" : "item-tab"
+                }
+                onClick={() => tabChange(item.id)}
+              >
+                {item.name}
+                {currentTab === item.id && <div className="actline"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+        {currentTab === 4 && (
+          <CourseVideoComments
+            vid={vid}
+            isBuy={isBuy}
+            comments={comments}
+            commentUsers={commentUsers}
+            success={() => {
+              resetComments();
+              getComments();
+            }}
+          />
+        )}
+        {currentTab === 5 && (
+          <div className={styles["attach-list-box"]}>
+            {attach.length === 0 && <Empty></Empty>}
+            {attach.length > 0 &&
+              attach.map((item: any) => (
+                <div className={styles["attach-item"]} key={item.id}>
+                  <div className={styles["attach-name"]}>{item.name}</div>
+                  <a
+                    onClick={() => download(item.id)}
+                    className={styles["download-attach"]}
+                  >
+                    下载附件
+                  </a>
+                </div>
+              ))}
+          </div>
+        )}
+        {configFunc.snapshort && isWatch && (
+          <SnaoShotDialog id={vid} duration={playDuration} resourceType="vod" />
+        )}
+      </div>
+    </>
   );
 };
