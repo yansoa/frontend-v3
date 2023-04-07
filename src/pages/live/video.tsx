@@ -56,6 +56,14 @@ export const LiveVideoPage = () => {
   ];
 
   useEffect(() => {
+    if (video.status === 1 && webrtc_play_url) {
+      initLiveTencentPlayer();
+    } else if (video.status === 1 && !webrtc_play_url) {
+      initLivePlayer();
+    }
+  }, [video]);
+
+  useEffect(() => {
     myRef.current = timeValue;
   }, [timeValue]);
 
@@ -153,6 +161,56 @@ export const LiveVideoPage = () => {
     } else {
       setTimeout(countTime, 1000);
     }
+  };
+
+  const initLiveTencentPlayer = () => {
+    livePlayer = new window.TcPlayer("meedu-live-player", {
+      m3u8: webrtc_play_url,
+      autoplay: true,
+      poster: course.poster || config.player.cover,
+      width: 950,
+      height: 535,
+      wording: {
+        2003: "讲师暂时离开直播间，稍后请刷新！",
+      },
+      listener: (msg: any) => {
+        setNoTeacher(false);
+        if (msg.type == "timeupdate") {
+          let time: number = Number(msg.timeStamp) / 1000;
+          let duration = Math.floor(time);
+          livePlayRecord(duration, false);
+        } else if (msg.type == "ended") {
+          let time: number = Number(msg.timeStamp) / 1000;
+          let duration = Math.floor(time);
+          livePlayRecord(duration, true);
+        } else if (msg.type == "error" && msg.detail.code === 2003) {
+          setNoTeacher(true);
+        }
+      },
+    });
+  };
+
+  const initLivePlayer = () => {
+    livePlayer = new window.HlsJsPlayer({
+      id: "meedu-live-player",
+      url: playUrl,
+      isLive: true,
+      autoplay: true,
+      poster: course.poster || config.player.cover,
+      height: 535,
+      width: 950,
+      closeVideoTouch: true,
+      closeVideoClick: true,
+      errorTips: "请刷新页面试试",
+    });
+    livePlayer.on("timeupdate", () => {
+      let curDuration = parseInt(livePlayer.currentTime);
+      livePlayRecord(curDuration, false);
+    });
+    livePlayer.on("ended", () => {
+      let curDuration = parseInt(livePlayer.currentTime);
+      livePlayRecord(curDuration, true);
+    });
   };
 
   const goDetail = () => {
@@ -262,6 +320,17 @@ export const LiveVideoPage = () => {
     }
   };
 
+  const livePlayRecord = (duration: number, isEnd: boolean) => {
+    if (duration - myRef.current >= 10 || isEnd === true) {
+      setCurDuration(duration);
+      goMeedu
+        .liveWatchRecord(video.course_id, id, {
+          duration: duration,
+        })
+        .then((res: any) => {});
+    }
+  };
+
   const submitMessage = () => {
     if (content === "") {
       return;
@@ -335,21 +404,19 @@ export const LiveVideoPage = () => {
                   {video.status === 1 && (
                     <>
                       {noTeacher && (
-                        <>
-                          <div className={styles["alert-message"]}>
-                            <div className={styles["message"]}>
-                              讲师暂时离开直播间，稍后请刷新！
-                              <a onClick={() => reloadPlayer()}>点击刷新</a>
-                            </div>
+                        <div className={styles["alert-message"]}>
+                          <div className={styles["message"]}>
+                            讲师暂时离开直播间，稍后请刷新！
+                            <a onClick={() => reloadPlayer()}>点击刷新</a>
                           </div>
-                          <div className={styles["play"]}>
-                            <div
-                              id="meedu-live-player"
-                              style={{ width: "100%", height: "100%" }}
-                            ></div>
-                          </div>
-                        </>
+                        </div>
                       )}
+                      <div className={styles["play"]}>
+                        <div
+                          id="meedu-live-player"
+                          style={{ width: "100%", height: "100%" }}
+                        ></div>
+                      </div>
                     </>
                   )}
                   {video.status === 0 && (
