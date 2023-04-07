@@ -21,3 +21,4 @@ export * from "./snap-shot";
 export * from "./snapshot-preview";
 export * from "./live-course-item";
 export * from "./live-course-comments";
+export * from "../pages/live/components/sign-dialog";
