@@ -115,9 +115,9 @@ export const InitPage = (props: Props) => {
 
   return (
     <>
-      <Header></Header>
+      {pathname !== "/live/video" && <Header></Header>}
       <Outlet />
-      <Footer status={true}></Footer>
+      {pathname !== "/live/video" && <Footer status={true}></Footer>}
     </>
   );
 };
