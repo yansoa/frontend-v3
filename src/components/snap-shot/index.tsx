@@ -221,8 +221,6 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         }
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
-      } else {
-        message.error("上传失败");
       }
     },
   };

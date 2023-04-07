@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
 import { Button, message, Input } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ChatBox } from "../../components";
 import { SignDialog } from "./components/sign-dialog";
 import { AttachDialog } from "./components/attach-dialog";
 import { useSelector } from "react-redux";
@@ -18,7 +19,7 @@ export const LiveVideoPage = () => {
   const [id, setId] = useState(Number(result.get("id")));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
-  const [chat, setChat] = useState<any>({});
+  const [chat, setChat] = useState<any>(null);
   const [curStartTime, setCurStartTime] = useState<string>("");
   const [playUrl, setPlayUrl] = useState<string>("");
   const [record_exists, setRecordExists] = useState<number>(0);
@@ -40,6 +41,7 @@ export const LiveVideoPage = () => {
   const [curDuration, setCurDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
   const [content, setContent] = useState<string>("");
+  const [enabledChat, setEnabledChat] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -87,6 +89,9 @@ export const LiveVideoPage = () => {
     live.play(id).then((res: any) => {
       let resData = res.data;
       document.title = resData.video.title;
+      if (!chat && resData.chat) {
+        setChat(resData.chat);
+      }
       setCurStartTime(resData.video.published_at);
       setCourse(resData.course);
       setVideo(resData.video);
@@ -94,6 +99,14 @@ export const LiveVideoPage = () => {
       setRecordExists(resData.record_exists);
       setRecordDuration(resData.record_duration);
       setWebrtcPlayUrl(resData.web_rtc_play_url);
+      if (typeof resData.video.status === "undefined") {
+        setEnabledChat(false);
+      } else {
+        setEnabledChat(
+          resData.video.status === 0 || resData.video.status === 1
+        );
+      }
+
       if (resData.room_is_ban === 1) {
         setRoomDisabled(true);
       } else {
@@ -354,7 +367,7 @@ export const LiveVideoPage = () => {
 
   const saveChat = (content: string) => {
     goMeedu
-      .vodWatchRecord(video.course_id, id, {
+      .chatMsgSend(video.course_id, id, {
         content: content,
         duration: curDuration,
       })
@@ -514,9 +527,28 @@ export const LiveVideoPage = () => {
                     </div>
                   ))}
                 </div>
-                {/* {currentTab === 1&&(
-                  <ChatBox chat={chat} enabledChat={enabledChat} />
-                )} */}
+                {currentTab === 1 && video.course_id && (
+                  <ChatBox
+                    chat={chat}
+                    enabledChat={enabledChat}
+                    cid={video.course_id}
+                    vid={id}
+                    disabled={userDisabled}
+                    enabledMessage={roomDisabled}
+                    change={(
+                      userDisabled: boolean,
+                      messageDisabled: boolean
+                    ) => {
+                      if (userDisabled || messageDisabled) {
+                        setMessageDisabled(true);
+                      } else {
+                        setMessageDisabled(false);
+                      }
+                    }}
+                    sign={(data: any) => openSignDialog(data)}
+                    endSign={() => closeSignDialog()}
+                  />
+                )}
                 {currentTab === 2 && (
                   <AttachDialog
                     cid={course.id}

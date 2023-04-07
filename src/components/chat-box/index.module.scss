@@ -1,0 +1,41 @@
+.chat-all-box {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  .tip-box {
+    width: 100%;
+    height: 30px;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .tip {
+      width: 80px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 12px;
+      background: #faad14;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .tit {
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    padding: 15px 15px 0px 15px;
+  }
+}
