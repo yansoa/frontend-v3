@@ -61,6 +61,10 @@ export const LiveVideoPage = () => {
     } else if (video.status === 1 && !webrtc_play_url) {
       initLivePlayer();
     }
+    return () => {
+      livePlayer && livePlayer.destroy(true);
+      vodPlayer && vodPlayer.destroy();
+    };
   }, [video]);
 
   useEffect(() => {
@@ -128,34 +132,41 @@ export const LiveVideoPage = () => {
     let endDate = new Date(curStartTime);
     let end = endDate.getTime();
     let leftTime = end - now;
+    let c_day = 0;
+    let c_hour = 0;
+    let c_min = 0;
+    let c_second = 0;
     if (leftTime >= 0) {
       // 天
       let day = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+      c_day = day;
       setDay(day);
       // 时
       let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+      c_hour = h;
       let hour = h < 10 ? "0" + h : h;
       setHour(hour);
       // 分
       let m = Math.floor((leftTime / 1000 / 60) % 60);
+      c_min = m;
       let min = m < 10 ? "0" + m : m;
       setMin(min);
       // 秒
       let s = Math.floor((leftTime / 1000) % 60);
+      c_second = s;
       let second = s < 10 ? "0" + s : s;
       setSecond(second);
     } else {
+      c_day = 0;
+      c_hour = 0;
+      c_min = 0;
+      c_second = 0;
       setDay(0);
       setHour("00");
       setMin("00");
       setSecond("00");
     }
-    if (
-      Number(hour) === 0 &&
-      Number(day) === 0 &&
-      Number(min) === 0 &&
-      Number(second) === 0
-    ) {
+    if (c_day === 0 && c_hour === 0 && c_min === 0 && c_second === 0) {
       setWaitTeacher(true);
       return;
     } else {
@@ -247,7 +258,6 @@ export const LiveVideoPage = () => {
 
   const showVodPlayer = () => {
     if (record_exists === 1 && playUrl.length > 0) {
-      setVodPlayerStatus(true);
       initVodPlayer(playUrl, course.poster);
     } else {
       setVodPlayerStatus(false);
@@ -269,6 +279,7 @@ export const LiveVideoPage = () => {
   };
 
   const initVodPlayer = (url: any, poster: string) => {
+    setVodPlayerStatus(true);
     let dplayerUrls: any = [];
     url.forEach((item: any) => {
       dplayerUrls.push({
@@ -445,12 +456,10 @@ export const LiveVideoPage = () => {
                             </div>
                           </div>
                         )}
-                        {record_exists === 1 && vodPlayerStatus && (
-                          <div
-                            id="meedu-vod-player"
-                            style={{ width: "100%", height: "100%" }}
-                          ></div>
-                        )}
+                        <div
+                          id="meedu-vod-player"
+                          style={{ width: "100%", height: "100%" }}
+                        ></div>
                       </div>
                     </>
                   )}
