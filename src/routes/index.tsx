@@ -16,6 +16,7 @@ import { LiveVideoPage } from "../pages/live/video";
 import { ExamPage } from "../pages/exam/index";
 import { ExamPaperPage } from "../pages/exam/paper/index";
 import { ExamPaperDetailPage } from "../pages/exam/paper/detail";
+import { ExamPaperPlayPage } from "../pages/exam/paper/play";
 
 let RootPage: any = null;
 let configFunc = {
@@ -199,6 +200,7 @@ const routes: RouteObject[] = [
       { path: "/exam", element: <ExamPage /> },
       { path: "/exam/papers", element: <ExamPaperPage /> },
       { path: "/exam/papers/detail", element: <ExamPaperDetailPage /> },
+      { path: "/exam/papers/play", element: <ExamPaperPlayPage /> },
     ],
   },
 ];

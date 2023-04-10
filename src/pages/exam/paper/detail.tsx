@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Spin, message } from "antd";
+import { message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";

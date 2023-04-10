@@ -334,6 +334,15 @@ button:focus-visible {
   justify-content: space-between;
 }
 
+.full-container {
+  width: 100%;
+  min-height: 600px;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   width: 1200px;
   min-height: 600px;

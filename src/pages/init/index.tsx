@@ -29,6 +29,8 @@ interface Props {
 
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
+  const showHeader = pathname !== ("/live/video" && "/exam/papers/play");
+  const showFooter = pathname !== ("/live/video" && "/exam/papers/play");
   const dispatch = useDispatch();
 
   const codeLogin = (code: string) => {
@@ -115,9 +117,9 @@ export const InitPage = (props: Props) => {
 
   return (
     <>
-      {pathname !== "/live/video" && <Header></Header>}
+      {showHeader && <Header></Header>}
       <Outlet />
-      {pathname !== "/live/video" && <Footer status={true}></Footer>}
+      {showFooter && <Footer status={true}></Footer>}
     </>
   );
 };
