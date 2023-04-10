@@ -105,6 +105,7 @@ export const LivePage = () => {
             <Pagination
               onChange={(currentPage) => {
                 setPage(currentPage);
+                window.scrollTo(0, 0);
               }}
               pageSize={size}
               defaultCurrent={page}

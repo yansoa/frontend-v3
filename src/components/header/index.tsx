@@ -245,6 +245,8 @@ export const Header = () => {
                 style={{
                   width: 250,
                   borderRadius: 20,
+                  fontSize: 14,
+                  color: "#999999",
                 }}
               />
             </div>

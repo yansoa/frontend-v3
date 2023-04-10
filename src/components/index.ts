@@ -22,3 +22,5 @@ export * from "./snapshot-preview";
 export * from "./live-course-item";
 export * from "./live-course-comments";
 export * from "./chat-box";
+export * from "./paper-course-item";
+export * from "./mock-course-item";
