@@ -155,7 +155,10 @@ export const VodDetailPage = () => {
     }
   };
 
-  const goLogin = () => {};
+  const goLogin = () => {
+    navigate("/login");
+  };
+
   const getMsDetail = () => {
     if (course.is_free === 1) {
       return;
@@ -193,7 +196,7 @@ export const VodDetailPage = () => {
 
   const buyCourse = () => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate(
@@ -227,7 +230,7 @@ export const VodDetailPage = () => {
 
   const goPay = (gid = 0) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate(
@@ -254,7 +257,7 @@ export const VodDetailPage = () => {
 
   const goPlay = (item: any) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate("/courses/video?id=" + item.id);
@@ -263,7 +266,7 @@ export const VodDetailPage = () => {
   const download = (id: number) => {
     let token = getToken();
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     if (!isBuy) {

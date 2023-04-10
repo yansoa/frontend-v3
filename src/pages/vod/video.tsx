@@ -274,7 +274,7 @@ export const VodPlayPage = () => {
 
   const goPlay = (item: any) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     clock && clearInterval(clock);
@@ -294,7 +294,7 @@ export const VodPlayPage = () => {
 
   const paySelect = (val: number) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     if (val === 2) {
@@ -359,6 +359,10 @@ export const VodPlayPage = () => {
     setCommentUsers({});
   };
 
+  const goLogin = () => {
+    navigate("/login");
+  };
+
   const goRole = () => {
     navigate("/vip");
   };
@@ -374,7 +378,7 @@ export const VodPlayPage = () => {
   const download = (id: number) => {
     let token = getToken();
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     if (!isBuy) {

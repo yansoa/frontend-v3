@@ -9,3 +9,4 @@ export * as tuangou from "./tuangou";
 export * as snapshot from "./snapshot";
 export * as live from "./live";
 export * as goMeedu from "./go-meedu";
+export * as exam from "./exam";

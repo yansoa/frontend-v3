@@ -13,6 +13,7 @@ import { VodPlayPage } from "../pages/vod/video";
 import { LivePage } from "../pages/live/index";
 import { LiveDetailPage } from "../pages/live/detail";
 import { LiveVideoPage } from "../pages/live/video";
+import { ExamPage } from "../pages/exam/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -193,6 +194,7 @@ const routes: RouteObject[] = [
       { path: "/live", element: <LivePage /> },
       { path: "/live/detail", element: <LiveDetailPage /> },
       { path: "/live/video", element: <LiveVideoPage /> },
+      { path: "/exam", element: <ExamPage /> },
     ],
   },
 ];

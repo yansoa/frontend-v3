@@ -21,9 +21,13 @@ export const TuangouList: React.FC<PropInterface> = ({ tgData }) => {
     return arr;
   };
 
+  const goLogin = () => {
+    navigate("/login");
+  };
+
   const copy = () => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     var input = document.createElement("input");
@@ -37,7 +41,7 @@ export const TuangouList: React.FC<PropInterface> = ({ tgData }) => {
 
   const goPay = (gid = 0) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate(

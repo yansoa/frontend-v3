@@ -181,7 +181,9 @@ export const LiveDetailPage = () => {
     }
   };
 
-  const goLogin = () => {};
+  const goLogin = () => {
+    navigate("/login");
+  };
 
   const handleTabFix = () => {
     let scrollTop =
@@ -201,7 +203,7 @@ export const LiveDetailPage = () => {
 
   const buyCourse = () => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate(
@@ -235,7 +237,7 @@ export const LiveDetailPage = () => {
 
   const goPay = (gid = 0) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
     navigate(
@@ -262,7 +264,7 @@ export const LiveDetailPage = () => {
 
   const goPlay = (item: any) => {
     if (!isLogin) {
-      message.error("请登录后再操作");
+      goLogin();
       return;
     }
 
