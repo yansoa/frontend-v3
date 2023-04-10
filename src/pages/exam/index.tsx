@@ -48,7 +48,7 @@ export const ExamPage = () => {
           <div
             className={styles["left-model"]}
             onClick={() => {
-              if (isLogin) {
+              if (!isLogin) {
                 goLogin();
                 return;
               }
@@ -63,7 +63,7 @@ export const ExamPage = () => {
             <div
               className={styles["mockpaper-model"]}
               onClick={() => {
-                if (isLogin) {
+                if (!isLogin) {
                   goLogin();
                   return;
                 }
@@ -79,7 +79,7 @@ export const ExamPage = () => {
             <div
               className={styles["practice-model"]}
               onClick={() => {
-                if (isLogin) {
+                if (!isLogin) {
                   goLogin();
                   return;
                 }
@@ -101,7 +101,7 @@ export const ExamPage = () => {
           <div
             className={styles["wrongbook-model"]}
             onClick={() => {
-              if (isLogin) {
+              if (!isLogin) {
                 goLogin();
                 return;
               }
@@ -115,7 +115,7 @@ export const ExamPage = () => {
           <div
             className={styles["collect-model"]}
             onClick={() => {
-              if (isLogin) {
+              if (!isLogin) {
                 goLogin();
                 return;
               }

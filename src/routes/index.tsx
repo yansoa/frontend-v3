@@ -14,6 +14,7 @@ import { LivePage } from "../pages/live/index";
 import { LiveDetailPage } from "../pages/live/detail";
 import { LiveVideoPage } from "../pages/live/video";
 import { ExamPage } from "../pages/exam/index";
+import { ExamPaperPage } from "../pages/exam/paper/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -195,6 +196,7 @@ const routes: RouteObject[] = [
       { path: "/live/detail", element: <LiveDetailPage /> },
       { path: "/live/video", element: <LiveVideoPage /> },
       { path: "/exam", element: <ExamPage /> },
+      { path: "/exam/papers", element: <ExamPaperPage /> },
     ],
   },
 ];
