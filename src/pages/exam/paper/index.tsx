@@ -117,7 +117,7 @@ export const ExamPaperPage = () => {
                 records={userpapers}
                 isFree={item.cur_user_can_join}
                 expiredMinutes={item.expired_minutes}
-                questionsCount={item.cur_user_can_join}
+                questionsCount={item.questions_count}
               ></PaperCourseItem>
             ))}
           </div>
