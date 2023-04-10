@@ -4,6 +4,7 @@ import { Row, Col, Spin, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
+import { Empty } from "../../../components";
 
 export const ExamPaperDetailPage = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const ExamPaperDetailPage = () => {
   const [canJoin, setCanJoin] = useState<boolean>(false);
   const [joinCount, setJoinCount] = useState<number>(0);
   const [requiredCourses, setRequiredCourses] = useState<any>([]);
-  const [surplus, setSurplus] = useState<number>(0);
+  const [surplus, setSurplus] = useState<number>(99999);
   const [sumQuestion, setSumQuestion] = useState<number>(0);
   const [joinLoading, setJoinLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")) || 0);
@@ -86,7 +87,28 @@ export const ExamPaperDetailPage = () => {
     navigate("/login");
   };
 
-  const payOrder = () => {};
+  const payOrder = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
+    if (list.charge === 0) {
+      message.error("当前试卷无法购买");
+      return;
+    }
+    if (list.enabled_invite === 1) {
+      message.error("当前试卷仅限邀请用户参与");
+      return;
+    }
+    navigate(
+      "/order?goods_id=" +
+        id +
+        "&goods_type=paper&goods_charge=" +
+        list.charge +
+        "&goods_label=试卷&goods_name=" +
+        list.title
+    );
+  };
 
   return (
     <div className="container">
@@ -146,6 +168,47 @@ export const ExamPaperDetailPage = () => {
             </>
           </div>
         )}
+      </div>
+      <div className={styles["records-box"]}>
+        <div className={styles["tit"]}>考试记录</div>
+        <div className={styles["records"]}>
+          {joinRecords.length === 0 && <Empty></Empty>}
+          {joinRecords.length > 0 && (
+            <>
+              {joinRecords.map((item: any) => (
+                <div key={item.id} className={styles["record-item"]}>
+                  <div className={styles["item-type"]}>
+                    <>
+                      {item.status === 2 && <span>{item.score}分</span>}
+                      {item.status === 3 && <span>已完成</span>}
+                      {item.status !== 2 && item.status !== 3 && (
+                        <span className={styles["red"]}>未完成</span>
+                      )}
+                    </>
+                  </div>
+                  <div className={styles["item-pro"]}>
+                    <>
+                      {item.status === 1 && <span>考试中</span>}
+                      {item.status === 3 && <span>阅卷中</span>}
+                      {item.status === 2 && <span>已结束</span>}
+                    </>
+                  </div>
+                  <div
+                    className={styles["item-status"]}
+                    onClick={() => join(item)}
+                  >
+                    <>
+                      {item.status === 1 && (
+                        <span className={styles["red"]}>继续考试</span>
+                      )}
+                      {item.status !== 1 && <span>考试详情</span>}
+                    </>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
