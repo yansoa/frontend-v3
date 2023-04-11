@@ -7,6 +7,7 @@ import { paper as examPaper, practice } from "../../../api/index";
 import backIcon from "../../../assets/img/commen/icon-back-h.png";
 import collectIcon from "../../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../../assets/img/commen/icon-collect-n.png";
+import { ChoiceComp } from "../../../components";
 
 var timer: any = null;
 export const ExamPaperPlayPage = () => {
@@ -18,7 +19,7 @@ export const ExamPaperPlayPage = () => {
   const [questions, setQuestions] = useState<any>([]);
   const [activeQuestions, setActiveQuestions] = useState<any>({});
   const [collects, setCollects] = useState<any>({});
-  const [surplus, serSurplus] = useState<number>(0);
+  const [surplus, setSurplus] = useState<number>(0);
   const [dialogStatus, setDialogStatus] = useState<boolean>(false);
   const [readTip, setReadTip] = useState<boolean>(false);
   const [openmask, setOpenmask] = useState<boolean>(false);
@@ -66,7 +67,7 @@ export const ExamPaperPlayPage = () => {
       });
       setActiveQuestions(obj);
       setQuestions(normaldata);
-      serSurplus(unread);
+      setSurplus(unread);
       let endTime: any = new Date(
         res.data.user_paper.ended_at.replace(/-/g, "/")
       );
@@ -184,6 +185,57 @@ export const ExamPaperPlayPage = () => {
       });
   };
 
+  const questionUpdate = (qid: string, answer: string, thumbs: string) => {
+    paper
+      .paperSubmitSingle(id, {
+        pid: pid,
+        images: thumbs,
+        answer: answer,
+        question_id: qid,
+      })
+      .then((res: any) => {
+        let obj: any = activeQuestions;
+        if (typeof qid == "string" && qid.indexOf("-") != -1) {
+          if (answer === "") {
+            if (thumbs && thumbs.length > 0) {
+              let key = qid.substring(0, qid.indexOf("-"));
+              obj[key] = true;
+              setActiveQuestions(obj);
+            } else {
+              let key = qid.substring(0, qid.indexOf("-"));
+              obj[key] = false;
+              setActiveQuestions(obj);
+            }
+          } else {
+            let key = qid.substring(0, qid.indexOf("-"));
+            obj[key] = true;
+            setActiveQuestions(obj);
+          }
+        } else {
+          if (answer === "") {
+            if (thumbs && thumbs.length > 0) {
+              obj[qid] = true;
+              setActiveQuestions(obj);
+            } else {
+              obj[qid] = false;
+              setActiveQuestions(obj);
+            }
+          } else {
+            obj[qid] = true;
+            setActiveQuestions(obj);
+          }
+        }
+        let num = 0;
+        for (let i = 0; i < obj.length; i++) {
+          if (obj[i]) {
+            num++;
+          }
+        }
+        let surplus = questions.length - num;
+        setSurplus(surplus);
+      });
+  };
+
   return (
     <div className="full-container">
       <div className={styles["navheader"]}>
@@ -287,6 +339,20 @@ export const ExamPaperPlayPage = () => {
                     </div>
                   )}
                   {/* 单选 */}
+                  {item.question.type === 1 && (
+                    <ChoiceComp
+                      num={index + 1}
+                      question={item.question}
+                      reply={item.answer_content}
+                      score={item.score}
+                      isCorrect={item.is_correct}
+                      isOver={userPaper.status === 2}
+                      wrongBook={false}
+                      update={(id: string, value: string, thumbs: string) => {
+                        questionUpdate(id, value, thumbs);
+                      }}
+                    ></ChoiceComp>
+                  )}
 
                   {/* 多选 */}
 
