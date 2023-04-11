@@ -13,6 +13,7 @@ import {
   InputComp,
   JudgeComp,
   QaComp,
+  CapComp,
 } from "../../../components";
 
 var timer: any = null;
@@ -431,7 +432,6 @@ export const ExamPaperPlayPage = () => {
                       }}
                     ></ChoiceComp>
                   )}
-
                   {/* 多选 */}
                   {item.question.type === 2 && (
                     <SelectComp
@@ -448,7 +448,6 @@ export const ExamPaperPlayPage = () => {
                       }}
                     ></SelectComp>
                   )}
-
                   {/* 填空 */}
                   {item.question.type === 3 && (
                     <InputComp
@@ -465,7 +464,6 @@ export const ExamPaperPlayPage = () => {
                       }}
                     ></InputComp>
                   )}
-
                   {/* 问答 */}
                   {item.question.type === 4 && (
                     <QaComp
@@ -484,7 +482,6 @@ export const ExamPaperPlayPage = () => {
                       }}
                     ></QaComp>
                   )}
-
                   {/* 判断 */}
                   {item.question.type === 5 && (
                     <JudgeComp
@@ -501,8 +498,23 @@ export const ExamPaperPlayPage = () => {
                       }}
                     ></JudgeComp>
                   )}
-
                   {/* 题帽题 */}
+                  {item.question.type === 6 && (
+                    <CapComp
+                      key={item.question_id}
+                      num={index + 1}
+                      question={item.question}
+                      reply={item.answer_contents_rows}
+                      score={item.score}
+                      isCorrect={item.is_correct}
+                      isOver={userPaper.status === 2}
+                      showImage={true}
+                      wrongBook={false}
+                      update={(id: string, value: string, thumbs: any) => {
+                        questionUpdate(id, value, thumbs);
+                      }}
+                    ></CapComp>
+                  )}
                 </div>
               ))}
             </div>

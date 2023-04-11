@@ -30,3 +30,4 @@ export * from "./select";
 export * from "./input";
 export * from "./judge";
 export * from "./qa";
+export * from "./cap";

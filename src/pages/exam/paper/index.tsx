@@ -21,7 +21,7 @@ export const ExamPaperPage = () => {
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [page, size, refresh]);
 
   const resetList = () => {
     setPage(1);
