@@ -30,7 +30,7 @@ export const SelectComp: React.FC<PropInterface> = ({
   update,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [active, setActive] = useState<any>(null);
+  const [active, setActive] = useState<any>([]);
   const [previewImage, setPreviewImage] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
   const [answers, setAnswers] = useState<any>([]);
@@ -126,7 +126,7 @@ export const SelectComp: React.FC<PropInterface> = ({
       </div>
       <div className={styles["choice-box"]}>
         {getArr(10).map((item: any) => (
-          <div key={item + "choice" + question.question_id}>
+          <div key={item + "select" + question.question_id}>
             {question["option" + item] && (
               <div
                 className={
