@@ -257,12 +257,8 @@ export const ExamPaperPlayPage = () => {
           setActiveQuestions(obj);
         }
       }
-      let num = 0;
-      for (let i = 0; i < obj.length; i++) {
-        if (obj[i]) {
-          num++;
-        }
-      }
+      let num = Object.keys(obj).length;
+      
       let surplus = questions.length - num;
       setSurplus(surplus);
     });
