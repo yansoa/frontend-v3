@@ -15,7 +15,7 @@ interface PropInterface {
   score: number;
   wrongBook: boolean;
   num: number;
-  update: (id: string, value: string, thumbs: string) => void;
+  update: (id: string, value: string, thumbs: any) => void;
 }
 
 export const ChoiceComp: React.FC<PropInterface> = ({
@@ -61,7 +61,7 @@ export const ChoiceComp: React.FC<PropInterface> = ({
     }
     let value = "option" + index;
     setActive(value);
-    update(question.id, value, "");
+    update(question.id, value, null);
   };
 
   const getArr = (num: number) => {

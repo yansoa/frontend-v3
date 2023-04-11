@@ -1,101 +1,160 @@
 import React, { useState, useEffect } from "react";
-import { Input } from "antd";
 import styles from "./index.module.scss";
+import { message, Input, Upload } from "antd";
+import type { UploadProps } from "antd";
+import { ThumbBar } from "../thumb-bar";
 import { QuestionContentRender } from "../question-content-render";
 import backIcon from "../../assets/img/icon-back-n.png";
-import rightIcon from "../../assets/img/exam/icon-right.png";
-import wrongIcon from "../../assets/img/exam/icon-Wrong.png";
+import delIcon from "../../assets/img/icon-delete.png";
 import foldIcon from "../../assets/img/exam/fold.png";
 import unfoldIcon from "../../assets/img/exam/unfold.png";
+import uploadIcon from "../../assets/img/icon-handin.png";
+import config from "../../js/config";
+import { getToken } from "../../utils/index";
 
 interface PropInterface {
   question: any;
   reply: any;
+  thumbs: any;
   isCorrect: number;
   isOver: boolean;
   score: number;
+  showImage: boolean;
   wrongBook: boolean;
   num: number;
   update: (id: string, value: string, thumbs: any) => void;
 }
 
-export const InputComp: React.FC<PropInterface> = ({
+export const QaComp: React.FC<PropInterface> = ({
   question,
   reply,
+  thumbs,
   isCorrect,
   isOver,
   score,
+  showImage,
   wrongBook,
   num,
   update,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [inputLength, setInputLength] = useState<any>(null);
+  const [val, setVal] = useState<any>("");
+  const [image, setImage] = useState<any>({
+    thumb: null,
+    index: null,
+  });
   const [previewImage, setPreviewImage] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
-  const [inputVal, setInputVal] = useState<any>([]);
-  const [questionAnswerRows, setQuestionAnswerRows] = useState<any>([]);
-  const [remarkStatus, setRemarkStatus] = useState<boolean>(false);
+  const [prew, setPrew] = useState<boolean>(false);
+  const [localThumbs, setLocalThumbs] = useState<any>([]);
+  const [remarkStatus, setRemarkStatus] = useState<boolean>(true);
+  const [showDelIcon, setShowDelIcon] = useState<boolean>(true);
 
   useEffect(() => {
-    let replyContent = reply || "";
-    let replyRows = replyContent;
-    let arr = [];
-    for (let i = 0; i < inputLength; i++) {
-      if (typeof replyRows[i] !== "undefined") {
-        arr.push(replyRows[i]);
+    setVal(reply);
+    if (thumbs) {
+      if (isJson(thumbs)) {
+        setLocalThumbs(JSON.parse(thumbs));
       } else {
-        arr.push(null);
+        setLocalThumbs(thumbs);
       }
     }
-    setInputVal(arr);
-    if (wrongBook) {
-      setRemarkStatus(true);
-    } else {
-      setRemarkStatus(false);
-    }
-  }, [reply, wrongBook, inputLength]);
+  }, [reply, wrongBook, thumbs]);
 
-  useEffect(() => {
-    if (typeof question.input_length !== "undefined") {
-      setInputLength(question.input_length);
-    } else if (typeof question.answer !== "undefined" && question.answer) {
-      let length = question.answer.split(",").length;
-      setInputLength(length);
-    } else {
-      setInputLength(0);
+  const isJson = (str: any) => {
+    if (typeof str == "string") {
+      try {
+        let obj = JSON.parse(str);
+        if (typeof obj == "object" && obj) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        return false;
+      }
     }
-
-    if (typeof question === "undefined") {
-      setQuestionAnswerRows([]);
-    } else if (typeof question.answer_transform === "undefined") {
-      setQuestionAnswerRows([]);
-    } else if (question.answer_transform) {
-      setQuestionAnswerRows(question.answer_transform);
-    } else {
-      setQuestionAnswerRows([]);
-    }
-  }, [question]);
+  };
 
   const change = (e: any) => {
     if (isOver) {
       return;
     }
-    let val;
-    if (e.target.value === "") {
-      val = "";
-    } else {
-      val = inputVal;
-    }
-    update(question.id, val, null);
+    emitCall();
   };
 
-  const PreviewImage = (event: any) => {
-    if (event.target.src) {
-      event.stopPropagation();
-      setThumb(event.target.src);
-      setPreviewImage(true);
+  const emitCall = () => {
+    update(question.id, val, localThumbs);
+  };
+
+  const deleteImage = () => {
+    if (isOver) {
+      return;
     }
+    let arr = [...localThumbs];
+    arr.splice(image.index, 1);
+    setLocalThumbs(arr);
+    setPreviewImage(false);
+    emitCall();
+  };
+
+  const PreviewImage = (val: any, index: number) => {
+    setPrew(false);
+    setImage({
+      thumb: val,
+      index: index,
+    });
+    setShowDelIcon(true);
+    setPreviewImage(true);
+  };
+
+  const props: UploadProps = {
+    name: "file",
+    multiple: false,
+    method: "POST",
+    action: config.app_url + "/api/v2/upload/image",
+    headers: {
+      Accept: "application/json",
+      authorization: "Bearer " + getToken(),
+    },
+    beforeUpload: (file) => {
+      if (localThumbs.length >= 9) {
+        message.error("最多上传9张图片");
+      }
+
+      const isPNG =
+        file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/jpeg";
+
+      if (!isPNG) {
+        message.error(`${file.name}不是图片文件`);
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error("超过2M限制，不允许上传");
+      }
+      return (
+        (isPNG && isLt2M && !isOver && localThumbs.length < 9) ||
+        Upload.LIST_IGNORE
+      );
+    },
+    onChange(info: any) {
+      const { status, response } = info.file;
+      if (status === "done") {
+        if (response.code === 0) {
+          let url = response.data.url;
+          let arr = localThumbs;
+          arr.push(url);
+          setLocalThumbs(arr);
+          emitCall();
+        } else {
+          message.error(response.msg);
+        }
+      } else if (status === "error") {
+        message.error(`${info.file.name} 上传失败`);
+      }
+    },
   };
 
   return (
@@ -107,10 +166,17 @@ export const InputComp: React.FC<PropInterface> = ({
             className={styles["back-detail"]}
             onClick={() => setPreviewImage(false)}
           />
+          {!isOver && !prew && showDelIcon && (
+            <img
+              src={delIcon}
+              className={styles["delete-img"]}
+              onClick={() => deleteImage()}
+            />
+          )}
           <div className={styles["pic-item"]}>
             <div
               className={styles["pic"]}
-              style={{ backgroundImage: "url(" + thumb + ")" }}
+              style={{ backgroundImage: "url(" + image.thumb + ")" }}
             ></div>
           </div>
         </div>
@@ -128,48 +194,47 @@ export const InputComp: React.FC<PropInterface> = ({
         ></QuestionContentRender>
       </div>
       <div className={styles["choice-box"]}>
-        {inputVal.map((item: any, index: number) => (
-          <div
-            key={index + "input" + question.question_id}
-            className={styles["input-input-item"]}
-          >
-            <div className={styles["name"]}>
-              填空{index + 1}（{questionAnswerRows[index].s}分）：
-            </div>
-            <div className={styles["input-box"]}>
-              <Input
-                className={styles["input"]}
-                disabled={isOver}
-                type="text"
-                value={inputVal[index]}
-                placeholder="请输入你的答案"
-                onBlur={(e) => {
-                  change(e);
-                }}
-                onChange={(e) => {
-                  let arr = inputVal;
-                  arr[index] = e.target.value;
-                  setInputVal(arr);
-                }}
-              ></Input>
-            </div>
-            {isOver && (
-              <div className={styles["icon-box"]}>
-                {inputVal[index] === questionAnswerRows[index].a && (
-                  <img src={rightIcon} className={styles["icon"]} />
-                )}
-                {inputVal[index] !== questionAnswerRows[index].a && (
-                  <>
-                    <img src={wrongIcon} className={styles["icon"]} />
-                    <div className={styles["answer"]}>
-                      答案：{questionAnswerRows[index].a}
-                    </div>
-                  </>
-                )}
+        <div className={styles["input-title"]}>我的作答</div>
+        <Input.TextArea
+          className={styles["input"]}
+          disabled={isOver}
+          placeholder="请输入你的答案"
+          value={val}
+          onBlur={(e) => {
+            change(e);
+          }}
+          onChange={(e) => {
+            setVal(e.target.value);
+          }}
+        ></Input.TextArea>
+        {showImage && (localThumbs.length > 0 || !isOver) && (
+          <div className={styles["images-box"]}>
+            {localThumbs.map((item: any, imageIndex: number) => (
+              <div key={imageIndex} className={styles["image-item"]}>
+                <div
+                  className={styles["image-view"]}
+                  onClick={() => PreviewImage(item, imageIndex)}
+                >
+                  <ThumbBar
+                    value={item}
+                    width={80}
+                    height={80}
+                    border={4}
+                  ></ThumbBar>
+                </div>
               </div>
+            ))}
+            {!isOver && !wrongBook && (
+              <Upload
+                className={styles["upload-image-button"]}
+                {...props}
+                showUploadList={false}
+              >
+                <img src={uploadIcon} />
+              </Upload>
             )}
           </div>
-        ))}
+        )}
       </div>
       {isOver &&
         ((wrongBook && question.remark && question.remark !== "") ||

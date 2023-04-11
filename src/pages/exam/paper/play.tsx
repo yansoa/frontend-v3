@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./play.module.scss";
-import { message } from "antd";
+import { Modal, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper as examPaper, practice } from "../../../api/index";
@@ -12,6 +12,7 @@ import {
   SelectComp,
   InputComp,
   JudgeComp,
+  QaComp,
 } from "../../../components";
 
 var timer: any = null;
@@ -27,7 +28,6 @@ export const ExamPaperPlayPage = () => {
   const [surplus, setSurplus] = useState<number>(0);
   const [dialogStatus, setDialogStatus] = useState<boolean>(false);
   const [readTip, setReadTip] = useState<boolean>(false);
-  const [openmask, setOpenmask] = useState<boolean>(false);
   const [submitTip, setSubmitTip] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState<number>(0);
   const [workTime, setWorkTime] = useState<number>(0);
@@ -104,7 +104,7 @@ export const ExamPaperPlayPage = () => {
   const countdown = (timestamp: number) => {
     const today: any = new Date();
     const now = Date.parse(today);
-    let remaining: number = timestamp - now;
+    let remaining: number = (timestamp - now) / 1000;
     if (remaining < 0) {
       let workTime = parseInt(paper.expired_minutes) * 60;
       setWorkTime(workTime);
@@ -127,17 +127,41 @@ export const ExamPaperPlayPage = () => {
           sec: second < 10 ? "0" + second : second,
         });
       } else {
+        let workTime =
+          parseInt(paper.expired_minutes) * 60 - Math.floor(remaining);
+        setWorkTime(workTime);
         finish();
         timer && clearInterval(timer);
       }
     }, 1000);
   };
 
-  const finish = () => {};
+  const finish = () => {
+    if (userPaper.status === 1) {
+      submitHandle();
+    }
+  };
+
+  const submitHandle = () => {
+    examPaper
+      .paperSubmit(id, {
+        pid: pid,
+      })
+      .then((res: any) => {
+        let status = res.data.status;
+        let totalScore = res.data.total_score;
+        setSubmitTip(false);
+        if (status === 2) {
+          message.success("考试结束，得分：" + totalScore);
+          getData();
+        } else {
+          setReadTip(true);
+        }
+      });
+  };
 
   const goBack = () => {
     if (userPaper.status === 1) {
-      setOpenmask(false);
       setDialogStatus(false);
     } else {
       cancelAll();
@@ -146,7 +170,6 @@ export const ExamPaperPlayPage = () => {
   };
 
   const ok = () => {
-    setOpenmask(false);
     setReadTip(false);
     setSubmitTip(false);
     setTimeout(() => {
@@ -158,7 +181,6 @@ export const ExamPaperPlayPage = () => {
     setReadTip(false);
     setSubmitTip(false);
     setDialogStatus(false);
-    setOpenmask(false);
   };
 
   const goDetail = (val: number) => {
@@ -167,7 +189,6 @@ export const ExamPaperPlayPage = () => {
   };
 
   const submitAll = () => {
-    setOpenmask(true);
     setSubmitTip(true);
   };
 
@@ -190,59 +211,118 @@ export const ExamPaperPlayPage = () => {
       });
   };
 
-  const questionUpdate = (qid: string, answer: string, thumbs: string) => {
-    paper
-      .paperSubmitSingle(id, {
+  const questionUpdate = (qid: string, answer: string, thumbs: any) => {
+    let params: any = {
+      pid: pid,
+      answer: answer,
+      question_id: qid,
+    };
+    if (thumbs) {
+      params = {
         pid: pid,
         images: thumbs,
         answer: answer,
         question_id: qid,
-      })
-      .then((res: any) => {
-        let obj: any = activeQuestions;
-        if (typeof qid == "string" && qid.indexOf("-") != -1) {
-          if (answer === "") {
-            if (thumbs && thumbs.length > 0) {
-              let key = qid.substring(0, qid.indexOf("-"));
-              obj[key] = true;
-              setActiveQuestions(obj);
-            } else {
-              let key = qid.substring(0, qid.indexOf("-"));
-              obj[key] = false;
-              setActiveQuestions(obj);
-            }
-          } else {
+      };
+    }
+    examPaper.paperSubmitSingle(id, params).then((res: any) => {
+      let obj: any = activeQuestions;
+      if (typeof qid == "string" && qid.indexOf("-") != -1) {
+        if (answer === "") {
+          if (thumbs && thumbs.length > 0) {
             let key = qid.substring(0, qid.indexOf("-"));
             obj[key] = true;
             setActiveQuestions(obj);
-          }
-        } else {
-          if (answer === "") {
-            if (thumbs && thumbs.length > 0) {
-              obj[qid] = true;
-              setActiveQuestions(obj);
-            } else {
-              obj[qid] = false;
-              setActiveQuestions(obj);
-            }
           } else {
-            obj[qid] = true;
+            let key = qid.substring(0, qid.indexOf("-"));
+            obj[key] = false;
             setActiveQuestions(obj);
           }
+        } else {
+          let key = qid.substring(0, qid.indexOf("-"));
+          obj[key] = true;
+          setActiveQuestions(obj);
         }
-        let num = 0;
-        for (let i = 0; i < obj.length; i++) {
-          if (obj[i]) {
-            num++;
+      } else {
+        if (answer === "") {
+          if (thumbs && thumbs.length > 0) {
+            obj[qid] = true;
+            setActiveQuestions(obj);
+          } else {
+            obj[qid] = false;
+            setActiveQuestions(obj);
           }
+        } else {
+          obj[qid] = true;
+          setActiveQuestions(obj);
         }
-        let surplus = questions.length - num;
-        setSurplus(surplus);
-      });
+      }
+      let num = 0;
+      for (let i = 0; i < obj.length; i++) {
+        if (obj[i]) {
+          num++;
+        }
+      }
+      let surplus = questions.length - num;
+      setSurplus(surplus);
+    });
+  };
+
+  const confirm = () => {
+    console.log(111);
   };
 
   return (
     <div className="full-container">
+      <Modal
+        title="确认信息"
+        centered
+        forceRender
+        maskClosable={false}
+        open={dialogStatus}
+        width={500}
+        onOk={() => {
+          cancelAll();
+          setTimeout(() => {
+            navigate(-1);
+          }, 500);
+        }}
+        onCancel={() => setDialogStatus(false)}
+      >
+        <div className={styles["text"]}>正在考试中,是否确认返回?</div>
+      </Modal>
+      <Modal
+        title="确认信息"
+        centered
+        forceRender
+        maskClosable={false}
+        open={submitTip}
+        width={500}
+        onOk={() => submitHandle()}
+        onCancel={() => setSubmitTip(false)}
+        cancelText="继续答题"
+      >
+        {surplus !== 0 && (
+          <div className={styles["text"]}>
+            还有{surplus}道题未做，确认要交卷吗？
+          </div>
+        )}
+        {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
+      </Modal>
+      <Modal
+        title="交卷提示"
+        centered
+        forceRender
+        maskClosable={false}
+        open={readTip}
+        width={500}
+        onOk={() => ok()}
+        onCancel={() => setReadTip(false)}
+      >
+        <div className={styles["text"]}>
+          此次在线考试包含主观题，等待老师阅卷后查看成绩
+        </div>
+      </Modal>
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           {userPaper && userPaper.status === 1 && (
@@ -354,7 +434,7 @@ export const ExamPaperPlayPage = () => {
                       isCorrect={item.is_correct}
                       isOver={userPaper.status === 2}
                       wrongBook={false}
-                      update={(id: string, value: string, thumbs: string) => {
+                      update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
                       }}
                     ></ChoiceComp>
@@ -371,7 +451,7 @@ export const ExamPaperPlayPage = () => {
                       isCorrect={item.is_correct}
                       isOver={userPaper.status === 2}
                       wrongBook={false}
-                      update={(id: string, value: string, thumbs: string) => {
+                      update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
                       }}
                     ></SelectComp>
@@ -388,13 +468,30 @@ export const ExamPaperPlayPage = () => {
                       isCorrect={item.is_correct}
                       isOver={userPaper.status === 2}
                       wrongBook={false}
-                      update={(id: string, value: string, thumbs: string) => {
+                      update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
                       }}
                     ></InputComp>
                   )}
 
                   {/* 问答 */}
+                  {item.question.type === 4 && (
+                    <QaComp
+                      key={item.question_id}
+                      num={index + 1}
+                      question={item.question}
+                      reply={item.answer_content}
+                      thumbs={item.thumbs_rows}
+                      score={item.score}
+                      isCorrect={item.is_correct}
+                      isOver={userPaper.status === 2}
+                      showImage={true}
+                      wrongBook={false}
+                      update={(id: string, value: string, thumbs: any) => {
+                        questionUpdate(id, value, thumbs);
+                      }}
+                    ></QaComp>
+                  )}
 
                   {/* 判断 */}
                   {item.question.type === 5 && (
@@ -407,7 +504,7 @@ export const ExamPaperPlayPage = () => {
                       isCorrect={item.is_correct}
                       isOver={userPaper.status === 2}
                       wrongBook={false}
-                      update={(id: string, value: string, thumbs: string) => {
+                      update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
                       }}
                     ></JudgeComp>

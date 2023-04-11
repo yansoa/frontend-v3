@@ -19,7 +19,7 @@ export const ThumbBar: React.FC<PropInterface> = ({
       <div className="flex justify-center" style={{ width: "100%" }}>
         <div
           style={{
-            borderRadius: border ? "none" : border + "px",
+            borderRadius: border ? border + "px" : "none",
             backgroundImage: "url(" + value + ")",
             width: width + "px",
             height: height + "px",

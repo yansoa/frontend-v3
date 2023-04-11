@@ -29,3 +29,4 @@ export * from "./choice";
 export * from "./select";
 export * from "./input";
 export * from "./judge";
+export * from "./qa";

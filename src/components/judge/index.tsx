@@ -15,7 +15,7 @@ interface PropInterface {
   score: number;
   wrongBook: boolean;
   num: number;
-  update: (id: string, value: string, thumbs: string) => void;
+  update: (id: string, value: string, thumbs: any) => void;
 }
 
 export const JudgeComp: React.FC<PropInterface> = ({
@@ -49,7 +49,7 @@ export const JudgeComp: React.FC<PropInterface> = ({
     }
     let value = index;
     setActive(value);
-    update(question.id, value, "");
+    update(question.id, value, null);
   };
 
   const PreviewImage = (event: any) => {
