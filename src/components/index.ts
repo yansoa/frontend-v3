@@ -25,3 +25,4 @@ export * from "./chat-box";
 export * from "./paper-course-item";
 export * from "./mock-course-item";
 export * from "./choice";
+export * from "./select";

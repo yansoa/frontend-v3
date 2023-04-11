@@ -19,7 +19,7 @@ interface PropInterface {
   update: (id: string, value: string, thumbs: string) => void;
 }
 
-export const ChoiceComp: React.FC<PropInterface> = ({
+export const SelectComp: React.FC<PropInterface> = ({
   question,
   reply,
   isCorrect,
@@ -33,6 +33,7 @@ export const ChoiceComp: React.FC<PropInterface> = ({
   const [active, setActive] = useState<any>(null);
   const [previewImage, setPreviewImage] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
+  const [answers, setAnswers] = useState<any>([]);
   const [remarkStatus, setRemarkStatus] = useState<boolean>(false);
   const optionTypeTextMap: any = {
     option1: "A",
@@ -54,7 +55,13 @@ export const ChoiceComp: React.FC<PropInterface> = ({
     } else {
       setRemarkStatus(false);
     }
-  }, [reply, wrongBook]);
+
+    if (question.answer) {
+      setAnswers(question.answer.split(","));
+    } else {
+      setAnswers([]);
+    }
+  }, [reply, wrongBook, question]);
 
   const newPreviewImage = (item: string) => {
     setThumb(item);
@@ -65,9 +72,16 @@ export const ChoiceComp: React.FC<PropInterface> = ({
     if (isOver) {
       return;
     }
-    let value = "option" + index;
-    setActive(value);
-    update(question.id, value, "");
+    let indexItem = "option" + index;
+    let box = [...active];
+    let pos = box.indexOf(indexItem);
+    if (pos === -1) {
+      box.push(indexItem);
+    } else {
+      box.splice(pos, 1);
+    }
+    setActive(box.sort());
+    update(question.id, box.join(","), "");
   };
 
   const getArr = (num: number) => {
@@ -157,7 +171,7 @@ export const ChoiceComp: React.FC<PropInterface> = ({
             {question["option" + item] && (
               <div
                 className={
-                  "option" + item === active
+                  active.indexOf("option" + item) !== -1
                     ? styles["choice-active-item"]
                     : styles["choice-tap-item"]
                 }
@@ -165,19 +179,19 @@ export const ChoiceComp: React.FC<PropInterface> = ({
               >
                 {isOver && (
                   <>
-                    {question.answer === "option" + item && (
+                    {question.answer.indexOf("option" + item) !== -1 && (
                       <div className={styles["answer-index"]}>
                         <img src={rightIcon} className={styles["icon"]} />
                       </div>
                     )}
-                    {question.answer !== "option" + item &&
-                      "option" + item === active && (
+                    {question.answer.indexOf("option" + item) === -1 &&
+                      active.indexOf("option" + item) !== -1 && (
                         <div className={styles["answer-index"]}>
                           <img src={wrongIcon} className={styles["icon"]} />
                         </div>
                       )}
-                    {"option" + item !== active &&
-                      question.answer !== "option" + item && (
+                    {question.answer.indexOf("option" + item) === -1 &&
+                      active.indexOf("option" + item) === -1 && (
                         <div className={styles["index"]}>
                           {optionTypeTextMap["option" + item]}
                         </div>
@@ -219,11 +233,19 @@ export const ChoiceComp: React.FC<PropInterface> = ({
           <div className="answer-box">
             <div className="content">
               <div className="answer">
-                <i></i>答案：{optionTypeTextMap[question.answer]}
+                <i></i>答案：
+                {answers.map((item: any) => (
+                  <span key={item}>{optionTypeTextMap[item]}</span>
+                ))}
               </div>
-              {!wrongBook && isCorrect !== 1 && (
+              {isCorrect !== 1 && (
                 <div className="my-answer">
-                  <i></i>我的答案：{optionTypeTextMap[active] || "--"}
+                  <i></i>我的答案：
+                  {active.length > 0 &&
+                    active.map((item: any) => (
+                      <span key={item}>{optionTypeTextMap[item]}</span>
+                    ))}
+                  {active.length == 0 && <>--</>}
                 </div>
               )}
               {!wrongBook && (
