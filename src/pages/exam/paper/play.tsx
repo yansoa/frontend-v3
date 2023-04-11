@@ -258,14 +258,10 @@ export const ExamPaperPlayPage = () => {
         }
       }
       let num = Object.keys(obj).length;
-      
+
       let surplus = questions.length - num;
       setSurplus(surplus);
     });
-  };
-
-  const confirm = () => {
-    console.log(111);
   };
 
   return (
