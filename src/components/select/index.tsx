@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
-import { ThumbBar } from "../thumb-bar";
+import { QuestionContentRender } from "../question-content-render";
 import backIcon from "../../assets/img/icon-back-n.png";
 import rightIcon from "../../assets/img/exam/icon-right.png";
 import wrongIcon from "../../assets/img/exam/icon-Wrong.png";
@@ -63,11 +63,6 @@ export const SelectComp: React.FC<PropInterface> = ({
     }
   }, [reply, wrongBook, question]);
 
-  const newPreviewImage = (item: string) => {
-    setThumb(item);
-    setPreviewImage(true);
-  };
-
   const change = (index: any) => {
     if (isOver) {
       return;
@@ -123,47 +118,11 @@ export const SelectComp: React.FC<PropInterface> = ({
         </span>
       </div>
       <div className={styles["question-content"]}>
-        <div className={styles["content-render"]}>
-          {question.content_transform.text}
-        </div>
-        {(question.content_transform.images.length > 0 ||
-          question.content_transform.iframes.length > 0) && (
-          <div className={styles["images-render"]}>
-            {question.content_transform.images.length > 0 && (
-              <>
-                {question.content_transform.images.map(
-                  (item: any, index: number) => (
-                    <div
-                      key={index + "thumb"}
-                      className={styles["thumb-bar"]}
-                      onClick={() => newPreviewImage(item)}
-                    >
-                      <ThumbBar
-                        value={item}
-                        width={200}
-                        height={200}
-                        border={8}
-                      ></ThumbBar>
-                    </div>
-                  )
-                )}
-              </>
-            )}
-            {question.content_transform.iframes.length > 0 && (
-              <>
-                {question.content_transform.iframes.map(
-                  (iframe: any, index: number) => (
-                    <div
-                      key={index + "iframe"}
-                      className={styles["iframe-bar"]}
-                      dangerouslySetInnerHTML={{ __html: iframe }}
-                    ></div>
-                  )
-                )}
-              </>
-            )}
-          </div>
-        )}
+        <QuestionContentRender
+          text={question.content_transform.text}
+          images={question.content_transform.images}
+          iframes={question.content_transform.iframes}
+        ></QuestionContentRender>
       </div>
       <div className={styles["choice-box"]}>
         {getArr(10).map((item: any) => (
@@ -282,47 +241,11 @@ export const SelectComp: React.FC<PropInterface> = ({
                 </div>
               </div>
               <div className="remark">
-                <div className="content-render">
-                  {question.remark_transform.text}
-                </div>
-                {(question.remark_transform.images.length > 0 ||
-                  question.remark_transform.iframes.length > 0) && (
-                  <div className="images-render">
-                    {question.remark_transform.images.length > 0 && (
-                      <>
-                        {question.remark_transform.images.map(
-                          (item: any, index: number) => (
-                            <div
-                              key={index + "thumb"}
-                              className="thumb-bar"
-                              onClick={() => newPreviewImage(item)}
-                            >
-                              <ThumbBar
-                                value={item}
-                                width={200}
-                                height={200}
-                                border={8}
-                              ></ThumbBar>
-                            </div>
-                          )
-                        )}
-                      </>
-                    )}
-                    {question.remark_transform.iframes.length > 0 && (
-                      <>
-                        {question.remark_transform.iframes.map(
-                          (iframe: any, index: number) => (
-                            <div
-                              key={index + "iframe"}
-                              className="iframe-bar"
-                              dangerouslySetInnerHTML={{ __html: iframe }}
-                            ></div>
-                          )
-                        )}
-                      </>
-                    )}
-                  </div>
-                )}
+                <QuestionContentRender
+                  text={question.remark_transform.text}
+                  images={question.remark_transform.images}
+                  iframes={question.remark_transform.iframes}
+                ></QuestionContentRender>
               </div>
             </div>
           )}

@@ -952,3 +952,45 @@ sup {
   }
 }
 
+.content-render {
+  width: 100%;
+  float: left;
+  height: auto;
+  p {
+    img {
+      display: inline-block;
+      max-width: 200px !important;
+      margin: 5px 0px;
+    }
+  }
+}
+
+.images-render {
+  width: 100%;
+  float: left;
+  height: auto;
+  margin-top: 20px;
+  display: grid;
+  grid-row-gap: 30px;
+  grid-column-gap: 50px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  .thumb-bar {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    float: left;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .iframe-bar {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    float: left;
+    overflow: hidden;
+    iframe {
+      width: 200px;
+      height: 200px;
+    }
+  }
+}
