@@ -818,3 +818,137 @@ sup {
     }
   }
 }
+
+.analysis-box {
+  width: 100%;
+  height: 100%;
+  float: left;
+  background-color: #fff;
+  padding: 0px 30px 30px 30px;
+  box-sizing: border-box;
+
+  .answer-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    background: #f4fafe;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 13px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333333;
+      line-height: 24px;
+      .answer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 50px;
+        i {
+          width: 4px;
+          height: 18px;
+          background: #04c877;
+          border-radius: 2px;
+          margin-right: 10px;
+        }
+      }
+      .my-answer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 50px;
+        i {
+          width: 4px;
+          height: 18px;
+          background: #ff4d4f;
+          border-radius: 2px;
+          margin-right: 10px;
+        }
+      }
+      .score {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        i {
+          width: 4px;
+          height: 18px;
+          background: #3ca7fa;
+          border-radius: 2px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .button {
+      width: auto;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 400;
+      color: #04c877;
+      line-height: 24px;
+      cursor: pointer;
+      .icon {
+        width: 16px;
+        height: 16px;
+        margin-left: 5px;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .remark-box {
+    width: 100%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 13px 20px;
+    display: flex;
+    flex-direction: row;
+    background: #04c877;
+    border-radius: 4px;
+    margin-top: 20px;
+    .left-remark {
+      width: auto;
+      height: auto;
+      float: left;
+      .tit {
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 24px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 10px;
+        i {
+          width: 4px;
+          height: 18px;
+          background: #ffffff;
+          border-radius: 2px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .remark {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 24px;
+    }
+  }
+}
+

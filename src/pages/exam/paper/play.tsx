@@ -167,7 +167,7 @@ export const ExamPaperPlayPage = () => {
   };
 
   const collectAnswer = (qid: number) => {
-    let box = collects;
+    let box = { ...collects };
     practice
       .collect({
         question_id: qid,
@@ -341,6 +341,7 @@ export const ExamPaperPlayPage = () => {
                   {/* 单选 */}
                   {item.question.type === 1 && (
                     <ChoiceComp
+                      key={item.question_id}
                       num={index + 1}
                       question={item.question}
                       reply={item.answer_content}
