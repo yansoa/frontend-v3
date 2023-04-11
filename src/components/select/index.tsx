@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { QuestionContentRender } from "../question-content-render";
 import backIcon from "../../assets/img/icon-back-n.png";

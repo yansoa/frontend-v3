@@ -18,7 +18,7 @@ interface PropInterface {
   update: (id: string, value: string, thumbs: string) => void;
 }
 
-export const ChoiceComp: React.FC<PropInterface> = ({
+export const JudgeComp: React.FC<PropInterface> = ({
   question,
   reply,
   isCorrect,
@@ -33,18 +33,6 @@ export const ChoiceComp: React.FC<PropInterface> = ({
   const [previewImage, setPreviewImage] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
   const [remarkStatus, setRemarkStatus] = useState<boolean>(false);
-  const optionTypeTextMap: any = {
-    option1: "A",
-    option2: "B",
-    option3: "C",
-    option4: "D",
-    option5: "E",
-    option6: "F",
-    option7: "G",
-    option8: "H",
-    option9: "I",
-    option10: "J",
-  };
 
   useEffect(() => {
     setActive(reply);
@@ -59,17 +47,9 @@ export const ChoiceComp: React.FC<PropInterface> = ({
     if (isOver) {
       return;
     }
-    let value = "option" + index;
+    let value = index;
     setActive(value);
     update(question.id, value, "");
-  };
-
-  const getArr = (num: number) => {
-    let arr = [];
-    for (let i = 0; i < num; i++) {
-      arr.push(i + 1);
-    }
-    return arr;
   };
 
   const PreviewImage = (event: any) => {
@@ -110,78 +90,97 @@ export const ChoiceComp: React.FC<PropInterface> = ({
         ></QuestionContentRender>
       </div>
       <div className={styles["choice-box"]}>
-        {getArr(10).map((item: any) => (
-          <div key={item + "choice" + question.question_id}>
-            {question["option" + item] && (
-              <div
-                className={
-                  "option" + item === active
-                    ? styles["choice-active-item"]
-                    : styles["choice-tap-item"]
-                }
-                onClick={() => change(item)}
-              >
-                {isOver && (
-                  <>
-                    {question.answer === "option" + item && (
-                      <div className={styles["answer-index"]}>
-                        <img src={rightIcon} className={styles["icon"]} />
-                      </div>
-                    )}
-                    {question.answer !== "option" + item &&
-                      "option" + item === active && (
-                        <div className={styles["answer-index"]}>
-                          <img src={wrongIcon} className={styles["icon"]} />
-                        </div>
-                      )}
-                    {"option" + item !== active &&
-                      question.answer !== "option" + item && (
-                        <div className={styles["index"]}>
-                          {optionTypeTextMap["option" + item]}
-                        </div>
-                      )}
-                    <div className={styles["content"]}>
-                      <div
-                        className={styles["content-render"]}
-                        onClick={(event) => PreviewImage(event)}
-                        dangerouslySetInnerHTML={{
-                          __html: question["option" + item],
-                        }}
-                      ></div>
-                    </div>
-                  </>
-                )}
-                {!isOver && (
-                  <>
-                    <div className={styles["index"]}>
-                      {optionTypeTextMap["option" + item]}
-                    </div>
-                    <div className={styles["content"]}>
-                      <div
-                        className={styles["content-render"]}
-                        onClick={(event) => PreviewImage(event)}
-                        dangerouslySetInnerHTML={{
-                          __html: question["option" + item],
-                        }}
-                      ></div>
-                    </div>
-                  </>
-                )}
+        {isOver && (
+          <>
+            <div
+              className={
+                active === 1
+                  ? styles["judge-active-item"]
+                  : styles["judge-item"]
+              }
+              onClick={() => change(1)}
+            >
+              {parseInt(question.answer) === 1 ? (
+                <div className={styles["answer-index"]}>
+                  <img src={rightIcon} className={styles["icon"]} />
+                </div>
+              ) : active === 1 ? (
+                <div className={styles["answer-index"]}>
+                  <img src={wrongIcon} className={styles["icon"]} />
+                </div>
+              ) : (
+                <div className={styles["index"]}></div>
+              )}
+              正确
+            </div>
+            <div
+              className={
+                active === 0
+                  ? styles["judge-active-item"]
+                  : styles["judge-item"]
+              }
+              onClick={() => change(0)}
+            >
+              {parseInt(question.answer) === 0 ? (
+                <div className={styles["answer-index"]}>
+                  <img src={rightIcon} className={styles["icon"]} />
+                </div>
+              ) : active === 0 ? (
+                <div className={styles["answer-index"]}>
+                  <img src={wrongIcon} className={styles["icon"]} />
+                </div>
+              ) : (
+                <div className={styles["index"]}></div>
+              )}
+              错误
+            </div>
+          </>
+        )}
+        {!isOver && (
+          <>
+            <div
+              className={
+                active === 1
+                  ? styles["judge-active-item"]
+                  : styles["judge-item"]
+              }
+              onClick={() => change(1)}
+            >
+              <div className={styles["index"]}>
+                <strong></strong>
               </div>
-            )}
-          </div>
-        ))}
+              正确
+            </div>
+            <div
+              className={
+                active === 0
+                  ? styles["judge-active-item"]
+                  : styles["judge-item"]
+              }
+              onClick={() => change(0)}
+            >
+              <div className={styles["index"]}>
+                <strong></strong>
+              </div>
+              错误
+            </div>
+          </>
+        )}
       </div>
       {isOver && (
         <div className="analysis-box">
           <div className="answer-box">
             <div className="content">
               <div className="answer">
-                <i></i>答案：{optionTypeTextMap[question.answer]}
+                <i></i>答案：{parseInt(question.answer) === 1 ? "正确" : "错误"}
               </div>
               {!wrongBook && isCorrect !== 1 && (
                 <div className="my-answer">
-                  <i></i>我的答案：{optionTypeTextMap[active] || "--"}
+                  <i></i>我的答案：
+                  {parseInt(active) !== -1 && (
+                    <span>{parseInt(active) === 1 ? "正确" : "错误"}</span>
+                  )}
+                  {parseInt(active) === -1 && <span>--</span>}
                 </div>
               )}
               {!wrongBook && (

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Input } from "antd";
 import styles from "./index.module.scss";
 import { QuestionContentRender } from "../question-content-render";

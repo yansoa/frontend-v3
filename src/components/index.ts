@@ -28,3 +28,4 @@ export * from "./question-content-render";
 export * from "./choice";
 export * from "./select";
 export * from "./input";
+export * from "./judge";

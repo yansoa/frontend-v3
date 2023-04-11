@@ -7,7 +7,12 @@ import { paper as examPaper, practice } from "../../../api/index";
 import backIcon from "../../../assets/img/commen/icon-back-h.png";
 import collectIcon from "../../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../../assets/img/commen/icon-collect-n.png";
-import { ChoiceComp, SelectComp, InputComp } from "../../../components";
+import {
+  ChoiceComp,
+  SelectComp,
+  InputComp,
+  JudgeComp,
+} from "../../../components";
 
 var timer: any = null;
 export const ExamPaperPlayPage = () => {
@@ -392,6 +397,21 @@ export const ExamPaperPlayPage = () => {
                   {/* 问答 */}
 
                   {/* 判断 */}
+                  {item.question.type === 5 && (
+                    <JudgeComp
+                      key={item.question_id}
+                      num={index + 1}
+                      question={item.question}
+                      reply={item.answer_contents_rows}
+                      score={item.score}
+                      isCorrect={item.is_correct}
+                      isOver={userPaper.status === 2}
+                      wrongBook={false}
+                      update={(id: string, value: string, thumbs: string) => {
+                        questionUpdate(id, value, thumbs);
+                      }}
+                    ></JudgeComp>
+                  )}
 
                   {/* 题帽题 */}
                 </div>
