@@ -21,6 +21,7 @@ import { ExamMockPaperPage } from "../pages/exam/mock/index";
 import { ExamMockPaperDetailPage } from "../pages/exam/mock/detail";
 import { ExamMockPaperPlayPage } from "../pages/exam/mock/play";
 import { ExamPracticePage } from "../pages/exam/practice/index";
+import { ExamPracticeDetailPage } from "../pages/exam/practice/detail";
 
 let RootPage: any = null;
 let configFunc = {
@@ -209,6 +210,7 @@ const routes: RouteObject[] = [
       { path: "/exam/mockpaper/detail", element: <ExamMockPaperDetailPage /> },
       { path: "/exam/mockpaper/play", element: <ExamMockPaperPlayPage /> },
       { path: "/exam/practice", element: <ExamPracticePage /> },
+      { path: "/exam/practice/detail", element: <ExamPracticeDetailPage /> },
     ],
   },
 ];
