@@ -11,4 +11,5 @@ export * as live from "./live";
 export * as goMeedu from "./go-meedu";
 export * as exam from "./exam";
 export * as paper from "./paper";
+export * as mock from "./mock";
 export * as practice from "./practice";

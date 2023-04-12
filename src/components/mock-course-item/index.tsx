@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import paperIcon from "../../assets/img/member/test.png";
-import paperLockIcon from "../../assets/img/exam/paper-lock.png";
+import paperIcon from "../../assets/img/member/mock.png";
+import paperLockIcon from "../../assets/img/exam/mock-lock.png";
 
 interface PropInterface {
   cid: number;
