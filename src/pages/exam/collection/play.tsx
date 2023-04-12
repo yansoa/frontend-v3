@@ -3,9 +3,10 @@ import styles from "./play.module.scss";
 import { Modal, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { wrongbook } from "../../../api/index";
+import { collection, practice } from "../../../api/index";
 import backIcon from "../../../assets/img/commen/icon-back-h.png";
-import delIcon from "../../../assets/img/icon-delete-h.png";
+import collectIcon from "../../../assets/img/commen/icon-collect-h.png";
+import noCollectIcon from "../../../assets/img/commen/icon-collect-n.png";
 import {
   FilterExamCategories,
   ChoiceComp,
@@ -17,7 +18,7 @@ import {
 } from "../../../components";
 import { NumberSheet } from "./components/number-sheet";
 
-export const ExamWrongbookPlayPage = () => {
+export const ExamCollectionPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,9 +33,9 @@ export const ExamWrongbookPlayPage = () => {
   const [cid, setCid] = useState(0);
   const [child, setChild] = useState(0);
   const [configkey, setConfigkey] = useState<any>({});
+  const [isCollected, setIsCollected] = useState<boolean>(false);
   const [type, setType] = useState(Number(result.get("type")));
   const [mode, setMode] = useState(Number(result.get("mode")));
-  const [openmask, setOpenmask] = useState<boolean>(false);
 
   useEffect(() => {
     getParams();
@@ -49,8 +50,8 @@ export const ExamWrongbookPlayPage = () => {
   }, [activeQid]);
 
   const getParams = () => {
-    wrongbook
-      .detail({
+    collection
+      .stats({
         question_type: type,
       })
       .then((res: any) => {
@@ -86,7 +87,7 @@ export const ExamWrongbookPlayPage = () => {
       return;
     }
     setLoading(true);
-    wrongbook
+    collection
       .orderMode({
         type: type,
         cid1: cid,
@@ -95,8 +96,19 @@ export const ExamWrongbookPlayPage = () => {
       .then((res: any) => {
         setQuestion(res.data.first_question);
         setQidArr(res.data.questions_ids);
+        collectStatus(res.data.first_question);
         setLoading(false);
       });
+  };
+
+  const collectStatus = (data: any) => {
+    practice.collectStatus({ question_id: data.id }).then((res: any) => {
+      if (res.data.status === 1) {
+        setIsCollected(true);
+      } else {
+        setIsCollected(false);
+      }
+    });
   };
 
   const getQuestion = () => {
@@ -111,44 +123,17 @@ export const ExamWrongbookPlayPage = () => {
       return;
     }
 
-    wrongbook
+    collection
       .newQuestion(questionId, {
-        from: "wrongbook",
+        from: "collection",
       })
       .then((res: any) => {
         let data = res.data.question;
         data.answer_content = "";
         setQuestion(data);
+        collectStatus(data);
         setLoading(false);
       });
-  };
-
-  const submitHandle = () => {
-    wrongbook
-      .removeQuestion(question.id)
-      .then((res: any) => {
-        setOpenmask(false);
-        message.success("操作成功，下次进入将不会看到该试题");
-        let num = activeQid;
-        let arr = qidArr;
-        arr.splice(activeQid - 1, 1);
-        setQidArr(arr);
-        if (num > arr.length) {
-          num--;
-          setActiveQid(num);
-        } else {
-          setShowAnswer(false);
-          setShowText("对答案");
-          getQuestion();
-        }
-      })
-      .catch((e) => {
-        setOpenmask(false);
-      });
-  };
-
-  const removeAnswer = () => {
-    setOpenmask(true);
   };
 
   const seeAnswer = () => {
@@ -164,10 +149,10 @@ export const ExamWrongbookPlayPage = () => {
     }
     setShowAnswer(!isShow);
     if (!isShow) {
-      wrongbook
+      collection
         .questionAnswerFill(questionId, {
           answer: answerContent,
-          from: "wrongbook",
+          from: "collection",
         })
         .then((res) => {
           //
@@ -176,7 +161,6 @@ export const ExamWrongbookPlayPage = () => {
   };
 
   const goBack = () => {
-    setOpenmask(false);
     navigate(-1);
   };
 
@@ -261,27 +245,24 @@ export const ExamWrongbookPlayPage = () => {
     setActiveQid(val);
   };
 
+  const collectAnswer = () => {
+    practice.collect({ question_id: question.id }).then(() => {
+      if (isCollected) {
+        message.success("已取消收藏");
+      } else {
+        message.success("已收藏试题");
+      }
+      setIsCollected(!isCollected);
+    });
+  };
+
   return (
     <div className="full-container">
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
-        open={openmask}
-        width={500}
-        onOk={() => {
-          submitHandle();
-        }}
-        onCancel={() => setOpenmask(false)}
-      >
-        <div className={styles["text"]}>是否将此题从错题本移除？</div>
-      </Modal>
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           <div className={styles["left-top"]} onClick={() => goBack()}>
             <img className={styles["icon-back"]} src={backIcon} />
-            试题错题本
+            收藏习题本
           </div>
           <div className={styles["right-top"]}>
             <div className={styles["prev-button"]} onClick={() => prevPage()}>
@@ -327,9 +308,20 @@ export const ExamWrongbookPlayPage = () => {
               {question.type && (
                 <div
                   className={styles["delete-icon"]}
-                  onClick={() => removeAnswer()}
+                  onClick={() => collectAnswer()}
                 >
-                  <img src={delIcon} />
+                  {isCollected && (
+                    <>
+                      <img src={collectIcon} />
+                      <strong>已收藏</strong>
+                    </>
+                  )}
+                  {!isCollected && (
+                    <>
+                      <img src={noCollectIcon} />
+                      收藏试题
+                    </>
+                  )}
                 </div>
               )}
               <div className={styles["practice-join-box"]}>
