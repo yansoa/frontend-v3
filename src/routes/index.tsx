@@ -18,6 +18,7 @@ import { ExamPaperPage } from "../pages/exam/paper/index";
 import { ExamPaperDetailPage } from "../pages/exam/paper/detail";
 import { ExamPaperPlayPage } from "../pages/exam/paper/play";
 import { ExamMockPaperPage } from "../pages/exam/mock/index";
+import { ExamMockPaperDetailPage } from "../pages/exam/mock/detail";
 
 let RootPage: any = null;
 let configFunc = {
@@ -203,6 +204,7 @@ const routes: RouteObject[] = [
       { path: "/exam/papers/detail", element: <ExamPaperDetailPage /> },
       { path: "/exam/papers/play", element: <ExamPaperPlayPage /> },
       { path: "/exam/mockpaper", element: <ExamMockPaperPage /> },
+      { path: "/exam/mockpaper/detail", element: <ExamMockPaperDetailPage /> },
     ],
   },
 ];
