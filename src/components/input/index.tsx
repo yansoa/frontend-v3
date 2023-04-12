@@ -147,7 +147,7 @@ export const InputComp: React.FC<PropInterface> = ({
                   change(e);
                 }}
                 onChange={(e) => {
-                  let arr = inputVal;
+                  let arr = [...inputVal];
                   arr[index] = e.target.value;
                   setInputVal(arr);
                 }}
