@@ -35,7 +35,8 @@ export const InitPage = (props: Props) => {
     pathname === "/live/video" ||
     pathname === "/exam/papers/play" ||
     pathname === "/exam/mockpaper/play" ||
-    pathname === "/exam/practice/play"
+    pathname === "/exam/practice/play" ||
+    pathname === "/exam/wrongbook/play"
   ) {
     showHeader = false;
     showFooter = false;

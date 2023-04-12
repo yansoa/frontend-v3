@@ -4,7 +4,7 @@ import styles from "./index.module.scss";
 interface PropInterface {
   activeNum: number;
   qidArr: any[];
-  hasPracticeIds: any[];
+  hasPracticeIds: any;
   change: (val: number) => void;
 }
 
@@ -28,7 +28,7 @@ export const NumberSheet: React.FC<PropInterface> = ({
               className={
                 index + 1 === activeNum
                   ? styles["active-num"]
-                  : hasPracticeIds && hasPracticeIds.indexOf(item) !== -1
+                  : hasPracticeIds[item]
                   ? styles["completed-num"]
                   : styles["num"]
               }
@@ -47,7 +47,7 @@ export const NumberSheet: React.FC<PropInterface> = ({
               className={
                 index + 1 === activeNum
                   ? styles["active-num"]
-                  : hasPracticeIds && hasPracticeIds.indexOf(item) !== -1
+                  : hasPracticeIds[item]
                   ? styles["completed-num"]
                   : styles["num"]
               }

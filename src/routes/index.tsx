@@ -24,6 +24,7 @@ import { ExamPracticePage } from "../pages/exam/practice/index";
 import { ExamPracticeDetailPage } from "../pages/exam/practice/detail";
 import { ExamPracticePlayPage } from "../pages/exam/practice/play";
 import { ExamWrongbookPage } from "../pages/exam/wrongbook/index";
+import { ExamWrongbookPlayPage } from "../pages/exam/wrongbook/play";
 
 let RootPage: any = null;
 let configFunc = {
@@ -215,6 +216,7 @@ const routes: RouteObject[] = [
       { path: "/exam/practice/detail", element: <ExamPracticeDetailPage /> },
       { path: "/exam/practice/play", element: <ExamPracticePlayPage /> },
       { path: "/exam/wrongbook", element: <ExamWrongbookPage /> },
+      { path: "/exam/wrongbook/play", element: <ExamWrongbookPlayPage /> },
     ],
   },
 ];

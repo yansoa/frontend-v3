@@ -3,11 +3,11 @@ import styles from "./play.module.scss";
 import { Modal, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { practice } from "../../../api/index";
+import { wrongbook } from "../../../api/index";
 import backIcon from "../../../assets/img/commen/icon-back-h.png";
-import collectIcon from "../../../assets/img/commen/icon-collect-h.png";
-import noCollectIcon from "../../../assets/img/commen/icon-collect-n.png";
+import delIcon from "../../../assets/img/icon-delete-h.png";
 import {
+  FilterExamCategories,
   ChoiceComp,
   SelectComp,
   InputComp,
@@ -17,28 +17,31 @@ import {
 } from "../../../components";
 import { NumberSheet } from "./components/number-sheet";
 
-export const ExamPracticePlayPage = () => {
+export const ExamWrongbookPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
-  const [list, setList] = useState<any>({});
   const [question, setQuestion] = useState<any>([]);
   const [qidArr, setQidArr] = useState<any>([]);
+  const [categories, setCategories] = useState<any>([]);
   const [activeQid, setActiveQid] = useState(1);
-  const [isCollected, setIsCollected] = useState<boolean>(false);
-  const [configkey, setConfigkey] = useState<any>({});
-  const [hasPracticeQuestionIds, setHasPracticeQuestionIds] = useState<any>([]);
   const [answerContent, setAnswerContent] = useState<any>([]);
   const [showText, setShowText] = useState<string>("对答案");
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [toastActive, setToastActive] = useState<boolean>(true);
-  const [day, setDay] = useState(Number(result.get("day")) || 0);
-  const [pid, setPid] = useState(Number(result.get("practiceId")) || 0);
-  const [cid, setCid] = useState(Number(result.get("chapterId")) || 0);
+  const [cid, setCid] = useState(0);
+  const [child, setChild] = useState(0);
+  const [configkey, setConfigkey] = useState<any>({});
+  const [type, setType] = useState(Number(result.get("type")));
+  const [mode, setMode] = useState(Number(result.get("mode")));
+  const [openmask, setOpenmask] = useState<boolean>(false);
 
   useEffect(() => {
-    getData();
-  }, [day, pid, cid]);
+    if (type) {
+      getParams();
+      getData();
+    }
+  }, [type, mode, cid, child]);
 
   useEffect(() => {
     keyDown();
@@ -47,46 +50,55 @@ export const ExamPracticePlayPage = () => {
     getQuestion();
   }, [activeQid]);
 
-  useEffect(() => {
-    keyDown();
-  }, [activeQid, qidArr]);
+  const getParams = () => {
+    wrongbook
+      .detail({
+        question_type: type,
+      })
+      .then((res: any) => {
+        let categories_count = res.data.categories_count;
+        let categories = res.data.categories;
+        let count = 0;
+        for (let i = 0; i < categories.length; i++) {
+          categories[i].name =
+            categories[i].name + "(" + categories_count[categories[i].id] + ")";
+          count = count + categories_count[categories[i].id];
+          if (categories[i].children.length > 0) {
+            let children = categories[i].children;
+            for (let j = 0; j < children.length; j++) {
+              children[j].name =
+                children[j].name + "(" + categories_count[children[j].id] + ")";
+            }
+            categories[i].children.unshift({
+              id: 0,
+              name: "全部(" + categories_count[categories[i].id] + ")",
+            });
+          }
+        }
+        categories.unshift({
+          id: 0,
+          name: "全部(" + count + ")",
+        });
+        setCategories(categories);
+      });
+  };
 
   const getData = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    if (day === 1) {
-      practice.practiceDayPlay(pid).then((res: any) => {
-        document.title = res.data.practice.name;
-        setList(res.data.practice);
-        setHasPracticeQuestionIds(res.data.has_practice_question_ids);
+    wrongbook
+      .orderMode({
+        type: type,
+        cid1: cid,
+        cid2: child,
+      })
+      .then((res: any) => {
         setQuestion(res.data.first_question);
-        setQidArr(res.data.qid_arr);
+        setQidArr(res.data.questions_ids);
         setLoading(false);
-        collectStatus(res.data.first_question);
-        let obj: any = {};
-        for (var i = 0; i < res.data.qid_arr.length; i++) {
-          obj[res.data.qid_arr[i]] = false;
-        }
-        setConfigkey(obj);
       });
-    } else {
-      practice.practicePlay(pid, cid).then((res: any) => {
-        document.title = res.data.practice.name;
-        setList(res.data.practice);
-        setHasPracticeQuestionIds(res.data.has_practice_question_ids);
-        setQuestion(res.data.first_question);
-        setQidArr(res.data.qid_arr);
-        setLoading(false);
-        collectStatus(res.data.first_question);
-        let obj: any = {};
-        for (var i = 0; i < res.data.qid_arr.length; i++) {
-          obj[res.data.qid_arr[i]] = false;
-        }
-        setConfigkey(obj);
-      });
-    }
   };
 
   const getQuestion = () => {
@@ -97,36 +109,77 @@ export const ExamPracticePlayPage = () => {
     setQuestion([]);
     setAnswerContent([]);
     let questionId = qidArr[activeQid - 1];
-    if (questionId) {
-      practice.practiceQuestion(pid, questionId).then((res: any) => {
+    if (!questionId) {
+      return;
+    }
+
+    wrongbook
+      .newQuestion(questionId, {
+        from: "wrongbook",
+      })
+      .then((res: any) => {
         let data = res.data.question;
         data.answer_content = "";
         setQuestion(data);
-        collectStatus(data);
         setLoading(false);
       });
+  };
+
+  const submitHandle = () => {
+    wrongbook
+      .removeQuestion(question.id)
+      .then((res: any) => {
+        setOpenmask(false);
+        message.success("操作成功，下次进入将不会看到该试题");
+        let num = activeQid;
+        let arr = qidArr;
+        arr.splice(activeQid - 1, 1);
+        setQidArr(arr);
+        if (num > arr.length) {
+          num--;
+          setActiveQid(num);
+        } else {
+          setShowAnswer(false);
+          setShowText("对答案");
+          getQuestion();
+        }
+      })
+      .catch((e) => {
+        setOpenmask(false);
+      });
+  };
+
+  const removeAnswer = () => {
+    setOpenmask(true);
+  };
+
+  const seeAnswer = () => {
+    let questionId = qidArr[activeQid - 1];
+    let config = configkey;
+    config[questionId] = true;
+    setConfigkey(config);
+    let isShow = showAnswer;
+    if (isShow === true) {
+      setShowText("对答案");
+    } else {
+      setShowText("收起答案");
+    }
+    setShowAnswer(!isShow);
+    if (!isShow) {
+      wrongbook
+        .questionAnswerFill(questionId, {
+          answer: answerContent,
+          from: "wrongbook",
+        })
+        .then((res) => {
+          //
+        });
     }
   };
 
-  const collectStatus = (data: any) => {
-    practice.collectStatus({ question_id: data.id }).then((res: any) => {
-      if (res.data.status === 1) {
-        setIsCollected(true);
-      } else {
-        setIsCollected(false);
-      }
-    });
-  };
-
-  const collectAnswer = () => {
-    practice.collect({ question_id: question.id }).then(() => {
-      if (isCollected) {
-        message.success("已取消收藏");
-      } else {
-        message.success("已收藏试题");
-      }
-      setIsCollected(!isCollected);
-    });
+  const goBack = () => {
+    setOpenmask(false);
+    navigate(-1);
   };
 
   const keyDown = () => {
@@ -155,37 +208,6 @@ export const ExamPracticePlayPage = () => {
         }
       }
     };
-  };
-
-  const goBack = () => {
-    navigate(-1);
-  };
-
-  const changeQid = (val: number) => {
-    setActiveQid(val);
-  };
-
-  const seeAnswer = () => {
-    let questionId = qidArr[activeQid - 1];
-    let config = configkey;
-    config[questionId] = true;
-    setConfigkey(config);
-    let isShow = showAnswer;
-    if (isShow === true) {
-      setShowText("对答案");
-    } else {
-      setShowText("收起答案");
-    }
-    setShowAnswer(!isShow);
-    if (!isShow) {
-      practice
-        .practiceQuestionAnswerFill(pid, questionId, {
-          answer: answerContent,
-        })
-        .then((res) => {
-          //
-        });
-    }
   };
 
   const prevPage = () => {
@@ -237,13 +259,31 @@ export const ExamPracticePlayPage = () => {
     }
   };
 
+  const changeQid = (val: number) => {
+    setActiveQid(val);
+  };
+
   return (
     <div className="full-container">
+      <Modal
+        title="确认信息"
+        centered
+        forceRender
+        maskClosable={false}
+        open={openmask}
+        width={500}
+        onOk={() => {
+          submitHandle();
+        }}
+        onCancel={() => setOpenmask(false)}
+      >
+        <div className={styles["text"]}>是否将此题从错题本移除？</div>
+      </Modal>
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           <div className={styles["left-top"]} onClick={() => goBack()}>
             <img className={styles["icon-back"]} src={backIcon} />
-            {list.name}
+            试题错题本
           </div>
           <div className={styles["right-top"]}>
             <div className={styles["prev-button"]} onClick={() => prevPage()}>
@@ -255,38 +295,45 @@ export const ExamPracticePlayPage = () => {
           </div>
         </div>
       </div>
+      <div className={styles["filter-two-class"]}>
+        <FilterExamCategories
+          categories={categories}
+          defaultKey={cid}
+          defaultChild={child}
+          scenes={[]}
+          scene={""}
+          onSelected={(id: number, child: number, sceneId: string) => {
+            setCid(id);
+            setChild(child);
+            setShowAnswer(false);
+            setShowText("对答案");
+            setActiveQid(1);
+            getData();
+          }}
+        ></FilterExamCategories>
+      </div>
       <div className={styles["project-box"]}>
         <div className={styles["left-box"]}>
           {qidArr && (
             <NumberSheet
               activeNum={activeQid}
               qidArr={qidArr}
-              configkey={configkey}
-              hasPracticeIds={hasPracticeQuestionIds}
+              hasPracticeIds={configkey}
               change={(val: number) => changeQid(val)}
             ></NumberSheet>
           )}
         </div>
         <div className={styles["right-box"]}>
-          {list && question && (
+          {question && (
             <>
-              <div
-                className={styles["delete-icon"]}
-                onClick={() => collectAnswer()}
-              >
-                {isCollected && (
-                  <>
-                    <img src={collectIcon} />
-                    <strong>已收藏</strong>
-                  </>
-                )}
-                {!isCollected && (
-                  <>
-                    <img src={noCollectIcon} />
-                    收藏试题
-                  </>
-                )}
-              </div>
+              {question.type && (
+                <div
+                  className={styles["delete-icon"]}
+                  onClick={() => removeAnswer()}
+                >
+                  <img src={delIcon} />
+                </div>
+              )}
               <div className={styles["practice-join-box"]}>
                 {/* 单选 */}
                 {question.type === 1 && (
