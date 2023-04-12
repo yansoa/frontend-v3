@@ -9,7 +9,7 @@ export function paperDetail(id: number) {
 }
 
 export function createPaperOrder(id: number, params: any) {
-  return client.post("/addons/Paper/api/v1/paper/" + id + "/buy", params);
+  return client.post("/addons/Paper/api/v1/paper/buy", params);
 }
 
 export function paperJoin(id: number) {

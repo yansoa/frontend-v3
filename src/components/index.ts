@@ -24,6 +24,7 @@ export * from "./live-course-comments";
 export * from "./chat-box";
 export * from "./paper-course-item";
 export * from "./mock-course-item";
+export * from "./practice-course-item";
 export * from "./question-content-render";
 export * from "./choice";
 export * from "./select";

@@ -36,3 +36,7 @@ export function submitAll(id: number, params: any) {
     params
   );
 }
+
+export function createPracticeOrder(id: number, params: any) {
+  return client.post("/addons/Paper/api/v1/mock_paper/buy", params);
+}
