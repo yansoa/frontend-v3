@@ -3,7 +3,7 @@ import styles from "./play.module.scss";
 import { Modal, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { paper as examPaper, practice } from "../../../api/index";
+import { mock, practice } from "../../../api/index";
 import backIcon from "../../../assets/img/commen/icon-back-h.png";
 import collectIcon from "../../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../../assets/img/commen/icon-collect-n.png";
@@ -17,7 +17,7 @@ import {
 } from "../../../components";
 
 var timer: any = null;
-export const ExamPaperPlayPage = () => {
+export const ExamMockPaperPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,11 +27,8 @@ export const ExamPaperPlayPage = () => {
   const [activeQuestions, setActiveQuestions] = useState<any>({});
   const [collects, setCollects] = useState<any>({});
   const [surplus, setSurplus] = useState<number>(0);
-  const [dialogStatus, setDialogStatus] = useState<boolean>(false);
-  const [readTip, setReadTip] = useState<boolean>(false);
   const [submitTip, setSubmitTip] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState<number>(0);
-  const [workTime, setWorkTime] = useState<number>(0);
   const [remainingTime, setRemainingTime] = useState<any>({
     day: 0,
     hr: 0,
@@ -52,14 +49,14 @@ export const ExamPaperPlayPage = () => {
   }, [id, pid]);
 
   const getData = () => {
-    examPaper.paperJoinRecord(id, pid).then((res: any) => {
+    mock.joinDetail(pid).then((res: any) => {
       document.title = res.data.paper.title;
       setPaper(res.data.paper);
-      setUserPaper(res.data.user_paper);
+      setUserPaper(res.data.record);
       let normaldata = res.data.questions;
       if (normaldata.length === 0) {
         message.error("未获取到试题");
-        navigate("/exam/papers");
+        navigate("/exam/mockpaper");
         return;
       }
       let unread = 0;
@@ -75,13 +72,13 @@ export const ExamPaperPlayPage = () => {
       setQuestions(normaldata);
       setSurplus(unread);
       let endTime: any = new Date(
-        res.data.user_paper.ended_at.replace(/-/g, "/")
+        res.data.record.expired_at.replace(/-/g, "/")
       );
       const end: number = Math.floor(Date.parse(endTime));
       setTimestamp(end);
-      if (res.data.user_paper.status === 1) {
+      if (res.data.record.status === 0) {
         countdown(end);
-      } else if (res.data.user_paper.status === 2) {
+      } else if (res.data.record.status === 1) {
         getCollectStatus(normaldata);
       }
     });
@@ -107,8 +104,6 @@ export const ExamPaperPlayPage = () => {
     const now = Date.parse(today);
     let remaining: number = (timestamp - now) / 1000;
     if (remaining < 0) {
-      let workTime = parseInt(paper.expired_minutes) * 60;
-      setWorkTime(workTime);
       finish();
       return;
     }
@@ -128,9 +123,6 @@ export const ExamPaperPlayPage = () => {
           sec: second < 10 ? "0" + second : second,
         });
       } else {
-        let workTime =
-          parseInt(paper.expired_minutes) * 60 - Math.floor(remaining);
-        setWorkTime(workTime);
         finish();
         timer && clearInterval(timer);
       }
@@ -138,40 +130,33 @@ export const ExamPaperPlayPage = () => {
   };
 
   const finish = () => {
-    if (userPaper.status === 1) {
+    if (userPaper.status === 0) {
       submitHandle();
     }
   };
 
   const submitHandle = () => {
-    examPaper
-      .paperSubmit(id, {
-        pid: pid,
+    mock
+      .submitAll(pid, {
+        pid: userPaper.id,
       })
       .then((res: any) => {
         let status = res.data.status;
         let totalScore = res.data.total_score;
         setSubmitTip(false);
-        if (status === 2) {
-          message.success("考试结束，得分：" + totalScore);
-          getData();
-        } else {
-          setReadTip(true);
-        }
+        message.success("考试结束，得分：" + totalScore);
+        getData();
       });
   };
 
   const goBack = () => {
     if (userPaper.status === 1) {
-      setDialogStatus(false);
-    } else {
       cancelAll();
       navigate(-1);
     }
   };
 
   const ok = () => {
-    setReadTip(false);
     setSubmitTip(false);
     setTimeout(() => {
       navigate(-1);
@@ -179,9 +164,7 @@ export const ExamPaperPlayPage = () => {
   };
 
   const cancelAll = () => {
-    setReadTip(false);
     setSubmitTip(false);
-    setDialogStatus(false);
   };
 
   const goDetail = (val: number) => {
@@ -226,7 +209,7 @@ export const ExamPaperPlayPage = () => {
         question_id: qid,
       };
     }
-    examPaper.paperSubmitSingle(id, params).then((res: any) => {
+    mock.submitSingle(pid, params).then((res: any) => {
       let obj: any = activeQuestions;
       if (typeof qid == "string" && qid.indexOf("-") != -1) {
         if (answer === "") {
@@ -272,23 +255,6 @@ export const ExamPaperPlayPage = () => {
         centered
         forceRender
         maskClosable={false}
-        open={dialogStatus}
-        width={500}
-        onOk={() => {
-          cancelAll();
-          setTimeout(() => {
-            navigate(-1);
-          }, 500);
-        }}
-        onCancel={() => setDialogStatus(false)}
-      >
-        <div className={styles["text"]}>正在考试中,是否确认返回?</div>
-      </Modal>
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
         open={submitTip}
         width={500}
         onOk={() => submitHandle()}
@@ -302,41 +268,28 @@ export const ExamPaperPlayPage = () => {
         )}
         {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
       </Modal>
-      <Modal
-        title="交卷提示"
-        centered
-        forceRender
-        maskClosable={false}
-        open={readTip}
-        width={500}
-        onOk={() => ok()}
-        onCancel={() => setReadTip(false)}
-      >
-        <div className={styles["text"]}>
-          此次在线考试包含主观题，等待老师阅卷后查看成绩
-        </div>
-      </Modal>
+
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
-          {userPaper && userPaper.status === 1 && (
+          {userPaper && userPaper.status === 0 && (
             <div className={styles["top-left"]}>{paper.title}</div>
           )}
-          {userPaper && userPaper.status === 2 && (
+          {userPaper && userPaper.status === 1 && (
             <div className={styles["top-left"]} onClick={() => goBack()}>
               <img className={styles["icon-back"]} src={backIcon} />
               {paper.title}
             </div>
           )}
           <div className={styles["top-right"]}>
-            {userPaper && userPaper.status === 2 && (
+            {userPaper && userPaper.status === 1 && (
               <div className={styles["score"]}>
-                考试得分：<strong>{userPaper.score}分</strong>
+                考试得分：<strong>{userPaper.get_score}分</strong>
               </div>
             )}
-            {userPaper && userPaper.status === 1 && (
+            {userPaper && userPaper.status === 0 && (
               <>
                 <div className={styles["score-info"]}>
-                  及格分：{paper.pass_score}分/{paper.score}分
+                  及格分：{paper.pass_score}分/{userPaper.total_score}分
                 </div>
                 <div className={styles["remaining-time"]}>
                   倒计时：
@@ -352,7 +305,7 @@ export const ExamPaperPlayPage = () => {
       </div>
       <div className={styles["paper-box"]}>
         <div className={styles["fix-left-box"]}>
-          {questions.length > 0 && userPaper && userPaper.status === 1 && (
+          {questions.length > 0 && userPaper && userPaper.status === 0 && (
             <div className={styles["number-box"]}>
               {questions.map((item: any, index: number) => (
                 <div
@@ -369,7 +322,7 @@ export const ExamPaperPlayPage = () => {
               ))}
             </div>
           )}
-          {questions.length > 0 && userPaper && userPaper.status === 2 && (
+          {questions.length > 0 && userPaper && userPaper.status === 1 && (
             <div className={styles["number-box"]}>
               {questions.map((item: any, index: number) => (
                 <div
@@ -398,7 +351,7 @@ export const ExamPaperPlayPage = () => {
             <div className={styles["questions-box"]}>
               {questions.map((item: any, index: number) => (
                 <div key={index} className={styles["item"]} id={String(index)}>
-                  {userPaper.status === 2 && (
+                  {userPaper.status === 1 && (
                     <div
                       className={styles["collect-icon"]}
                       onClick={() => collectAnswer(item.question_id)}
@@ -426,7 +379,7 @@ export const ExamPaperPlayPage = () => {
                       reply={item.answer_content}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
@@ -442,7 +395,7 @@ export const ExamPaperPlayPage = () => {
                       reply={item.answer_contents_rows}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
@@ -458,7 +411,7 @@ export const ExamPaperPlayPage = () => {
                       reply={item.answer_contents_rows}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
@@ -475,7 +428,7 @@ export const ExamPaperPlayPage = () => {
                       thumbs={item.thumbs_rows}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       showImage={true}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
@@ -492,7 +445,7 @@ export const ExamPaperPlayPage = () => {
                       reply={item.answer_contents_rows}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
                         questionUpdate(id, value, thumbs);
@@ -508,7 +461,7 @@ export const ExamPaperPlayPage = () => {
                       reply={item.answer_contents_rows}
                       score={item.score}
                       isCorrect={item.is_correct}
-                      isOver={userPaper.status === 2}
+                      isOver={userPaper.status === 1}
                       showImage={true}
                       wrongBook={false}
                       update={(id: string, value: string, thumbs: any) => {
