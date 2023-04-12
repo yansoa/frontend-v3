@@ -76,7 +76,7 @@ export const ExamPracticeDetailPage = () => {
       message.error("当前练习为空");
       return;
     }
-    navigate("/exam/papers/play?day=1&practiceId=" + id);
+    navigate("/exam/practice/play?day=1&practiceId=" + id);
   };
 
   const goPracticeChapter = (chapter: any) => {
@@ -95,7 +95,9 @@ export const ExamPracticeDetailPage = () => {
       message.error("无权限参与");
       return;
     }
-    navigate("/exam/papers/play?practiceId=" + id + "&chapterId=" + chapter.id);
+    navigate(
+      "/exam/practice/play?practiceId=" + id + "&chapterId=" + chapter.id
+    );
   };
 
   const goLogin = () => {

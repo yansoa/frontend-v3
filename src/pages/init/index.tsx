@@ -34,7 +34,8 @@ export const InitPage = (props: Props) => {
   if (
     pathname === "/live/video" ||
     pathname === "/exam/papers/play" ||
-    pathname === "/exam/mockpaper/play"
+    pathname === "/exam/mockpaper/play" ||
+    pathname === "/exam/practice/play"
   ) {
     showHeader = false;
     showFooter = false;
