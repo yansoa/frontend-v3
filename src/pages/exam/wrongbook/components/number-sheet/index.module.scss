@@ -1,0 +1,111 @@
+.box {
+  width: 100%;
+  .number-box {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    display: grid;
+    grid-row-gap: 22.5px;
+    grid-column-gap: 22.5px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    .active-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #3ca7fa;
+      background-color: rgba(#3ca7fa, 0.1);
+      color: #3ca7fa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    .completed-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #3ca7fa;
+      background-color: #3ca7fa;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #c1c4cb;
+      color: #999999;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .number-box2 {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 23px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    .active-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #3ca7fa;
+      background-color: rgba(#3ca7fa, 0.1);
+      color: #3ca7fa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    .completed-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #3ca7fa;
+      background-color: #3ca7fa;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #c1c4cb;
+      color: #999999;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

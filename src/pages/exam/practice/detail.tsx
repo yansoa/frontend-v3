@@ -45,17 +45,6 @@ export const ExamPracticeDetailPage = () => {
     });
   };
 
-  const chapterProgress = (chapter: any) => {
-    if (typeof userChapterRecords[chapter.id] === "undefined") {
-      return 0;
-    }
-    let num = Math.floor(
-      (userChapterRecords[chapter.id].submit_count / chapter.question_count) *
-        100
-    );
-    return num;
-  };
-
   const chapterSubmitCount = (chapter: any) => {
     if (typeof userChapterRecords[chapter.id] === "undefined") {
       return 0;

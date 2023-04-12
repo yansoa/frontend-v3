@@ -13,3 +13,4 @@ export * as exam from "./exam";
 export * as paper from "./paper";
 export * as mock from "./mock";
 export * as practice from "./practice";
+export * as wrongbook from "./wrongbook";
