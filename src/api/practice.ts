@@ -1,5 +1,9 @@
 import client from "./internal/httpClient";
 
+export function collectStatus(params: any) {
+  return client.post(`/addons/Paper/api/v1/collection/status`, params);
+}
+
 export function collectionStatus(params: any) {
   return client.post(`/addons/Paper/api/v1/collection/status/multi`, params);
 }
