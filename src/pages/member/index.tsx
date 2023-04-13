@@ -68,6 +68,7 @@ export const MemberPage = () => {
       id: 2,
     },
   ];
+  
   useEffect(() => {
     getSignStatus();
   }, []);

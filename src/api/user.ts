@@ -69,3 +69,15 @@ export function cancelBind(app: string) {
 export function wechatBind() {
   return client.get("/api/v3/member/wechatScanBind", {});
 }
+
+export function readMessageAll() {
+  return client.get("/api/v2/member/notificationMarkAllAsRead", {});
+}
+
+export function messages(params: any) {
+  return client.get("/api/v2/member/messages", params);
+}
+
+export function readMessage(id: number) {
+  return client.get("/api/v2/member/notificationMarkAsRead/" + id, {});
+}
