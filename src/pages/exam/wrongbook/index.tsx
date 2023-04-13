@@ -21,7 +21,7 @@ export const ExamWrongbookPage = () => {
       return;
     }
     setLoading(true);
-    wrongbook.detail().then((res: any) => {
+    wrongbook.detail({}).then((res: any) => {
       setList(res.data.types_count);
       setLoading(false);
     });

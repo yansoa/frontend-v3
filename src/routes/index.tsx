@@ -27,6 +27,7 @@ import { ExamWrongbookPage } from "../pages/exam/wrongbook/index";
 import { ExamWrongbookPlayPage } from "../pages/exam/wrongbook/play";
 import { ExamCollectionPage } from "../pages/exam/collection/index";
 import { ExamCollectionPlayPage } from "../pages/exam/collection/play";
+import { MemberPage } from "../pages/member/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -221,6 +222,7 @@ const routes: RouteObject[] = [
       { path: "/exam/wrongbook/play", element: <ExamWrongbookPlayPage /> },
       { path: "/exam/collection", element: <ExamCollectionPage /> },
       { path: "/exam/collection/play", element: <ExamCollectionPlayPage /> },
+      { path: "/member", element: <MemberPage /> },
     ],
   },
 ];
