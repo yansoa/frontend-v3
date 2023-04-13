@@ -45,3 +45,7 @@ export function tecentFaceVerify(params: any) {
 export function tecentFaceVerifyQuery(params: any) {
   return client.get("/api/v3/member/tencent/faceVerify", params);
 }
+
+export function nicknameChange(params: any) {
+  return client.post("/api/v2/member/detail/nickname", params);
+}

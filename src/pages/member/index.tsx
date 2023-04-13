@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Modal, message, Upload } from "antd";
+import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -19,6 +19,7 @@ export const MemberPage = () => {
   const [editNickStatus, setEditNickStatus] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const [currentTab, setCurrentTab] = useState(1);
+  const [nickName, setNickName] = useState<string>(user.nick_name);
   const loginCode = result.get("login_code");
   const action = result.get("action");
   const errMsg = result.get("login_err_msg");
@@ -54,8 +55,29 @@ export const MemberPage = () => {
     setEditNickStatus(false);
     member.detail().then((res: any) => {
       let loginData = res.data;
+      setNickName(loginData.nick_name);
       dispatch(loginAction(loginData));
     });
+  };
+  const saveEditNick = () => {
+    if (loading) {
+      return;
+    }
+    if (!nickName) {
+      message.error("请输入昵称");
+      return;
+    }
+    setLoading(true);
+    member
+      .nicknameChange({ nick_name: nickName })
+      .then((res) => {
+        setLoading(false);
+        message.success("修改成功");
+        resetData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const props: UploadProps = {
@@ -171,6 +193,52 @@ export const MemberPage = () => {
                   </div>
                   <div className={styles["item-right"]}>
                     <div className={styles["tip"]}>点击图片修改</div>
+                  </div>
+                </div>
+                <div className={styles["item-line"]}>
+                  <div className={styles["item-left"]}>
+                    <div className={styles["item-name"]}>我的昵称</div>
+                    {editNickStatus && (
+                      <div className={styles["item-value"]}>
+                        <Input
+                          className={styles["input"]}
+                          placeholder="昵称"
+                          value={nickName}
+                          onChange={(e) => {
+                            setNickName(e.target.value);
+                          }}
+                        ></Input>
+                      </div>
+                    )}
+                    {!editNickStatus && (
+                      <div className={styles["item-value"]}>
+                        {user.nick_name}
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles["item-right"]}>
+                    {user.is_set_nickname === 0 && editNickStatus && (
+                      <div
+                        className={styles["act-btn"]}
+                        onClick={() => saveEditNick()}
+                      >
+                        保存
+                      </div>
+                    )}
+                    {user.is_set_nickname === 0 && !editNickStatus && (
+                      <div
+                        className={styles["btn"]}
+                        onClick={() => setEditNickStatus(true)}
+                      >
+                        修改
+                      </div>
+                    )}
+                    {user.is_set_nickname === 1 && (
+                      <div className={styles["btn"]}>已修改</div>
+                    )}
+                    {user.is_set_nickname === 0 && (
+                      <div className={styles["tip"]}>（只可修改一次）</div>
+                    )}
                   </div>
                 </div>
               </div>
