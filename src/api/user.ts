@@ -49,3 +49,7 @@ export function tecentFaceVerifyQuery(params: any) {
 export function nicknameChange(params: any) {
   return client.post("/api/v2/member/detail/nickname", params);
 }
+
+export function mobileVerify(params: any) {
+  return client.post("/api/v2/member/verify", params);
+}

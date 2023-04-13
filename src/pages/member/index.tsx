@@ -9,6 +9,7 @@ import { NavMember } from "../../components";
 import config from "../../js/config";
 import { getToken } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
+import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
 
 export const MemberPage = () => {
   document.title = "用户中心";
@@ -17,6 +18,10 @@ export const MemberPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
   const [editNickStatus, setEditNickStatus] = useState<boolean>(false);
+  const [mobileValidateVisible, setMobileValidateVisible] =
+    useState<boolean>(false);
+  const [bindMobileSign, setBindMobileSign] = useState<string>("");
+  const [bindMobileVisible, setBindMobileVisible] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const [currentTab, setCurrentTab] = useState(1);
   const [nickName, setNickName] = useState<string>(user.nick_name);
@@ -119,8 +124,26 @@ export const MemberPage = () => {
     },
   };
 
+  const goChangeMobile = () => {
+    setMobileValidateVisible(true);
+  };
+
+  const successMobileValidate = (sign: string) => {
+    setBindMobileSign(sign);
+    setMobileValidateVisible(false);
+    setBindMobileVisible(true);
+  };
+
+  const goBindMobile = () => {};
+
   return (
     <div className="container">
+      <MobileVerifyDialog
+        open={mobileValidateVisible}
+        mobile={user.mobile}
+        onCancel={() => setMobileValidateVisible(false)}
+        success={(sign: string) => successMobileValidate(sign)}
+      ></MobileVerifyDialog>
       <div className={styles["box"]}>
         <NavMember cid={0}></NavMember>
         <div className={styles["project-box"]}>
@@ -238,6 +261,36 @@ export const MemberPage = () => {
                     )}
                     {user.is_set_nickname === 0 && (
                       <div className={styles["tip"]}>（只可修改一次）</div>
+                    )}
+                  </div>
+                </div>
+                <div className={styles["item-line"]}>
+                  <div className={styles["item-left"]}>
+                    <div className={styles["item-name"]}>手机号码</div>
+                    {user.is_bind_mobile === 1 && (
+                      <div className={styles["item-value"]}>
+                        {user.mobile.substr(0, 3) +
+                          "****" +
+                          user.mobile.substr(7)}
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles["item-right"]}>
+                    {user.is_bind_mobile === 1 && (
+                      <div
+                        className={styles["btn"]}
+                        onClick={() => goChangeMobile()}
+                      >
+                        换绑手机号
+                      </div>
+                    )}
+                    {user.is_bind_mobile !== 1 && (
+                      <div
+                        className={styles["btn"]}
+                        onClick={() => goBindMobile()}
+                      >
+                        绑定手机号
+                      </div>
                     )}
                   </div>
                 </div>
