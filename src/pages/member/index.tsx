@@ -22,6 +22,8 @@ export const MemberPage = () => {
     useState<boolean>(false);
   const [bindMobileSign, setBindMobileSign] = useState<string>("");
   const [bindMobileVisible, setBindMobileVisible] = useState<boolean>(false);
+  const [bindNewMobileVisible, setBindNewMobileVisible] =
+    useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const [currentTab, setCurrentTab] = useState(1);
   const [nickName, setNickName] = useState<string>(user.nick_name);
@@ -134,7 +136,9 @@ export const MemberPage = () => {
     setBindMobileVisible(true);
   };
 
-  const goBindMobile = () => {};
+  const goBindMobile = () => {
+    setBindNewMobileVisible(true);
+  };
 
   return (
     <div className="container">
