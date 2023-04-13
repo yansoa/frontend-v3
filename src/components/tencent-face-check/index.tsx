@@ -107,19 +107,22 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
           timer && clearInterval(timer);
           onCancel();
         }}
-        maskClosable={!active}
+        maskClosable={false}
+        closable={active}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}></div>
-          <a
-            className={styles["linkTab"]}
-            onClick={() => {
-              timer && clearInterval(timer);
-              goLogout();
-            }}
-          >
-            退出登录&gt;&gt;
-          </a>
+          {!active && (
+            <a
+              className={styles["linkTab"]}
+              onClick={() => {
+                timer && clearInterval(timer);
+                goLogout();
+              }}
+            >
+              退出登录&gt;&gt;
+            </a>
+          )}
         </div>
         <div className={styles["box"]}>
           <QRCode

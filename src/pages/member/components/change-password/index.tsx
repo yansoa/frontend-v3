@@ -195,6 +195,7 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
               style={{ width: 440, height: 54, fontSize: 16 }}
               autoComplete="off"
               placeholder="请设置账号密码"
+              onPressEnter={() => form.submit()}
             />
           </Form.Item>
           <Form.Item>

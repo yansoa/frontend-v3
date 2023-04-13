@@ -24,6 +24,7 @@ import { BindNewMobileDialog } from "./components/bind-new-mobile";
 import { ChangePasswordDialog } from "./components/change-password";
 import { DestroyUserDialog } from "./components/destroy-user";
 import { BindWeixinDialog } from "./components/bind-weixin";
+import { ProfileComp } from "./components/profile";
 import qqIcon from "../../assets/img/commen/icon-qq.png";
 import wxIcon from "../../assets/img/commen/icon-wechat.png";
 
@@ -532,6 +533,11 @@ export const MemberPage = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+            {currentTab === 2 && (
+              <div className={styles["project-content"]}>
+                <ProfileComp></ProfileComp>
               </div>
             )}
           </div>
