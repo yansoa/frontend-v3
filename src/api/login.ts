@@ -22,3 +22,11 @@ export function codeLogin(params: any) {
 export function passwordForget(params: any) {
   return client.post(`/api/v2/member/detail/password`, params);
 }
+
+export function destroyUser(params: any) {
+  return client.post(`/api/v3/member/destroy`, params);
+}
+
+export function codeBind(params: any) {
+  return client.post(`/api/v3/member/socialite/bindWithCode`, params);
+}

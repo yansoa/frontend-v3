@@ -4,15 +4,20 @@ import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { user as member } from "../../api/index";
+import { login, user as member } from "../../api/index";
 import { NavMember } from "../../components";
 import config from "../../js/config";
-import { getToken } from "../../utils/index";
+import {
+  getToken,
+  saveSessionLoginCode,
+  getSessionLoginCode,
+} from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
 import { BindMobileDialog } from "./components/bind-mobile";
 import { BindNewMobileDialog } from "./components/bind-new-mobile";
 import { ChangePasswordDialog } from "./components/change-password";
+import { DestroyUserDialog } from "./components/destroy-user";
 
 export const MemberPage = () => {
   document.title = "用户中心";
@@ -29,6 +34,7 @@ export const MemberPage = () => {
     useState<boolean>(false);
   const [changePasswordVisible, setChangePasswordVisible] =
     useState<boolean>(false);
+  const [destroyUserVisible, setDestroyUserVisible] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const systemConfig = useSelector(
     (state: any) => state.systemConfig.value.config
@@ -58,9 +64,20 @@ export const MemberPage = () => {
     }
   }, [loginCode, action, errMsg]);
 
-  const codeBind = (loginCode: string) => {};
+  const codeBind = (code: string) => {
+    if (getSessionLoginCode(code)) {
+      return;
+    }
+    saveSessionLoginCode(code);
+    login.codeBind({ code: code }).then((res: any) => {
+      message.success("绑定成功");
+      resetData();
+    });
+  };
 
-  const destroyUser = () => {};
+  const destroyUser = () => {
+    setDestroyUserVisible(true);
+  };
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
@@ -158,6 +175,10 @@ export const MemberPage = () => {
 
   return (
     <div className="container">
+      <DestroyUserDialog
+        open={destroyUserVisible}
+        onCancel={() => setDestroyUserVisible(false)}
+      ></DestroyUserDialog>
       <ChangePasswordDialog
         scene="password_reset"
         open={changePasswordVisible}
