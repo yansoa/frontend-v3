@@ -4,8 +4,8 @@ import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { system, login, user as member } from "../../api/index";
-import { NavMember } from "../../components";
+import { sign, system, login, user as member } from "../../api/index";
+import { NavMember, SignComp } from "../../components";
 import config from "../../js/config";
 import {
   getToken,
@@ -47,6 +47,7 @@ export const MemberPage = () => {
     useState<boolean>(false);
   const [destroyUserVisible, setDestroyUserVisible] = useState<boolean>(false);
   const [bindWeixinVisible, setBindWeixinVisible] = useState<boolean>(false);
+  const [signStatus, setSignStatus] = useState<boolean>(false);
   const [app, setApp] = useState<string>("");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const systemConfig = useSelector(
@@ -67,6 +68,9 @@ export const MemberPage = () => {
       id: 2,
     },
   ];
+  useEffect(() => {
+    getSignStatus();
+  }, []);
 
   useEffect(() => {
     if (loginCode && action === "bind") {
@@ -76,6 +80,17 @@ export const MemberPage = () => {
       message.error(errMsg);
     }
   }, [loginCode, action, errMsg]);
+
+  const getSignStatus = () => {
+    sign.user().then((res: any) => {
+      let is_submit = res.data.is_submit;
+      if (is_submit === 0) {
+        setSignStatus(true);
+      } else {
+        setSignStatus(false);
+      }
+    });
+  };
 
   const codeBind = (code: string) => {
     if (getSessionLoginCode(code)) {
@@ -258,6 +273,10 @@ export const MemberPage = () => {
 
   return (
     <div className="container">
+      <SignComp
+        open={signStatus}
+        success={() => setSignStatus(false)}
+      ></SignComp>
       <DestroyUserDialog
         open={destroyUserVisible}
         onCancel={() => setDestroyUserVisible(false)}

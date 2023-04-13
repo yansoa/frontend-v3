@@ -38,12 +38,10 @@ export const Header = () => {
     useState<boolean>(false);
   const [hasMessage, setHasMessage] = useState<boolean>(false);
   const [list, setList] = useState<MenuProps["items"]>([]);
-  const [current, setCurrent] = useState("/");
+  const [current, setCurrent] = useState(pathname);
 
   useEffect(() => {
-    if (pathname === "/") {
-      setCurrent("/");
-    }
+    setCurrent(pathname);
     getHeaderNav();
   }, [pathname]);
 
@@ -58,7 +56,11 @@ export const Header = () => {
       let list = res.data;
       const arr: MenuProps["items"] = [];
       list.map((item: any) => {
-        if (pathname !== "/" && pathname.indexOf(item.url) !== -1) {
+        if (
+          item.url !== "/" &&
+          pathname !== "/" &&
+          pathname.indexOf(item.url) !== -1
+        ) {
           setCurrent(item.url);
         }
 

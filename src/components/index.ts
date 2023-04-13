@@ -34,3 +34,4 @@ export * from "./qa";
 export * from "./cap";
 export * from "./exam-play-categories";
 export * from "./nav-member";
+export * from "./sign";
