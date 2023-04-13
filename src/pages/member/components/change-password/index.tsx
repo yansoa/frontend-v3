@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, message, Button, Space, Image } from "antd";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import styles from "./index.module.scss";
-import { login, user, system } from "../../../../api/index";
-import { logoutAction } from "../../../../store/user/loginUserSlice";
+import { login, system } from "../../../../api/index";
 
 interface PropInterface {
   open: boolean;
-  active: boolean;
+  mobile: number;
   scene: string;
   onCancel: () => void;
   success: () => void;
@@ -16,18 +13,14 @@ interface PropInterface {
 
 var interval: any = null;
 
-export const BindNewMobileDialog: React.FC<PropInterface> = ({
+export const ChangePasswordDialog: React.FC<PropInterface> = ({
   open,
-  active,
+  mobile,
   scene,
   onCancel,
   success,
 }) => {
-  const params = useParams();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
@@ -35,7 +28,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
 
   useEffect(() => {
     form.setFieldsValue({
-      mobile: "",
+      password: "",
       captcha: "",
       sms: "",
     });
@@ -62,7 +55,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
     }
     system
       .sendSms({
-        mobile: form.getFieldValue("mobile"),
+        mobile: mobile,
         image_key: captcha.key,
         image_captcha: form.getFieldValue("captcha"),
         scene: scene,
@@ -85,25 +78,21 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
         message.error(e.message);
       });
   };
-
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
     setLoading(true);
-    user
-      .newMobile({
-        mobile: values.mobile,
+    login
+      .passwordForget({
+        mobile: mobile,
         mobile_code: values.sms,
+        password: values.password,
       })
       .then((res: any) => {
         setLoading(false);
-        message.success("绑定成功");
-        if (active) {
-          redirectHandler();
-        } else {
-          success();
-        }
+        message.success("修改完成");
+        success();
       })
       .catch((e: any) => {
         setLoading(false);
@@ -112,40 +101,6 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
-  };
-
-  const redirectHandler = () => {
-    interval && clearInterval(interval);
-    onCancel();
-    if (pathname === "/login") {
-      if (params.redirect) {
-        navigate(params.redirect);
-      } else {
-        navigate("/");
-      }
-    } else {
-      location.reload();
-    }
-  };
-
-  const goLogout = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    login
-      .logout()
-      .then((res) => {
-        setLoading(false);
-        interval && clearInterval(interval);
-        dispatch(logoutAction());
-        onCancel();
-        location.reload();
-      })
-      .catch((e) => {
-        setLoading(false);
-        message.error("网络错误");
-      });
   };
 
   return (
@@ -162,24 +117,13 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
-        closable={!active}
       >
         <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>绑定新手机号</div>
-          {active && (
-            <a
-              className={styles["linkTab"]}
-              onClick={() => {
-                goLogout();
-              }}
-            >
-              退出登录&gt;&gt;
-            </a>
-          )}
+          <div className={styles["tab-active-item"]}>设置（修改）密码</div>
         </div>
         <Form
           form={form}
-          name="bind-new-mobile-dialog"
+          name="change-password-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
@@ -188,15 +132,10 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
           autoComplete="off"
           style={{ marginTop: 30 }}
         >
-          <Form.Item
-            name="mobile"
-            rules={[{ required: true, message: "请输入新手机号码!" }]}
-          >
-            <Input
-              style={{ width: 440, height: 54 }}
-              autoComplete="off"
-              placeholder="请输入新手机号码"
-            />
+          <Form.Item name="mobile">
+            <div className={styles["box-mobile"]}>
+              绑定手机号：<strong>{mobile}</strong>
+            </div>
           </Form.Item>
           <Form.Item>
             <Space align="baseline" style={{ height: 54 }}>
@@ -248,6 +187,16 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
               </div>
             </Space>
           </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "请设置账号密码!" }]}
+          >
+            <Input.Password
+              style={{ width: 440, height: 54, fontSize: 16 }}
+              autoComplete="off"
+              placeholder="请设置账号密码"
+            />
+          </Form.Item>
           <Form.Item>
             <Button
               style={{ width: 440, height: 54, outline: "none" }}
@@ -255,7 +204,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
               onClick={() => form.submit()}
               loading={loading}
             >
-              立即绑定
+              重置密码
             </Button>
           </Form.Item>
         </Form>

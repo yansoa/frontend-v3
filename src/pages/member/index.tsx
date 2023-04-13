@@ -12,6 +12,7 @@ import { loginAction } from "../../store/user/loginUserSlice";
 import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
 import { BindMobileDialog } from "./components/bind-mobile";
 import { BindNewMobileDialog } from "./components/bind-new-mobile";
+import { ChangePasswordDialog } from "./components/change-password";
 
 export const MemberPage = () => {
   document.title = "用户中心";
@@ -25,6 +26,8 @@ export const MemberPage = () => {
   const [bindMobileSign, setBindMobileSign] = useState<string>("");
   const [bindMobileVisible, setBindMobileVisible] = useState<boolean>(false);
   const [bindNewMobileVisible, setBindNewMobileVisible] =
+    useState<boolean>(false);
+  const [changePasswordVisible, setChangePasswordVisible] =
     useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const systemConfig = useSelector(
@@ -145,8 +148,26 @@ export const MemberPage = () => {
     setBindNewMobileVisible(true);
   };
 
+  const goChangePassword = () => {
+    if (user.is_bind_mobile !== 1) {
+      message.error("请绑定手机号");
+      return;
+    }
+    setChangePasswordVisible(true);
+  };
+
   return (
     <div className="container">
+      <ChangePasswordDialog
+        scene="password_reset"
+        open={changePasswordVisible}
+        mobile={user.mobile}
+        onCancel={() => setChangePasswordVisible(false)}
+        success={() => {
+          setChangePasswordVisible(false);
+          resetData();
+        }}
+      ></ChangePasswordDialog>
       <MobileVerifyDialog
         scene="mobile_bind"
         open={mobileValidateVisible}
@@ -322,6 +343,19 @@ export const MemberPage = () => {
                         绑定手机号
                       </div>
                     )}
+                  </div>
+                </div>
+                <div className={styles["item-line"]}>
+                  <div className={styles["item-left"]}>
+                    <div className={styles["item-name"]}>设置(修改)密码</div>
+                  </div>
+                  <div className={styles["item-right"]}>
+                    <div
+                      className={styles["btn"]}
+                      onClick={() => goChangePassword()}
+                    >
+                      点击设置（修改）密码
+                    </div>
                   </div>
                 </div>
               </div>

@@ -18,3 +18,7 @@ export function logout() {
 export function codeLogin(params: any) {
   return client.post(`/api/v3/auth/login/code`, params);
 }
+
+export function passwordForget(params: any) {
+  return client.post(`/api/v2/member/detail/password`, params);
+}
