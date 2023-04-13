@@ -125,11 +125,13 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
           )}
         </div>
         <div className={styles["box"]}>
-          <QRCode
-            size={250}
-            value={qrode}
-            status={verifyLoading ? "loading" : "active"}
-          />
+          {qrode !== "" && (
+            <QRCode
+              size={250}
+              value={qrode}
+              status={verifyLoading ? "loading" : "active"}
+            />
+          )}
         </div>
         <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
       </Modal>
