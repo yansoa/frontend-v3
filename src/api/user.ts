@@ -61,3 +61,11 @@ export function mobileChange(params: any) {
 export function newMobile(params: any) {
   return client.post("/api/v2/member/detail/mobile", params);
 }
+
+export function cancelBind(app: string) {
+  return client.destroy(`/api/v2/member/socialite/${app}`);
+}
+
+export function wechatBind() {
+  return client.get("/api/v3/member/wechatScanBind", {});
+}

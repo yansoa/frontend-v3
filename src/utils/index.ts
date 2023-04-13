@@ -137,3 +137,15 @@ export function random(minNum: number, maxNum: number) {
       return 0;
   }
 }
+
+export function getShareHost() {
+  let hash = window.location.hash;
+  if (hash.match("#")) {
+    hash = "/#/";
+  } else {
+    hash = "";
+  }
+  let host = window.location.protocol + "//" + window.location.host + hash;
+
+  return host;
+}

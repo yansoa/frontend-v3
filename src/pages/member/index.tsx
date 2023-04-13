@@ -4,20 +4,30 @@ import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { login, user as member } from "../../api/index";
+import { system, login, user as member } from "../../api/index";
 import { NavMember } from "../../components";
 import config from "../../js/config";
 import {
   getToken,
   saveSessionLoginCode,
   getSessionLoginCode,
+  getShareHost,
 } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
+import {
+  saveConfigAction,
+  saveConfigFuncAction,
+} from "../../store/system/systemConfigSlice";
 import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
 import { BindMobileDialog } from "./components/bind-mobile";
 import { BindNewMobileDialog } from "./components/bind-new-mobile";
 import { ChangePasswordDialog } from "./components/change-password";
 import { DestroyUserDialog } from "./components/destroy-user";
+import { BindWeixinDialog } from "./components/bind-weixin";
+import qqIcon from "../../assets/img/commen/icon-qq.png";
+import wxIcon from "../../assets/img/commen/icon-wechat.png";
+
+const { confirm } = Modal;
 
 export const MemberPage = () => {
   document.title = "用户中心";
@@ -35,6 +45,8 @@ export const MemberPage = () => {
   const [changePasswordVisible, setChangePasswordVisible] =
     useState<boolean>(false);
   const [destroyUserVisible, setDestroyUserVisible] = useState<boolean>(false);
+  const [bindWeixinVisible, setBindWeixinVisible] = useState<boolean>(false);
+  const [app, setApp] = useState<string>("");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const systemConfig = useSelector(
     (state: any) => state.systemConfig.value.config
@@ -72,6 +84,7 @@ export const MemberPage = () => {
     login.codeBind({ code: code }).then((res: any) => {
       message.success("绑定成功");
       resetData();
+      getConfig();
     });
   };
 
@@ -91,6 +104,14 @@ export const MemberPage = () => {
       dispatch(loginAction(loginData));
     });
   };
+
+  const getConfig = () => {
+    system.config().then((res: any) => {
+      let config = res.data;
+      dispatch(saveConfigAction(config));
+    });
+  };
+
   const saveEditNick = () => {
     if (loading) {
       return;
@@ -173,6 +194,67 @@ export const MemberPage = () => {
     setChangePasswordVisible(true);
   };
 
+  const goBindQQ = () => {
+    let host = getShareHost() + "member";
+    let token = getToken();
+    let redirect = encodeURIComponent(host);
+    window.location.href =
+      systemConfig.url +
+      "/api/v3/auth/login/socialite/qq?s_url=" +
+      redirect +
+      "&f_url=" +
+      redirect +
+      "&action=bind";
+  };
+
+  const cancelBindQQ = () => {
+    setApp("qq");
+    confirm({
+      title: "解绑账号",
+      content:
+        "解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        member.cancelBind("qq").then((res: any) => {
+          message.success("解绑成功");
+          resetData();
+          getConfig();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const goBindWeixin = () => {
+    setBindWeixinVisible(true);
+  };
+
+  const cancelBindWeixin = () => {
+    setApp("wechat");
+    confirm({
+      title: "解绑账号",
+      content:
+        "解绑账号后请立即绑定其他社交账号，不然可能导致无法找回原账号，确认操作？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        member.cancelBind("wechat").then((res: any) => {
+          message.success("解绑成功");
+          resetData();
+          getConfig();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <div className="container">
       <DestroyUserDialog
@@ -216,6 +298,15 @@ export const MemberPage = () => {
           resetData();
         }}
       ></BindNewMobileDialog>
+      <BindWeixinDialog
+        open={bindWeixinVisible}
+        onCancel={() => setBindWeixinVisible(false)}
+        success={() => {
+          setBindWeixinVisible(false);
+          resetData();
+          getConfig();
+        }}
+      ></BindWeixinDialog>
       <div className={styles["box"]}>
         <NavMember cid={0}></NavMember>
         <div className={styles["project-box"]}>
@@ -379,6 +470,68 @@ export const MemberPage = () => {
                     </div>
                   </div>
                 </div>
+                {systemConfig.socialites.qq === 1 && (
+                  <div className={styles["item-line"]}>
+                    <div className={styles["item-left"]}>
+                      <div className={styles["item-name"]}>
+                        <img src={qqIcon} />
+                        绑定QQ
+                      </div>
+                      {user.is_bind_qq === 1 && (
+                        <div className={styles["item-value"]}>已绑定</div>
+                      )}
+                      {user.is_bind_qq === 0 && (
+                        <div
+                          className={styles["item-value"]}
+                          onClick={() => goBindQQ()}
+                        >
+                          点击绑定
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles["item-right"]}>
+                      {user.is_bind_qq === 1 && (
+                        <div
+                          className={styles["btn"]}
+                          onClick={() => cancelBindQQ()}
+                        >
+                          解绑账号
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {systemConfig.socialites.wechat_scan === 1 && (
+                  <div className={styles["item-line"]}>
+                    <div className={styles["item-left"]}>
+                      <div className={styles["item-name"]}>
+                        <img src={wxIcon} />
+                        绑定微信
+                      </div>
+                      {user.is_bind_wechat === 1 && (
+                        <div className={styles["item-value"]}>已绑定</div>
+                      )}
+                      {user.is_bind_wechat === 0 && (
+                        <div
+                          className={styles["item-value"]}
+                          onClick={() => goBindWeixin()}
+                        >
+                          点击绑定
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles["item-right"]}>
+                      {user.is_bind_wechat === 1 && (
+                        <div
+                          className={styles["btn"]}
+                          onClick={() => cancelBindWeixin()}
+                        >
+                          解绑账号
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
