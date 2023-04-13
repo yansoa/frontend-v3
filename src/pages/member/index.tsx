@@ -10,6 +10,8 @@ import config from "../../js/config";
 import { getToken } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
+import { BindMobileDialog } from "./components/bind-mobile";
+import { BindNewMobileDialog } from "./components/bind-new-mobile";
 
 export const MemberPage = () => {
   document.title = "用户中心";
@@ -25,6 +27,9 @@ export const MemberPage = () => {
   const [bindNewMobileVisible, setBindNewMobileVisible] =
     useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
+  const systemConfig = useSelector(
+    (state: any) => state.systemConfig.value.config
+  );
   const [currentTab, setCurrentTab] = useState(1);
   const [nickName, setNickName] = useState<string>(user.nick_name);
   const loginCode = result.get("login_code");
@@ -143,11 +148,32 @@ export const MemberPage = () => {
   return (
     <div className="container">
       <MobileVerifyDialog
+        scene="mobile_bind"
         open={mobileValidateVisible}
         mobile={user.mobile}
         onCancel={() => setMobileValidateVisible(false)}
         success={(sign: string) => successMobileValidate(sign)}
       ></MobileVerifyDialog>
+      <BindMobileDialog
+        scene="mobile_bind"
+        open={bindMobileVisible}
+        sign={bindMobileSign}
+        onCancel={() => setBindMobileVisible(false)}
+        success={() => {
+          setBindMobileVisible(false);
+          resetData();
+        }}
+      ></BindMobileDialog>
+      <BindNewMobileDialog
+        scene="mobile_bind"
+        open={bindNewMobileVisible}
+        active={false}
+        onCancel={() => setBindNewMobileVisible(false)}
+        success={() => {
+          setBindNewMobileVisible(false);
+          resetData();
+        }}
+      ></BindNewMobileDialog>
       <div className={styles["box"]}>
         <NavMember cid={0}></NavMember>
         <div className={styles["project-box"]}>

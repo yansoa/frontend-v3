@@ -53,3 +53,11 @@ export function nicknameChange(params: any) {
 export function mobileVerify(params: any) {
   return client.post("/api/v2/member/verify", params);
 }
+
+export function mobileChange(params: any) {
+  return client.put("/api/v2/member/mobile", params);
+}
+
+export function newMobile(params: any) {
+  return client.post("/api/v2/member/detail/mobile", params);
+}

@@ -5,17 +5,17 @@ import { user, system } from "../../../../api/index";
 
 interface PropInterface {
   open: boolean;
-  mobile: number;
+  sign: string;
   scene: string;
   onCancel: () => void;
-  success: (sign: string) => void;
+  success: () => void;
 }
 
 var interval: any = null;
 
-export const MobileVerifyDialog: React.FC<PropInterface> = ({
+export const BindMobileDialog: React.FC<PropInterface> = ({
   open,
-  mobile,
+  sign,
   scene,
   onCancel,
   success,
@@ -28,6 +28,7 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
 
   useEffect(() => {
     form.setFieldsValue({
+      mobile: "",
       captcha: "",
       sms: "",
     });
@@ -54,7 +55,7 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
     }
     system
       .sendSms({
-        mobile: mobile,
+        mobile: form.getFieldValue("mobile"),
         image_key: captcha.key,
         image_captcha: form.getFieldValue("captcha"),
         scene: scene,
@@ -77,20 +78,22 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
         message.error(e.message);
       });
   };
+
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
     setLoading(true);
     user
-      .mobileVerify({
-        mobile: mobile,
+      .mobileChange({
+        mobile: values.mobile,
         mobile_code: values.sms,
+        sign: sign,
       })
       .then((res: any) => {
         setLoading(false);
-        message.success("验证成功");
-        success(res.data.sign);
+        message.success("绑定成功");
+        success();
       })
       .catch((e: any) => {
         setLoading(false);
@@ -117,11 +120,11 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
         maskClosable={false}
       >
         <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>验证原手机号</div>
+          <div className={styles["tab-active-item"]}>绑定新手机号</div>
         </div>
         <Form
           form={form}
-          name="change-bind-mobile-dialog"
+          name="bind-mobile-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
@@ -130,10 +133,15 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
           autoComplete="off"
           style={{ marginTop: 30 }}
         >
-          <Form.Item name="mobile">
-            <div className={styles["box-mobile"]}>
-              原手机号码验证：<strong>{mobile}</strong>
-            </div>
+          <Form.Item
+            name="mobile"
+            rules={[{ required: true, message: "请输入新手机号码!" }]}
+          >
+            <Input
+              style={{ width: 440, height: 54 }}
+              autoComplete="off"
+              placeholder="请输入新手机号码"
+            />
           </Form.Item>
           <Form.Item>
             <Space align="baseline" style={{ height: 54 }}>
@@ -192,7 +200,7 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
               onClick={() => form.submit()}
               loading={loading}
             >
-              确定
+              立即绑定
             </Button>
           </Form.Item>
         </Form>
