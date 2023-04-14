@@ -81,3 +81,27 @@ export function messages(params: any) {
 export function readMessage(id: number) {
   return client.get("/api/v2/member/notificationMarkAsRead/" + id, {});
 }
+
+export function orders(params: any) {
+  return client.get("/api/v2/member/orders", params);
+}
+
+export function myCourses(params: any) {
+  return client.get("/api/v2/member/courses", params);
+}
+
+export function myVideos(params: any) {
+  return client.get("/api/v2/member/videos", params);
+}
+
+export function newCourses(params: any) {
+  return client.get("/api/v3/member/courses", params);
+}
+
+export function tuangou(params: any) {
+  return client.get("/addons/TuanGou/api/v1/t/member/orders", params);
+}
+
+export function miaosha(params: any) {
+  return client.get("/addons/MiaoSha/api/v1/m/user/orders", params);
+}
