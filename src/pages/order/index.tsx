@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { order } from "../../api/index";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import { ThumbBar } from "../../components";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import defaultPaperIcon from "../../assets/img/commen/default-paper.png";
 import defaultVipIcon from "../../assets/img/commen/default-vip.png";
+import zfbIcon from "../../assets/img/commen/icon-zfb.png";
+import wepayIcon from "../../assets/img/commen/icon-wepay.png";
+import cradIcon from "../../assets/img/commen/icon-crad.png";
+import { getAppUrl, getToken } from "../../utils/index";
 
 export const OrderPage = () => {
   document.title = "收银台";
@@ -14,6 +18,7 @@ export const OrderPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
   const [payment, setPayment] = useState<string>("");
+  const [payments, setPayments] = useState<any>([]);
   const [paymentScene, setPaymentScene] = useState<string>("pc");
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
@@ -22,7 +27,7 @@ export const OrderPage = () => {
   const [handStatus, setHandStatus] = useState<boolean>(false);
   const [hasThumb, setHasThumb] = useState<boolean>(false);
   const [configTip, setConfigTip] = useState<number>(999);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState<number>(0);
   const [goodsType, setGoodsType] = useState(result.get("goods_type"));
   const [goodsId, setGoodsId] = useState(Number(result.get("goods_id")));
   const [goodsThumb, setGoodsThumb] = useState<string>(
@@ -36,14 +41,49 @@ export const OrderPage = () => {
     Number(result.get("goods_charge"))
   );
   const [courseType, setCourseType] = useState(result.get("course_type"));
-  const [total, setTotal] = useState(Number(result.get("goods_charge")));
+  const [total, setTotal] = useState<number>(
+    Number(result.get("goods_charge"))
+  );
+  const [totalVal, setTotalVal] = useState<number>(0);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
+  );
+  const systemConfig = useSelector(
+    (state: any) => state.systemConfig.value.config
   );
 
   useEffect(() => {
     initData();
   }, [goodsType]);
+
+  useEffect(() => {
+    let val = total - discount;
+    val = val < 0 ? 0 : val;
+    setTotalVal(val);
+  }, [total, discount]);
+
+  useEffect(() => {
+    let data = [];
+    if (aliStatus) {
+      data.push({
+        name: "支付宝",
+        sign: "alipay",
+      });
+    }
+    if (weStatus) {
+      data.push({
+        name: "微信支付",
+        sign: "wechat",
+      });
+    }
+    if (handStatus) {
+      data.push({
+        name: "手动打款",
+        sign: "handPay",
+      });
+    }
+    setPayments(data);
+  }, [aliStatus, weStatus, handStatus]);
 
   const initData = () => {
     if (goodsType === "role") {
@@ -130,6 +170,249 @@ export const OrderPage = () => {
       });
   };
 
+  const payHandler = () => {
+    if (!payment) {
+      message.error("请选择支付方式");
+      return;
+    }
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    if (goodsType === "vod") {
+      // 点播课程
+      order
+        .createCourseOrder({
+          course_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "video") {
+      // 视频
+      order
+        .createVideoOrder({
+          video_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "role") {
+      order
+        .createRoleOrder({
+          role_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "live") {
+      order
+        .createLiveOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "book") {
+      order
+        .createBookOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "paper") {
+      order
+        .createPaperOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "practice") {
+      order
+        .createPracticeOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "mockpaper") {
+      order
+        .createMockpaperOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "path") {
+      order
+        .createPathOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "tg") {
+      order
+        .createTgOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+          gid: tgGid,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "ms") {
+      order
+        .createMsOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "topic") {
+      order
+        .createTopicOrder(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    } else if (goodsType === "k12") {
+      order
+        .createK12Order(goodsId, {
+          goods_id: goodsId,
+          promo_code: promoCode,
+        })
+        .then((res: any) => {
+          orderCreatedHandler(res.data);
+        })
+        .catch((e) => {
+          setLoading(false);
+          message.error(e.message);
+        });
+    }
+  };
+
+  const orderCreatedHandler = (data: any) => {
+    setLoading(false);
+    // 判断是否继续走支付平台支付
+    if (data.status_text === "已支付") {
+      // 优惠全部抵扣
+      message.success("支付成功");
+
+      setTimeout(() => {
+        navigate(-1);
+      }, 1000);
+    } else {
+      if (payment === "alipay") {
+        let host = getAppUrl();
+        let redirect = encodeURIComponent(host + "/order/success");
+        let indexUrl = encodeURIComponent(host + "/");
+        window.location.href =
+          systemConfig.url +
+          "/api/v2/order/pay/redirect?order_id=" +
+          data.order_id +
+          "&payment_scene=" +
+          paymentScene +
+          "&scene=" +
+          paymentScene +
+          "&payment=" +
+          payment +
+          "&token=" +
+          getToken() +
+          "&redirect=" +
+          redirect +
+          "&cancel_redirect=" +
+          indexUrl;
+      } else if (payment === "handPay" || payment === "wechat") {
+        navigate(
+          "/order/pay?orderId=" +
+            data.order_id +
+            "&price=" +
+            totalVal +
+            "&payment=" +
+            payment +
+            "&type=" +
+            goodsType +
+            "&id=" +
+            goodsId +
+            "&course_id=" +
+            courseId +
+            "&course_type=" +
+            courseType
+        );
+      } else {
+        payFailure();
+      }
+    }
+  };
+
+  const payFailure = () => {
+    message.error("无法支付");
+    setLoading(false);
+  };
+
   return (
     <div className="container">
       <div className={styles["box"]}>
@@ -200,6 +483,35 @@ export const OrderPage = () => {
           )}
         </div>
         <div className={styles["tit"]}>支付方式</div>
+        <div className={styles["credit2-box"]}>
+          {payments.map((item: any) => (
+            <div
+              key={item.sign}
+              className={
+                item.sign === payment
+                  ? styles["payment-active-item"]
+                  : styles["payment-item"]
+              }
+            >
+              {item.sign === "alipay" && <img src={zfbIcon} />}
+              {item.sign === "wechat" && <img src={wepayIcon} />}
+              {item.sign === "handPay" && <img src={cradIcon} />}
+            </div>
+          ))}
+        </div>
+        <div className={styles["line"]}></div>
+        <div className={styles["price-box"]}>
+          <span>优惠码已减</span>
+          <span className={styles["red"]}>{discount}</span>
+          <span>元，需支付</span>
+          <span className={styles["red"]}>
+            ￥<span className={styles["big"]}>{totalVal}</span>
+          </span>
+        </div>
+        <div className={styles["order-tip"]}>请在15分钟内支付完成</div>
+        <div className={styles["btn-submit"]} onClick={() => payHandler()}>
+          提交订单
+        </div>
       </div>
     </div>
   );
