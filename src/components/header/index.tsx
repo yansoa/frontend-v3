@@ -46,7 +46,7 @@ export const Header = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (isLogin) {
+    if (isLogin && freshUnread) {
       getUnread();
     }
   }, [freshUnread, isLogin]);
