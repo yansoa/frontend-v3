@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Layout } from "antd";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { system } from "../../api/index";
 import footlink from "../../assets/img/commen/footlink.png";
 
@@ -11,13 +12,19 @@ interface Props {
 
 export const Footer = (props: Props) => {
   const config = useSelector((state: any) => state.systemConfig.value.config);
+  const pathname = useLocation().pathname;
   const [list, setList] = useState<any>([]);
+  let footerStatus = true;
+  if (pathname === "/vip") {
+    footerStatus = false;
+  }
 
   useEffect(() => {
     if (props.status) {
       getData();
     }
   }, [props.status]);
+
   const getData = () => {
     system.footerLink().then((res: any) => {
       setList(res.data);
@@ -26,13 +33,23 @@ export const Footer = (props: Props) => {
 
   return (
     <Layout.Footer
-      style={{
-        width: "100%",
-        backgroundColor: "#0f0a1e",
-        height: "auto",
-        textAlign: "center",
-        marginTop: 150,
-      }}
+      style={
+        footerStatus
+          ? {
+              width: "100%",
+              backgroundColor: "#0f0a1e",
+              height: "auto",
+              textAlign: "center",
+              marginTop: 150,
+            }
+          : {
+              width: "100%",
+              backgroundColor: "#0f0a1e",
+              height: "auto",
+              textAlign: "center",
+              marginTop: 0,
+            }
+      }
     >
       <div className={styles["footer-box"]}>
         {list.length > 0 && (

@@ -16,3 +16,4 @@ export * as practice from "./practice";
 export * as wrongbook from "./wrongbook";
 export * as collection from "./collection";
 export * as sign from "./sign";
+export * as role from "./role";
