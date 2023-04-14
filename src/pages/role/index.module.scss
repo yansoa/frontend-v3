@@ -17,6 +17,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
+
       img {
         width: 50px;
         height: 50px;
@@ -64,6 +65,7 @@
           line-height: 36px;
           letter-spacing: 1px;
           margin-bottom: 30px;
+          text-align: left;
         }
         .price {
           width: 100%;
@@ -73,6 +75,7 @@
           color: #572f1d;
           line-height: 48px;
           margin-bottom: 30px;
+          text-align: left;
           .small {
             font-size: 20px;
           }
@@ -83,6 +86,7 @@
           width: 100%;
           height: auto;
           min-height: 162px;
+          text-align: left;
           p {
             display: block;
             width: 100%;
@@ -93,6 +97,7 @@
             color: #572f1d;
             line-height: 24px;
             margin-bottom: 30px;
+            text-align: left;
           }
         }
         .button {

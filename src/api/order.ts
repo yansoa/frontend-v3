@@ -59,3 +59,15 @@ export function createTopicOrder(id: number, params: any) {
 export function createK12Order(id: number, params: any) {
   return client.post("/addons/ke/api/v1/course/" + id + "/paid", params);
 }
+
+export function checkOrderStatus(params: any) {
+  return client.get(`/api/v2/order/status`, params);
+}
+
+export function payWechatScan(params: any) {
+  return client.post("/api/v2/order/pay/wechatScan", params);
+}
+
+export function handPay(params: any) {
+  return client.post("/api/v3/order/pay/handPay", params);
+}

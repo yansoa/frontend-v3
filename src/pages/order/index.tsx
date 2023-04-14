@@ -492,6 +492,7 @@ export const OrderPage = () => {
                   ? styles["payment-active-item"]
                   : styles["payment-item"]
               }
+              onClick={() => setPayment(item.sign)}
             >
               {item.sign === "alipay" && <img src={zfbIcon} />}
               {item.sign === "wechat" && <img src={wepayIcon} />}

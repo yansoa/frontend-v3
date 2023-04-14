@@ -32,6 +32,7 @@ import { MemberMessagesPage } from "../pages/member/messages";
 import { MemberOrdersPage } from "../pages/member/orders";
 import { RolePage } from "../pages/role";
 import { OrderPage } from "../pages/order/index";
+import { OrderPayPage } from "../pages/order/pay";
 
 let RootPage: any = null;
 let configFunc = {
@@ -231,6 +232,7 @@ const routes: RouteObject[] = [
       { path: "/member/orders", element: <MemberOrdersPage /> },
       { path: "/vip", element: <RolePage /> },
       { path: "/order", element: <OrderPage /> },
+      { path: "/order/pay", element: <OrderPayPage /> },
     ],
   },
 ];
