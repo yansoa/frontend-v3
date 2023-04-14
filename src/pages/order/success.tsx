@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styles from "./success.module.scss";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import successIcon from "../../assets/img/commen/icon-adopt.png";
 
 export const OrderSuccessPage = () => {
   document.title = "支付成功";
-  const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [totalAmount, setTotalAmount] = useState(
     Number(result.get("total_amount")) || 0
@@ -25,15 +24,12 @@ export const OrderSuccessPage = () => {
           </span>
         </div>
         <div className={styles["btn-box"]}>
-          <div className={styles["button"]} onClick={() => navigate("/")}>
-            返回首页
-          </div>
-          <div
-            className={styles["find-button"]}
-            onClick={() => navigate("/member/orders")}
-          >
-            查看订单
-          </div>
+          <Link replace to="/">
+            <div className={styles["button"]}>返回首页</div>
+          </Link>
+          <Link replace to="/member/orders">
+            <div className={styles["find-button"]}>查看订单</div>
+          </Link>
         </div>
       </div>
     </div>
