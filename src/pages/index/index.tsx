@@ -4,6 +4,8 @@ import { sign, viewBlock, home } from "../../api/index";
 import { SignComp } from "../../components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { message, Row, Col, Spin, Carousel } from "antd";
+import { VodComp } from "./components/vod-v1";
+import { LiveComp } from "./components/live-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -93,7 +95,7 @@ const IndexPage = () => {
           </div>
         </Row>
       )}
-      {!loading && sliders && sliders.length > 0 && (
+      {!loading && sliders.length > 0 && (
         <Carousel autoplay>
           {sliders.map((item: any) => (
             <div key={item.sort} onClick={() => sliderClcik(item.url)}>
@@ -110,6 +112,31 @@ const IndexPage = () => {
           公告：{notice.title}
         </a>
       )}
+      {!blocksLoading &&
+        blocks.length > 0 &&
+        blocks.map((item: any) => (
+          <div className={styles["box"]} key={item.id}>
+            {item.sign === "pc-vod-v1" && (
+              <VodComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></VodComp>
+            )}
+            {item.sign === "pc-live-v1" && (
+              <LiveComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></LiveComp>
+            )}
+            {item.sign === "code" && (
+              <div className={styles["code-box"]}>
+                <div
+                  dangerouslySetInnerHTML={{ __html: item.config_render.html }}
+                ></div>
+              </div>
+            )}
+          </div>
+        ))}
     </div>
   );
 };

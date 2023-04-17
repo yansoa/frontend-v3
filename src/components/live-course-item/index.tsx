@@ -33,7 +33,9 @@ export const LiveCourseItem: React.FC<PropInterface> = ({
       <div className={styles["live-course-body"]}>
         <div className={styles["live-course-title"]}>{title}</div>
         <div className={styles["live-course-info"]}>
-          <div className={styles["live-course-sub"]}>{category.name}</div>
+          <div className={styles["live-course-sub"]}>
+            {category && category.name}
+          </div>
           <div className={styles["live-course-charge"]}>
             {charge > 0 && (
               <span className={styles["charge-text"]}>
