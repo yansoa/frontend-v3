@@ -46,7 +46,7 @@ export const PageBox: React.FC<PropInterface> = ({
 
   return (
     <div className="page-wrapper clearfix">
-      <div className="page-tab fl clearfix">
+      <div className="page-tab clearfix">
         <span className="fl h50">第{currentPage}页</span>
         {currentPage !== 1 && (
           <button

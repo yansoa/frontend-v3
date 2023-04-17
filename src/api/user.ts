@@ -109,3 +109,11 @@ export function miaosha(params: any) {
 export function userPaper(params: any) {
   return client.get("/addons/Paper/api/v2/member/joinPapers", params);
 }
+
+export function userMockPaper(params: any) {
+  return client.get("/addons/Paper/api/v2/member/joinMockPapers", params);
+}
+
+export function userPractice(params: any) {
+  return client.get("/addons/Paper/api/v2/member/joinPractices", params);
+}

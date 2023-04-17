@@ -1057,14 +1057,13 @@ li {
 .clearfix {
   zoom: 1;
 }
-
-.page-wrapper .fl {
-  float: left;
-}
 .page-wrapper {
   font-size: 14px;
   color: #333;
+  display: flex;
+  justify-content: center;
 }
+
 .h50 {
   display: inline-block;
   height: 30px;

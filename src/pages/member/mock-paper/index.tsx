@@ -5,10 +5,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { NavMember, Empty, PageBox } from "../../../components";
 import { user as member } from "../../../api/index";
-import paperIcon from "../../../assets/img/member/test.png";
+import paperIcon from "../../../assets/img/member/mock.png";
 
-export const MemberPaperPage = () => {
-  document.title = "我的考试";
+export const MemberMockPaperPage = () => {
+  document.title = "我的模考";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -34,7 +34,7 @@ export const MemberPaperPage = () => {
     }
     setLoading(true);
     member
-      .userPaper({
+      .userMockPaper({
         page: page,
         size: size,
       })
@@ -60,15 +60,15 @@ export const MemberPaperPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/exam/papers/detail?id=" + id);
+    navigate("/exam/mockpaper/detail?id=" + id);
   };
 
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={9}></NavMember>
+        <NavMember cid={11}></NavMember>
         <div className={styles["project-box"]}>
-          <div className={styles["btn-title"]}>我的考试</div>
+          <div className={styles["btn-title"]}>我的模考</div>
           {loading && (
             <Row>
               <div className="float-left d-j-flex mt-50">
@@ -95,11 +95,11 @@ export const MemberPaperPage = () => {
                         <div className={styles["name"]}>{item.paper.title}</div>
                       </div>
                       <div className={styles["info"]}>
-                        <span style={{ color: "#3CA7FA" }}>
+                        <span style={{ color: "#00BBA7" }}>
                           最高得分：{item.max_score}
                         </span>
                         <span className={styles["item"]}>|</span>
-                        <span>{item.paper.score}分</span>
+                        <span>共{item.paper.question_count}道题</span>
                       </div>
                     </div>
                   )}
