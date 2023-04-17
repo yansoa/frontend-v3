@@ -18,7 +18,9 @@ export const SearchPage = () => {
   const [size, setSize] = useState(10);
   const [type, setType] = useState(0);
   const [total, setTotal] = useState(0);
-  const [keywords, setKeywords] = useState<string>(result.get("keywords"));
+  const [keywords, setKeywords] = useState<string>(
+    String(result.get("keywords"))
+  );
   const [content, setContent] = useState<string>(
     String(result.get("keywords"))
   );
