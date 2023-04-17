@@ -7,6 +7,7 @@ import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import App from "./App";
 import "./index.scss"; //全局样式
+import AutoScorllTop from "./AutoTop";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       theme={{ token: { colorPrimary: "#3ca7fa" } }}
     >
       <BrowserRouter>
-        <App />
+        <AutoScorllTop>
+          <App />
+        </AutoScorllTop>
       </BrowserRouter>
     </ConfigProvider>
   </Provider>

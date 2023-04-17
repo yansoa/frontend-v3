@@ -105,3 +105,7 @@ export function tuangou(params: any) {
 export function miaosha(params: any) {
   return client.get("/addons/MiaoSha/api/v1/m/user/orders", params);
 }
+
+export function userPaper(params: any) {
+  return client.get("/addons/Paper/api/v2/member/joinPapers", params);
+}
