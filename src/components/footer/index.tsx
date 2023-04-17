@@ -15,7 +15,7 @@ export const Footer = (props: Props) => {
   const pathname = useLocation().pathname;
   const [list, setList] = useState<any>([]);
   let footerStatus = true;
-  if (pathname === "/vip") {
+  if (pathname === "/vip" || pathname === "/search") {
     footerStatus = false;
   }
 

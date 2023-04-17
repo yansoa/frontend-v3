@@ -1,7 +1,8 @@
+import React from "react";
 import { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const AutoScorllTop = ({ children }) => {
+const AutoScorllTop: React.FC<{ children: any }> = ({ children }) => {
   const location = useLocation();
   useLayoutEffect(() => {
     document.documentElement.scrollTo(0, 0);

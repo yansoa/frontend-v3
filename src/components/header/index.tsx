@@ -110,7 +110,7 @@ export const Header = () => {
       message.error("请输入关键字后再搜索");
       return;
     }
-    navigate(`/search/${value}`);
+    navigate(`/search?keywords=${value}`);
   };
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
