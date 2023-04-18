@@ -57,6 +57,9 @@ export function getSessionLoginCode(code: string) {
 }
 
 export function getCommentTime(dateStr: string) {
+  if (dateStr === "刚刚") {
+    return "刚刚";
+  }
   const interval = moment().diff(moment(dateStr), "seconds");
   if (interval < 60) {
     return "刚刚";
