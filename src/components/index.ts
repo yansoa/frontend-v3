@@ -38,3 +38,4 @@ export * from "./sign";
 export * from "./page-box";
 export * from "./topic-course-item";
 export * from "./book-course-item";
+export * from "./share";

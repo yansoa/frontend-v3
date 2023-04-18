@@ -513,6 +513,12 @@ button:focus-visible {
   }
 }
 
+.free-content {
+  width: 100%;
+  min-height: 72px;
+  margin-bottom: 0px;
+}
+
 .md-content .ql-size-small {
   font-size: 0.75em;
 }
