@@ -38,7 +38,8 @@ import { OrderPage } from "../pages/order/index";
 import { OrderPayPage } from "../pages/order/pay";
 import { OrderSuccessPage } from "../pages/order/success";
 import { SearchPage } from "../pages/search";
-import { TopicPage } from "../pages/topic";
+import { TopicPage } from "../pages/topic/index";
+import { BookPage } from "../pages/book/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -245,6 +246,7 @@ const routes: RouteObject[] = [
       { path: "/order/success", element: <OrderSuccessPage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/topic", element: <TopicPage /> },
+      { path: "/book", element: <BookPage /> },
     ],
   },
 ];
