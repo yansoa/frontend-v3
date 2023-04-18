@@ -20,3 +20,4 @@ export * as role from "./role";
 export * as order from "./order";
 export * as search from "./search";
 export * as viewBlock from "./viewBlock";
+export * as topic from "./topic";

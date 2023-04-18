@@ -36,3 +36,4 @@ export * from "./exam-play-categories";
 export * from "./nav-member";
 export * from "./sign";
 export * from "./page-box";
+export * from "./topic-course-item";

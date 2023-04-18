@@ -38,6 +38,7 @@ import { OrderPage } from "../pages/order/index";
 import { OrderPayPage } from "../pages/order/pay";
 import { OrderSuccessPage } from "../pages/order/success";
 import { SearchPage } from "../pages/search";
+import { TopicPage } from "../pages/topic";
 
 let RootPage: any = null;
 let configFunc = {
@@ -243,6 +244,7 @@ const routes: RouteObject[] = [
       { path: "/order/pay", element: <OrderPayPage /> },
       { path: "/order/success", element: <OrderSuccessPage /> },
       { path: "/search", element: <SearchPage /> },
+      { path: "/topic", element: <TopicPage /> },
     ],
   },
 ];
