@@ -66,7 +66,7 @@ export const MemberPracticePage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={11}></NavMember>
+        <NavMember cid={10}></NavMember>
         <div className={styles["project-box"]}>
           <div className={styles["btn-title"]}>我的练习</div>
           {loading && (
