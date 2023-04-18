@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { message, Row, Col, Spin, Carousel } from "antd";
 import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
+import { BookComp } from "./components/book-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -127,6 +128,12 @@ const IndexPage = () => {
                 name={item.config_render.title}
                 items={item.config_render.items}
               ></LiveComp>
+            )}
+            {item.sign === "pc-book-v1" && (
+              <BookComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></BookComp>
             )}
             {item.sign === "code" && (
               <div className={styles["code-box"]}>
