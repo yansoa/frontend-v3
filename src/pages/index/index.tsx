@@ -8,6 +8,7 @@ import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
 import { TopicComp } from "./components/topic-v1";
+import { LearnPathComp } from "./components/learnpath-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -141,6 +142,12 @@ const IndexPage = () => {
                 name={item.config_render.title}
                 items={item.config_render.items}
               ></TopicComp>
+            )}
+            {item.sign === "pc-learnPath-v1" && (
+              <LearnPathComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></LearnPathComp>
             )}
             {item.sign === "code" && (
               <div className={styles["code-box"]}>

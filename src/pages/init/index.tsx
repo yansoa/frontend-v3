@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { message } from "antd";
 import { Outlet } from "react-router-dom";
@@ -8,7 +8,7 @@ import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
-import { Header, Footer } from "../../components";
+import { Header, Footer, BackTop } from "../../components";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
@@ -29,6 +29,7 @@ interface Props {
 
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
+  const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
   let showHeader = true;
   let showFooter = true;
   if (
@@ -44,6 +45,13 @@ export const InitPage = (props: Props) => {
   }
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.addEventListener("scroll", getHeight, true);
+    return () => {
+      window.removeEventListener("scroll", getHeight, true);
+    };
+  }, []);
 
   const codeLogin = (code: string) => {
     if (getSessionLoginCode(code)) {
@@ -127,11 +135,24 @@ export const InitPage = (props: Props) => {
   //   setFaceCheckVisible(true);
   // }
 
+  const getHeight = () => {
+    let scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
+    if (scrollTop >= 2000) {
+      setBackTopStatus(true);
+    } else {
+      setBackTopStatus(false);
+    }
+  };
+
   return (
     <>
       {showHeader && <Header></Header>}
       <Outlet />
       {showFooter && <Footer status={true}></Footer>}
+      {backTopStatus && <BackTop></BackTop>}
     </>
   );
 };
