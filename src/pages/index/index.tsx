@@ -7,6 +7,7 @@ import { message, Row, Col, Spin, Carousel } from "antd";
 import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
+import { TopicComp } from "./components/topic-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -134,6 +135,12 @@ const IndexPage = () => {
                 name={item.config_render.title}
                 items={item.config_render.items}
               ></BookComp>
+            )}
+            {item.sign === "pc-topic-v1" && (
+              <TopicComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></TopicComp>
             )}
             {item.sign === "code" && (
               <div className={styles["code-box"]}>
