@@ -16,8 +16,11 @@ export const VodComp: React.FC<PropInterface> = ({ items, name }) => {
             <div className={styles["index-section-title-text"]}>{name}</div>
           </div>
           <div className={styles["index-section-body"]}>
-            {items.map((item: any) => (
-              <div className={styles["vod-course-item"]} key={item.id}>
+            {items.map((item: any, index: number) => (
+              <div
+                className={styles["vod-course-item"]}
+                key={item.id + "vod" + index}
+              >
                 <VodCourseItem
                   cid={item.id}
                   videosCount={item.videos_count}

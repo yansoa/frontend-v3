@@ -21,10 +21,10 @@ export const TopicComp: React.FC<PropInterface> = ({ items, name }) => {
             <div className={styles["index-section-title-text"]}>{name}</div>
           </div>
           <div className={styles["index-section-body"]}>
-            {items.map((item: any) => (
+            {items.map((item: any, index: number) => (
               <div
                 className={styles["topic-course-item"]}
-                key={item.id}
+                key={item.id + "topic" + index}
                 onClick={() => goDetail(item)}
               >
                 <div className={styles["topic-course-thumb"]}>

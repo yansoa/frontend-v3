@@ -21,10 +21,10 @@ export const BookComp: React.FC<PropInterface> = ({ items, name }) => {
             <div className={styles["index-section-title-text"]}>{name}</div>
           </div>
           <div className={styles["index-section-body"]}>
-            {items.map((item: any) => (
+            {items.map((item: any, index: number) => (
               <div
                 className={styles["book-course-item"]}
-                key={item.id}
+                key={item.id + "book" + index}
                 onClick={() => goBookDetail(item)}
               >
                 <div className={styles["book-course-thumb"]}>

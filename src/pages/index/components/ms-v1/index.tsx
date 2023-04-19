@@ -36,7 +36,7 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
             {items.map((item: any, index: number) => (
               <div
                 className={styles["ms-course-item"]}
-                key={item.id + index}
+                key={item.id + "ms" + index}
                 onClick={() => goDetail(item)}
               >
                 <div className={styles["ms-course-thumb"]}>
