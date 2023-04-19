@@ -40,3 +40,4 @@ export * from "./topic-course-item";
 export * from "./book-course-item";
 export * from "./share";
 export * from "./back-top";
+export * from "./learn-path-course-item";

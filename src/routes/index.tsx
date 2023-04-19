@@ -41,6 +41,7 @@ import { SearchPage } from "../pages/search";
 import { TopicPage } from "../pages/topic/index";
 import { TopicDetailPage } from "../pages/topic/detail";
 import { BookPage } from "../pages/book/index";
+import { LearnPathPage } from "../pages/learnPath";
 import { ErrorPage } from "../pages/error/index";
 
 let RootPage: any = null;
@@ -250,6 +251,7 @@ const routes: RouteObject[] = [
       { path: "/topic", element: <TopicPage /> },
       { path: "/topic/detail", element: <TopicDetailPage /> },
       { path: "/book", element: <BookPage /> },
+      { path: "/learnPath", element: <LearnPathPage /> },
       { path: "/error", element: <ErrorPage /> },
     ],
   },

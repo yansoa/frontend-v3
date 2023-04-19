@@ -22,3 +22,4 @@ export * as search from "./search";
 export * as viewBlock from "./viewBlock";
 export * as topic from "./topic";
 export * as book from "./book";
+export * as path from "./path";
