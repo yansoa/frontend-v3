@@ -9,6 +9,7 @@ import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
 import { TopicComp } from "./components/topic-v1";
 import { LearnPathComp } from "./components/learnpath-v1";
+import { MiaoShaComp } from "./components/ms-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -148,6 +149,12 @@ const IndexPage = () => {
                 name={item.config_render.title}
                 items={item.config_render.items}
               ></LearnPathComp>
+            )}
+            {item.sign === "pc-ms-v1" && (
+              <MiaoShaComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></MiaoShaComp>
             )}
             {item.sign === "code" && (
               <div className={styles["code-box"]}>
