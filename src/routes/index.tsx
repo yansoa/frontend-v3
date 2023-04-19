@@ -44,6 +44,7 @@ import { BookPage } from "../pages/book/index";
 import { LearnPathPage } from "../pages/learnPath/index";
 import { LearnPathDetailPage } from "../pages/learnPath/detail";
 import { ErrorPage } from "../pages/error/index";
+import { WendaPage } from "../pages/wenda/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -255,6 +256,7 @@ const routes: RouteObject[] = [
       { path: "/learnPath", element: <LearnPathPage /> },
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },
+      { path: "/wenda", element: <WendaPage /> },
     ],
   },
 ];
