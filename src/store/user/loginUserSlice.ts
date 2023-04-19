@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type UserStoreInterface = {
-  user: null;
+  user: any;
   isLogin: boolean;
   freshUnread: boolean;
 };
@@ -27,6 +27,9 @@ const loginUserSlice = createSlice({
       stage.value.user = null;
       stage.value.isLogin = false;
     },
+    changeUserCredit(stage, e) {
+      stage.value.user.credit1 = e.payload;
+    },
     saveUnread(stage, e) {
       stage.value.freshUnread = e.payload;
     },
@@ -34,6 +37,7 @@ const loginUserSlice = createSlice({
 });
 
 export default loginUserSlice.reducer;
-export const { loginAction, logoutAction, saveUnread } = loginUserSlice.actions;
+export const { loginAction, logoutAction, saveUnread, changeUserCredit } =
+  loginUserSlice.actions;
 
 export type { UserStoreInterface };

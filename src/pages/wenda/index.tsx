@@ -9,7 +9,9 @@ import {
   QaItem,
   FilterScenes,
   FilterCategories,
+  CreateQuestionDialog,
 } from "../../components";
+import { changeUserCredit } from "../../store/user/loginUserSlice";
 
 export const WendaPage = () => {
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ export const WendaPage = () => {
   const [scene, setScene] = useState(result.get("scene") || "default");
   const [cid, setCid] = useState(Number(result.get("cid")) || 0);
   const [child, setChild] = useState(Number(result.get("child")) || 0);
+  const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const scenes = [
     {
@@ -96,6 +99,15 @@ export const WendaPage = () => {
     navigate("/login");
   };
 
+  const createSuccess = (id: number, credit1: number) => {
+    setVisiable(false);
+    let credit = Number(user.credit1) - Number(credit1);
+    changeUserCredit(credit);
+    setTimeout(() => {
+      navigate("/wenda/detail?id=" + id);
+    }, 600);
+  };
+
   return (
     <>
       <FilterCategories
@@ -128,6 +140,11 @@ export const WendaPage = () => {
           resetList();
         }}
       />
+      <CreateQuestionDialog
+        open={visiable}
+        onCancel={() => setVisiable(false)}
+        onSuccess={(id: number, credit1: number) => createSuccess(id, credit1)}
+      ></CreateQuestionDialog>
       <div className={styles["contanier"]}>
         <div className={styles["qa-box"]}>
           {loading && (
