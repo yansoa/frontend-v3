@@ -10,6 +10,7 @@ import { BookComp } from "./components/book-v1";
 import { TopicComp } from "./components/topic-v1";
 import { LearnPathComp } from "./components/learnpath-v1";
 import { MiaoShaComp } from "./components/ms-v1";
+import { TuangouComp } from "./components/tg-v1";
 
 const IndexPage = () => {
   document.title = "首页";
@@ -156,6 +157,13 @@ const IndexPage = () => {
                 items={item.config_render.items}
               ></MiaoShaComp>
             )}
+            {item.sign === "pc-tg-v1" && (
+              <TuangouComp
+                name={item.config_render.title}
+                items={item.config_render.items}
+              ></TuangouComp>
+            )}
+
             {item.sign === "code" && (
               <div className={styles["code-box"]}>
                 <div
