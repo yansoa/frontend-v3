@@ -34,6 +34,7 @@ import { MemberPaperPage } from "../pages/member/paper";
 import { MemberMockPaperPage } from "../pages/member/mock-paper";
 import { MemberPracticePage } from "../pages/member/practice";
 import { MemberQuestionsPage } from "../pages/member/questions";
+import { MemberExchangerPage } from "../pages/member/codeexchanger";
 import { RolePage } from "../pages/role";
 import { OrderPage } from "../pages/order/index";
 import { OrderPayPage } from "../pages/order/pay";
@@ -248,6 +249,7 @@ const routes: RouteObject[] = [
       { path: "/member/mockpaper", element: <MemberMockPaperPage /> },
       { path: "/member/practice", element: <MemberPracticePage /> },
       { path: "/member/questions", element: <MemberQuestionsPage /> },
+      { path: "/member/codeexchanger", element: <MemberExchangerPage /> },
       { path: "/vip", element: <RolePage /> },
       { path: "/order", element: <OrderPage /> },
       { path: "/order/pay", element: <OrderPayPage /> },

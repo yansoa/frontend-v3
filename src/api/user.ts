@@ -125,3 +125,7 @@ export function userQuestions(params: any) {
 export function userAnswers(params: any) {
   return client.get("/addons/Wenda/api/v1/member/answers", params);
 }
+
+export function codeExchangerRecords(params: any) {
+  return client.get("/addons/CodeExchanger/api/v2/user/records", params);
+}

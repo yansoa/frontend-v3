@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, Pagination } from "antd";
 import styles from "./index.module.scss";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { NavMember, Empty, ThumbBar } from "../../../components";
+import { NavMember, Empty } from "../../../components";
 import { user as member } from "../../../api/index";
-import { getCommentTime } from "../../../utils/index";
 
 export const MemberQuestionsPage = () => {
   document.title = "我的问答";
