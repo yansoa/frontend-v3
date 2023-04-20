@@ -15,3 +15,10 @@ export function user() {
 export function goods(params: any) {
   return client.get("/addons/MultiLevelShare/api/v1/user/goods", params);
 }
+
+export function inviteBalanceRecords(params: any) {
+  return client.get(
+    "/addons/MultiLevelShare/api/v1/user/balanceRecords",
+    params
+  );
+}
