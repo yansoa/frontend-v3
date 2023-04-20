@@ -45,6 +45,7 @@ import { LearnPathPage } from "../pages/learnPath/index";
 import { LearnPathDetailPage } from "../pages/learnPath/detail";
 import { ErrorPage } from "../pages/error/index";
 import { WendaPage } from "../pages/wenda/index";
+import { SharePage } from "../pages/share";
 
 let RootPage: any = null;
 let configFunc = {
@@ -257,6 +258,7 @@ const routes: RouteObject[] = [
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },
       { path: "/wenda", element: <WendaPage /> },
+      { path: "/share", element: <SharePage /> },
     ],
   },
 ];
