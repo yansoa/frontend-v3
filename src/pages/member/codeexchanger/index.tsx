@@ -3,6 +3,7 @@ import { Row, Col, Spin, Pagination, Input, Button } from "antd";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { NavMember, Empty } from "../../../components";
+import { RecordsDialog } from "./components/records";
 import { user as member } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
 
@@ -15,6 +16,8 @@ export const MemberExchangerPage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [relateData, setRelateData] = useState<any>([]);
+  const [recordsVisiable, setRecordsVisiable] = useState<boolean>(false);
   const [exchangeCode, setExchangeCode] = useState<string>("");
 
   useEffect(() => {
@@ -35,7 +38,10 @@ export const MemberExchangerPage = () => {
       });
   };
 
-  const showDetail = (data: any) => {};
+  const showDetail = (data: any) => {
+    setRelateData(data);
+    setRecordsVisiable(true);
+  };
 
   const resetData = () => {
     setPage(1);
@@ -47,6 +53,11 @@ export const MemberExchangerPage = () => {
 
   return (
     <div className="container">
+      <RecordsDialog
+        relateData={relateData}
+        open={recordsVisiable}
+        onCancel={() => setRecordsVisiable(false)}
+      ></RecordsDialog>
       <div className={styles["box"]}>
         <NavMember cid={15}></NavMember>
         <div className={styles["right-box"]}>
