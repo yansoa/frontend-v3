@@ -21,7 +21,7 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
   buyVideos,
   switchVideo,
 }) => {
-  const myRef = useRef();
+  const myRef = useRef(null);
   useEffect(() => {
     // 自动锁定当前视频位置
     if (chapters.length > 0) {
