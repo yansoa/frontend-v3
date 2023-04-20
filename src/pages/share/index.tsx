@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { multiLevelShare } from "../../api/index";
 import { getShareHost, changeTime } from "../../utils/index";
 import { Empty } from "../../components";
+import { WithdrawDialog } from "./components/withdraw-dialog";
 
 export const SharePage = () => {
   const navigate = useNavigate();
@@ -195,6 +196,18 @@ export const SharePage = () => {
 
   return (
     <div className="container">
+      <WithdrawDialog
+        open={dialogStatus}
+        balance={balance}
+        onCancel={() => setDialogStatus(false)}
+        onSuccess={() => {
+          getInviteInfo();
+          setList("");
+          setPage(1);
+          getData();
+          setDialogStatus(false);
+        }}
+      ></WithdrawDialog>
       <div className={styles["box"]}>
         <div className={styles["user-box"]}>
           <div className={styles["user"]}>

@@ -22,3 +22,7 @@ export function inviteBalanceRecords(params: any) {
     params
   );
 }
+
+export function withdraw(params: any) {
+  return client.post("/addons/MultiLevelShare/api/v1/user/withdraw", params);
+}
