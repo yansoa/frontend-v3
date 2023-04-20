@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Spin, Pagination, Input, Button } from "antd";
+import { Row, Col, Spin, Pagination, Input, Button, message } from "antd";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { NavMember, Empty } from "../../../components";
 import { RecordsDialog } from "./components/records";
+import { VerifyDialog } from "./components/verify-dialog";
+import { ConfirmDialog } from "./components/confirm-dialog";
 import { user as member } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
 
@@ -18,7 +20,12 @@ export const MemberExchangerPage = () => {
   const [total, setTotal] = useState(0);
   const [relateData, setRelateData] = useState<any>([]);
   const [recordsVisiable, setRecordsVisiable] = useState<boolean>(false);
+  const [verifyVisiable, setVerifyVisiable] = useState<boolean>(false);
+  const [ischecked, setIschecked] = useState<boolean>(false);
   const [exchangeCode, setExchangeCode] = useState<string>("");
+  const [queryList, setQueryList] = useState<any>([]);
+  const [buttonStatus, setButtonStatus] = useState<boolean>(false);
+  const [confirmStatus, setConfirmStatus] = useState<boolean>(false);
 
   useEffect(() => {
     getData();
@@ -49,7 +56,14 @@ export const MemberExchangerPage = () => {
     setRefresh(!refresh);
   };
 
-  const exchange = () => {};
+  const exchange = () => {
+    if (!exchangeCode) {
+      message.error("请输入兑换码");
+      return;
+    }
+    setIschecked(false);
+    setVerifyVisiable(true);
+  };
 
   return (
     <div className="container">
@@ -58,6 +72,34 @@ export const MemberExchangerPage = () => {
         open={recordsVisiable}
         onCancel={() => setRecordsVisiable(false)}
       ></RecordsDialog>
+      <VerifyDialog
+        status={ischecked}
+        exchangeCode={exchangeCode}
+        open={verifyVisiable}
+        onSuccess={() => {
+          setExchangeCode("");
+          setVerifyVisiable(false);
+          resetData();
+        }}
+        checkSuccess={(data: any, status: boolean) => {
+          setVerifyVisiable(false);
+          setQueryList(data);
+          setButtonStatus(status);
+          setConfirmStatus(true);
+        }}
+        onCancel={() => setVerifyVisiable(false)}
+      ></VerifyDialog>
+      <ConfirmDialog
+        data={queryList}
+        buttonStatus={buttonStatus}
+        open={confirmStatus}
+        onSubmit={() => {
+          setConfirmStatus(false);
+          setIschecked(true);
+          setVerifyVisiable(true);
+        }}
+        onCancel={() => setConfirmStatus(false)}
+      ></ConfirmDialog>
       <div className={styles["box"]}>
         <NavMember cid={15}></NavMember>
         <div className={styles["right-box"]}>
@@ -96,7 +138,7 @@ export const MemberExchangerPage = () => {
               <>
                 {list.map((item: any) => (
                   <div
-                    key={item.id}
+                    key={item.activity_id}
                     className={styles["project-item"]}
                     onClick={() =>
                       showDetail(JSON.parse(item.activity.relate_data))

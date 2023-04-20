@@ -129,3 +129,11 @@ export function userAnswers(params: any) {
 export function codeExchangerRecords(params: any) {
   return client.get("/addons/CodeExchanger/api/v2/user/records", params);
 }
+
+export function exchange(params: any) {
+  return client.post("/addons/CodeExchanger/api/v2/confirm", params);
+}
+
+export function query(params: any) {
+  return client.post("/addons/CodeExchanger/api/v2/query", params);
+}
