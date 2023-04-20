@@ -65,7 +65,10 @@ export const ConfirmDialog: React.FC<PropInterface> = ({
             </div>
             <div className={styles["btn-box"]}>
               {buttonStatus && (
-                <div className={styles["btn-submit"]} onClick={() => submit()}>
+                <div
+                  className={styles["btn-submit"]}
+                  onClick={() => onSubmit()}
+                >
                   确认兑换
                 </div>
               )}

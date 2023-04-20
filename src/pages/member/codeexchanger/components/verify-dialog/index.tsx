@@ -8,7 +8,7 @@ interface PropInterface {
   open: boolean;
   status: boolean;
   exchangeCode: string;
-  checkSuccess: (data: any, status: boolean) => void;
+  checkSuccess: (data: any, value: boolean) => void;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -38,7 +38,7 @@ export const VerifyDialog: React.FC<PropInterface> = ({
     });
   };
 
-  const submit = () => {
+  const exchangeConfirm = () => {
     if (loading) {
       return;
     }
@@ -68,8 +68,6 @@ export const VerifyDialog: React.FC<PropInterface> = ({
         image_key: captcha.key,
       })
       .then((res: any) => {
-        message.success("兑换成功");
-
         let data = res.data.activity.relate_courses;
         let buttonStatus = false;
         for (let i = 0; i < data.length; i++) {
@@ -118,7 +116,10 @@ export const VerifyDialog: React.FC<PropInterface> = ({
             </div>
             <div className={styles["btn-box"]}>
               {status && (
-                <div className={styles["btn-submit"]} onClick={() => submit()}>
+                <div
+                  className={styles["btn-submit"]}
+                  onClick={() => exchangeConfirm()}
+                >
                   确认
                 </div>
               )}
