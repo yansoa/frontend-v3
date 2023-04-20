@@ -117,3 +117,11 @@ export function userMockPaper(params: any) {
 export function userPractice(params: any) {
   return client.get("/addons/Paper/api/v2/member/joinPractices", params);
 }
+
+export function userQuestions(params: any) {
+  return client.get("/addons/Wenda/api/v1/member/questions", params);
+}
+
+export function userAnswers(params: any) {
+  return client.get("/addons/Wenda/api/v1/member/answers", params);
+}
