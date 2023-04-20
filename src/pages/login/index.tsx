@@ -50,9 +50,9 @@ const LoginPage = () => {
           ) {
             setFaceCheckVisible(true);
           } else if (params.redirect) {
-            navigate(params.redirect);
+            navigate(params.redirect, { replace: true });
           } else {
-            navigate("/");
+            navigate("/", { replace: true });
           }
         });
       })
@@ -62,9 +62,9 @@ const LoginPage = () => {
   };
   const redirectHandler = () => {
     if (params.redirect) {
-      navigate(params.redirect);
+      navigate(params.redirect, { replace: true });
     } else {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
   const onFinishFailed = (errorInfo: any) => {

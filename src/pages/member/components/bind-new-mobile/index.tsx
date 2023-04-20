@@ -119,9 +119,9 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
     onCancel();
     if (pathname === "/login") {
       if (params.redirect) {
-        navigate(params.redirect);
+        navigate(params.redirect, { replace: true });
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     } else {
       location.reload();
