@@ -137,3 +137,8 @@ export function exchange(params: any) {
 export function query(params: any) {
   return client.post("/addons/CodeExchanger/api/v2/query", params);
 }
+
+export function credit1Records(params: any) {
+  return client.get("/api/v2/member/credit1Records", params);
+}
+
