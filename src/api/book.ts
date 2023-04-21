@@ -12,6 +12,14 @@ export function detail(id: number) {
   return client.get("/addons/MeeduBooks/api/v1/book/" + id, {});
 }
 
+export function likeStatus(params: any) {
+  return client.get(`/addons/templateOne/api/v1/like/status`, params);
+}
+
+export function likeHit(params: any) {
+  return client.get(`/addons/templateOne/api/v1/like/hit`, params);
+}
+
 export function bookComments(id: number, params: any) {
   return client.get(
     "/addons/MeeduBooks/api/v1/book/" + id + "/comments",
