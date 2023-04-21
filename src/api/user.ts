@@ -157,3 +157,6 @@ export function creditMallDetail(id: number) {
 export function creditMallAddress() {
   return client.get(`/addons/Credit1Mall/api/v1/user/address`, {});
 }
+export function creditMallExchange(id: number, params: any) {
+  return client.post(`/addons/Credit1Mall/api/v1/goods/${id}/exchange`, params);
+}

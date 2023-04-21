@@ -109,6 +109,7 @@ export const MemberCredit1RecordsPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+    setGoodStatus(false);
     resetData();
   };
 
@@ -163,6 +164,11 @@ export const MemberCredit1RecordsPage = () => {
             open={goodStatus}
             id={id}
             isV={is_v}
+            onExchange={() => {
+              setTimeout(() => {
+                tabChange(3);
+              }, 500);
+            }}
             onCancel={() => setGoodStatus(false)}
           ></GoodsDetailComp>
           {!goodStatus && currentTab === 1 && (

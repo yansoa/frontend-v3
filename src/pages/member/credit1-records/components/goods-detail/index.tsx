@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { user as member } from "../../../../../api/index";
-import { setNewAddress } from "../../../../../store/user/loginUserSlice";
+import {
+  setNewAddress,
+  loginAction,
+} from "../../../../../store/user/loginUserSlice";
 import backIcon from "../../../../../assets/img/back@2x.png";
+import { ConfirmDialog } from "../confirm-dialog";
+import { EditAddressDialog } from "../edit-address";
 
 interface PropInterface {
   open: boolean;
   id: number;
   isV: number;
+  onExchange: () => void;
   onCancel: () => void;
 }
 
@@ -16,13 +23,17 @@ export const GoodsDetailComp: React.FC<PropInterface> = ({
   open,
   id,
   isV,
+  onExchange,
   onCancel,
 }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [goods, setGoods] = useState<any>([]);
   const [address, setAddress] = useState<string>("");
+  const [openMask, setOpenMask] = useState<boolean>(false);
+  const [dialogStatus, setDialogStatus] = useState<boolean>(false);
   const [addressId, setAddressId] = useState(0);
+  const user = useSelector((state: any) => state.loginUser.value.user);
   const addressForm = useSelector(
     (state: any) => state.loginUser.value.addressForm
   );
@@ -102,13 +113,71 @@ export const GoodsDetailComp: React.FC<PropInterface> = ({
     });
   };
 
-  const exchange = () => {};
-  const changeAddress = () => {};
+  const resetUserDetail = () => {
+    member.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+      onExchange();
+    });
+  };
+
+  const exchange = () => {
+    if (user.credit1 < goods.charge) {
+      message.error("积分余额不足");
+      return;
+    }
+    if (isV === 0 && address === "请输入地址") {
+      message.error("请填写地址");
+      return;
+    }
+    setOpenMask(true);
+  };
+
+  const changeAddress = () => {
+    setDialogStatus(true);
+  };
+
+  const submitHandle = () => {
+    if (isV === 0) {
+      let form = {
+        address_id: addressId,
+        name: addressForm.name,
+        mobile: addressForm.mobile,
+        province: addressForm.province,
+        city: addressForm.city,
+        area: addressForm.area,
+        street: addressForm.street,
+      };
+      member.creditMallExchange(id, form).then((res: any) => {
+        message.success("兑换成功");
+        setOpenMask(false);
+        resetUserDetail();
+      });
+    } else if (isV === 1) {
+      member.creditMallExchange(id, {}).then((res: any) => {
+        setOpenMask(false);
+        message.success("兑换成功");
+        resetUserDetail();
+      });
+    }
+  };
 
   return (
     <>
       {open && (
         <div className={styles["goodsDetail-box"]}>
+          <ConfirmDialog
+            open={openMask}
+            onSubmit={() => submitHandle()}
+            onCancel={() => setOpenMask(false)}
+          ></ConfirmDialog>
+          <EditAddressDialog
+            open={dialogStatus}
+            onCancel={() => {
+              setDialogStatus(false);
+              getDetail();
+            }}
+          ></EditAddressDialog>
           <div className={styles["btn-title"]} onClick={() => onCancel()}>
             <img className={styles["back"]} src={backIcon} />
             <span>更多商品</span>
