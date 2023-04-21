@@ -4,12 +4,28 @@ type UserStoreInterface = {
   user: any;
   isLogin: boolean;
   freshUnread: boolean;
+  addressForm: {
+    name: string;
+    mobile: string;
+    province: string;
+    city: string;
+    area: string;
+    street: string;
+  };
 };
 
 let defaultValue: UserStoreInterface = {
   user: null,
   isLogin: false,
   freshUnread: false,
+  addressForm: {
+    name: "",
+    mobile: "",
+    province: "",
+    city: "",
+    area: "",
+    street: "",
+  },
 };
 
 const loginUserSlice = createSlice({
@@ -33,11 +49,19 @@ const loginUserSlice = createSlice({
     saveUnread(stage, e) {
       stage.value.freshUnread = e.payload;
     },
+    setNewAddress(state, e) {
+      state.value.addressForm = e.payload;
+    },
   },
 });
 
 export default loginUserSlice.reducer;
-export const { loginAction, logoutAction, saveUnread, changeUserCredit } =
-  loginUserSlice.actions;
+export const {
+  loginAction,
+  logoutAction,
+  saveUnread,
+  changeUserCredit,
+  setNewAddress,
+} = loginUserSlice.actions;
 
 export type { UserStoreInterface };

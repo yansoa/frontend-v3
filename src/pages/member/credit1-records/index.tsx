@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { NavMember, Empty } from "../../../components";
 import { user as member } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
+import { GoodsDetailComp } from "./components/goods-detail";
 
 export const MemberCredit1RecordsPage = () => {
   document.title = "积分商城";
@@ -17,6 +18,9 @@ export const MemberCredit1RecordsPage = () => {
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
+  const [goodStatus, setGoodStatus] = useState<boolean>(false);
+  const [id, setId] = useState(0);
+  const [is_v, setIsV] = useState(0);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const tabs = [
@@ -85,7 +89,11 @@ export const MemberCredit1RecordsPage = () => {
     setRefresh(!refresh);
   };
 
-  const showDetail = (item: any) => {};
+  const showDetail = (item: any) => {
+    setId(item.id);
+    setIsV(item.is_v);
+    setGoodStatus(true);
+  };
 
   const goDetail = (type: string, id: number) => {
     if (type === "vip") {
@@ -151,7 +159,13 @@ export const MemberCredit1RecordsPage = () => {
               <div className={styles["credit"]}>{user.credit1}积分</div>
             </div>
           </div>
-          {currentTab === 1 && (
+          <GoodsDetailComp
+            open={goodStatus}
+            id={id}
+            isV={is_v}
+            onCancel={() => setGoodStatus(false)}
+          ></GoodsDetailComp>
+          {!goodStatus && currentTab === 1 && (
             <div className={styles["goods-box"]}>
               {loading && (
                 <Row>
@@ -217,7 +231,7 @@ export const MemberCredit1RecordsPage = () => {
               )}
             </div>
           )}
-          {currentTab === 2 && (
+          {!goodStatus && currentTab === 2 && (
             <div className={styles["rules"]}>
               <div className={styles["project-box"]}>
                 <div className={styles["btn-title"]}>积分明细</div>
@@ -315,7 +329,7 @@ export const MemberCredit1RecordsPage = () => {
               </div>
             </div>
           )}
-          {currentTab === 3 && (
+          {!goodStatus && currentTab === 3 && (
             <div className={styles["orders-box"]}>
               {loading && (
                 <Row>
