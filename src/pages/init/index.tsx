@@ -39,7 +39,8 @@ export const InitPage = (props: Props) => {
     pathname === "/exam/practice/play" ||
     pathname === "/exam/wrongbook/play" ||
     pathname === "/exam/collection/play" ||
-    pathname === "/error"
+    pathname === "/error" ||
+    pathname === "/book/read"
   ) {
     showHeader = false;
     showFooter = false;

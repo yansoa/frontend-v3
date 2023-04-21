@@ -47,6 +47,7 @@ import { TopicPage } from "../pages/topic/index";
 import { TopicDetailPage } from "../pages/topic/detail";
 import { BookPage } from "../pages/book/index";
 import { BookDetailPage } from "../pages/book/detail";
+import { BookReadPage } from "../pages/book/read";
 import { LearnPathPage } from "../pages/learnPath/index";
 import { LearnPathDetailPage } from "../pages/learnPath/detail";
 import { ErrorPage } from "../pages/error/index";
@@ -269,6 +270,7 @@ const routes: RouteObject[] = [
       { path: "/topic/detail", element: <TopicDetailPage /> },
       { path: "/book", element: <BookPage /> },
       { path: "/book/detail", element: <BookDetailPage /> },
+      { path: "/book/read", element: <BookReadPage /> },
       { path: "/learnPath", element: <LearnPathPage /> },
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },

@@ -54,3 +54,7 @@ export function answerComments(id: number, params: any) {
     params
   );
 }
+
+export function articleRead(id: number) {
+  return client.get("/addons/MeeduBooks/api/v1/book/" + id + "/read", {});
+}
