@@ -43,3 +43,4 @@ export * from "./back-top";
 export * from "./learn-path-course-item";
 export * from "./qa-item";
 export * from "./create-question";
+export * from "./book-course-comments";

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, message } from "antd";
+import { message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi, miaosha, tuangou } from "../../api/index";
@@ -8,10 +8,9 @@ import {
   HistoryRecord,
   MiaoshaDialog,
   ThumbBar,
-  Empty,
   MiaoshaList,
   TuangouList,
-  LiveCourseComments,
+  BookCourseComments,
 } from "../../components";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
@@ -38,7 +37,6 @@ export const BookDetailPage = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
-  const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const tabs = [
     {
@@ -57,6 +55,7 @@ export const BookDetailPage = () => {
 
   useEffect(() => {
     getDetail();
+    getComments();
     getLikeStatus();
     window.addEventListener("scroll", handleTabFix, true);
     return () => {
@@ -107,6 +106,29 @@ export const BookDetailPage = () => {
       .then((res: any) => {
         setIsLike(res.data.like);
       });
+  };
+
+  const getComments = () => {
+    if (commentLoading) {
+      return;
+    }
+    setCommentLoading(true);
+    bookApi
+      .bookComments(bid, {
+        page: 1,
+        size: 10000,
+      })
+      .then((res: any) => {
+        setComments(res.data.data.data);
+        setCommentUsers(res.data.users);
+        setCommentLoading(false);
+      });
+  };
+
+  const resetComments = () => {
+    setCommentLoading(false);
+    setComments([]);
+    setCommentUsers({});
   };
 
   const getMsDetail = () => {
@@ -205,9 +227,60 @@ export const BookDetailPage = () => {
     }
   };
 
-  const startLearn = () => {};
+  const goRead = (item: any) => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
+    if (book.charge > 0 && item.charge > 0 && isBuy === false) {
+      buyBook();
+      return;
+    }
+    navigate("/book/read?id=" + item.id);
+  };
 
-  const buyBook = () => {};
+  const startLearn = () => {
+    if (articles.length === 0) {
+      message.error("当前电子书下暂无文章");
+      return;
+    }
+    let article = null;
+    if (chapters.length === 0) {
+      // 无章节电子书
+      article = articles[0][0];
+    } else {
+      for (let i = 0; i < chapters.length; i++) {
+        article = articles[chapters[i].id][0];
+        if (article) {
+          break;
+        }
+      }
+    }
+
+    if (!article) {
+      message.error("当前电子书下暂无文章");
+      return;
+    }
+
+    goRead(article);
+  };
+
+  const buyBook = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
+    navigate(
+      "/order?goods_id=" +
+        bid +
+        "&goods_type=book&goods_charge=" +
+        book.charge +
+        "&goods_label=电子书&goods_name=" +
+        book.name +
+        "&goods_thumb=" +
+        book.thumb
+    );
+  };
 
   const goPay = (gid = 0) => {
     if (!isLogin) {
@@ -272,6 +345,13 @@ export const BookDetailPage = () => {
           /<span>{book.name}</span>
         </div>
         <HistoryRecord id={book.id} title={book.name} type="book" />
+        {!isBuy && msData && (
+          <MiaoshaDialog
+            open={msVisible}
+            msData={msData}
+            onCancel={() => setMsVisible(false)}
+          />
+        )}
         <div className={styles["book-info"]}>
           <div className={styles["book-info-box"]}>
             <div className={styles["book-thumb"]}>
@@ -398,7 +478,74 @@ export const BookDetailPage = () => {
             ></div>
           </div>
         )}
-        {currentTab === 3 && <div className={styles["book-chapter-box"]}></div>}
+        {currentTab === 3 && (
+          <div className={styles["book-chapter-box"]}>
+            {chapters.length > 0 &&
+              chapters.map((chapter: any) => (
+                <div key={chapter.id} className={styles["chapter-item"]}>
+                  <div className={styles["chapter-name"]}>{chapter.name}</div>
+                  {articles[chapter.id] && articles[chapter.id].length > 0 && (
+                    <div className={styles["chapter-videos-box"]}>
+                      {articles[chapter.id].map((articleItem: any) => (
+                        <div
+                          key={articleItem.id}
+                          className={styles["book-item"]}
+                          onClick={() => goRead(articleItem)}
+                        >
+                          <div className={styles["video-title"]}>
+                            <div className={styles["text"]}>
+                              {articleItem.title}
+                            </div>
+                            {!isBuy &&
+                              book.charge > 0 &&
+                              articleItem.charge === 0 && (
+                                <div className={styles["free"]}>试读</div>
+                              )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            {chapters.length === 0 && articles[0] && articles[0].length > 0 && (
+              <div className={styles["chapter-item"]}>
+                <div className={styles["chapter-videos-box"]}>
+                  {articles[0].map((articleItem: any) => (
+                    <div
+                      key={articleItem.id}
+                      className={styles["book-itemsp"]}
+                      onClick={() => goRead(articleItem)}
+                    >
+                      <div className={styles["video-title"]}>
+                        <div className={styles["text"]}>
+                          {articleItem.title}
+                        </div>
+                        {!isBuy &&
+                          book.charge > 0 &&
+                          articleItem.charge === 0 && (
+                            <div className={styles["free"]}>试读</div>
+                          )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {currentTab === 4 && (
+          <BookCourseComments
+            bid={bid}
+            isBuy={isBuy}
+            comments={comments}
+            commentUsers={commentUsers}
+            success={() => {
+              resetComments();
+              getComments();
+            }}
+          />
+        )}
       </div>
     </>
   );
