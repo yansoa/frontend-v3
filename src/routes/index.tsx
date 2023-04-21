@@ -36,6 +36,7 @@ import { MemberPracticePage } from "../pages/member/practice";
 import { MemberQuestionsPage } from "../pages/member/questions";
 import { MemberExchangerPage } from "../pages/member/codeexchanger";
 import { MemberCredit1FreePage } from "../pages/member/credit1-free";
+import { MemberCredit1RecordsPage } from "../pages/member/credit1-records";
 import { RolePage } from "../pages/role";
 import { OrderPage } from "../pages/order/index";
 import { OrderPayPage } from "../pages/order/pay";
@@ -252,6 +253,10 @@ const routes: RouteObject[] = [
       { path: "/member/questions", element: <MemberQuestionsPage /> },
       { path: "/member/codeexchanger", element: <MemberExchangerPage /> },
       { path: "/member/credit1_free", element: <MemberCredit1FreePage /> },
+      {
+        path: "/member/credit1_records",
+        element: <MemberCredit1RecordsPage />,
+      },
       { path: "/vip", element: <RolePage /> },
       { path: "/order", element: <OrderPage /> },
       { path: "/order/pay", element: <OrderPayPage /> },

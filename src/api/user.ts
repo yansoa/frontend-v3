@@ -142,3 +142,10 @@ export function credit1Records(params: any) {
   return client.get("/api/v2/member/credit1Records", params);
 }
 
+export function creditMallList(params: any) {
+  return client.get("/addons/Credit1Mall/api/v1/goods", params);
+}
+
+export function creditMallOrders(params: any) {
+  return client.get("/addons/Credit1Mall/api/v1/user/orders", params);
+}
