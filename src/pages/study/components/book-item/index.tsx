@@ -2,31 +2,27 @@ import React, { useState } from "react";
 import styles from "./index.module.scss";
 import { ThumbBar } from "../../../../components/thumb-bar";
 import { useNavigate } from "react-router-dom";
-import { dateFormat } from "../../../../utils/index";
+import { dateFormat, changeTime } from "../../../../utils/index";
 
 interface PropInterface {
   list: any[];
   currentStatus: number;
 }
 
-export const LiveItemComp: React.FC<PropInterface> = ({
+export const BookItemComp: React.FC<PropInterface> = ({
   list,
   currentStatus,
 }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const goPlay = (item: any) => {
-    let vid = item.video_id;
-    if (item.course && item.course.next_video.length !== 0) {
-      vid = item.course.next_video.id;
-    }
-    navigate("/live/video?id=" + vid);
+  const goRead = (item: any) => {
+    navigate("/book/read?id=" + item.article_id);
   };
 
   const goDetail = (id: number) => {
-    let tab = currentStatus !== 3 ? 3 : 2;
-    navigate("/live/detail?id=" + id + "&tab=" + tab);
+    let tab = currentStatus === 2 ? 3 : 2;
+    navigate("/book/detail?id=" + id + "&tab=" + tab);
   };
 
   return (
@@ -34,13 +30,13 @@ export const LiveItemComp: React.FC<PropInterface> = ({
       {currentStatus === 1 &&
         list.map((item: any) => (
           <div key={item.id}>
-            {item.course && item.course.id && (
+            {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
                   <ThumbBar
-                    value={item.course.thumb}
+                    value={item.book.thumb}
                     border={4}
-                    width={160}
+                    width={90}
                     height={120}
                   ></ThumbBar>
                   {item.is_subscribe === 1 && (
@@ -48,33 +44,22 @@ export const LiveItemComp: React.FC<PropInterface> = ({
                   )}
                 </div>
                 <div className={styles["right-item"]}>
-                  <div className={styles["item-title"]}>
-                    {item.course.title}
-                  </div>
+                  <div className={styles["item-title"]}>{item.book.name}</div>
                   <div className={styles["item-info"]}>
-                    <div className={styles["item-text"]}>
-                      已学完：<span>{item.learned_count}课时</span> / 共
-                      {item.course.videos_count}课时
-                    </div>
-                    {item.course.status === 2 && (
-                      <div className={styles["item-progress"]}>已结课</div>
+                    {item.created_at && (
+                      <div className={styles["item-text"]}>
+                        上次浏览：{changeTime(item.created_at)}
+                      </div>
                     )}
-                    {item.course.next_video &&
-                      item.course.next_video.length !== 0 && (
-                        <div className={styles["item-progress"]}>
-                          下节直播：{item.course.next_video.title}(
-                          {dateFormat(item.course.next_video.published_at)})
-                        </div>
-                      )}
                   </div>
                 </div>
                 <div
                   className={styles["continue-button"]}
                   onClick={() => {
-                    goDetail(item.course_id);
+                    goRead(item);
                   }}
                 >
-                  观看直播
+                  继续学习
                 </div>
               </div>
             )}
@@ -83,46 +68,41 @@ export const LiveItemComp: React.FC<PropInterface> = ({
       {currentStatus === 2 &&
         list.map((item: any) => (
           <div key={item.id}>
-            {item.course && item.course.id && (
+            {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
                   <ThumbBar
-                    value={item.course.thumb}
+                    value={item.book.thumb}
                     border={4}
-                    width={160}
+                    width={90}
                     height={120}
                   ></ThumbBar>
 
                   <div className={styles["icon"]}>已订阅</div>
                 </div>
                 <div className={styles["right-item"]}>
-                  <div className={styles["item-title"]}>
-                    {item.course.title}
-                  </div>
+                  <div className={styles["item-title"]}>{item.book.name}</div>
                   <div className={styles["item-info"]}>
-                    <div className={styles["item-text"]}>
-                      已学完：<span>{item.learned_count}课时</span> / 共
-                      {item.course.videos_count}课时
-                    </div>
-                    {item.course.status === 2 && (
-                      <div className={styles["item-progress"]}>已结课</div>
+                    {item.last_view &&
+                    item.last_view.length === 0 &&
+                    item.created_at ? (
+                      <div className={styles["item-text"]}>
+                        订阅时间：{dateFormat(item.created_at)}
+                      </div>
+                    ) : (
+                      <div className={styles["item-text"]}>
+                        上次浏览：{changeTime(item.created_at)}
+                      </div>
                     )}
-                    {item.course.next_video &&
-                      item.course.next_video.length !== 0 && (
-                        <div className={styles["item-progress"]}>
-                          下节直播：{item.course.next_video.title}(
-                          {dateFormat(item.course.next_video.published_at)})
-                        </div>
-                      )}
                   </div>
                 </div>
                 <div
                   className={styles["continue-button"]}
                   onClick={() => {
-                    goDetail(item.course_id);
+                    goDetail(item.book_id);
                   }}
                 >
-                  直播排课
+                  章节目录
                 </div>
               </div>
             )}
@@ -135,7 +115,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
               <ThumbBar
                 value={item.thumb}
                 border={4}
-                width={160}
+                width={90}
                 height={120}
               ></ThumbBar>
             </div>

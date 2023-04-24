@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Row, Col, Spin, Pagination, Radio } from "antd";
 import type { RadioChangeEvent } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
 import { user as member, study, live } from "../../api/index";
-import { Empty, ThumbBar } from "../../components";
+import { Empty } from "../../components";
 import { useSelector } from "react-redux";
 import { CourseItemComp } from "./components/course-item";
 import { LiveItemComp } from "./components/live-item";
+import { BookItemComp } from "./components/book-item";
+import { TopicItemComp } from "./components/topic-item";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 
 export const StudyCenterPage = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [current, setCurrent] = useState("vod");
   const [tabs, setTabs] = useState<any>([]);
@@ -296,6 +296,18 @@ export const StudyCenterPage = () => {
                     list={list}
                     currentStatus={currentStatus}
                   ></LiveItemComp>
+                )}
+                {current === "book" && (
+                  <BookItemComp
+                    list={list}
+                    currentStatus={currentStatus}
+                  ></BookItemComp>
+                )}
+                {current === "topic" && (
+                  <TopicItemComp
+                    list={list}
+                    currentStatus={currentStatus}
+                  ></TopicItemComp>
                 )}
               </>
             )}
