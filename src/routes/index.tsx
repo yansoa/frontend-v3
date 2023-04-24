@@ -54,6 +54,7 @@ import { ErrorPage } from "../pages/error/index";
 import { WendaPage } from "../pages/wenda/index";
 import { WendaDetailPage } from "../pages/wenda/detail";
 import { SharePage } from "../pages/share";
+import { StudyCenterPage } from "../pages/study/index";
 
 let RootPage: any = null;
 let configFunc = {
@@ -278,6 +279,7 @@ const routes: RouteObject[] = [
       { path: "/wenda", element: <WendaPage /> },
       { path: "/wenda/detail", element: <WendaDetailPage /> },
       { path: "/share", element: <SharePage /> },
+      { path: "/study-center", element: <StudyCenterPage /> },
     ],
   },
 ];
