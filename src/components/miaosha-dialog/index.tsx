@@ -105,7 +105,7 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
         </div>
         <Form
           form={form}
-          name="register-dialog"
+          name="miaosha-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
