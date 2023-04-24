@@ -25,3 +25,4 @@ export * as book from "./book";
 export * as path from "./path";
 export * as wenda from "./wenda";
 export * as multiLevelShare from "./multiLevelShare";
+export * as study from "./study";

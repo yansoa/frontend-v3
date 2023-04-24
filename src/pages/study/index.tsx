@@ -3,9 +3,11 @@ import styles from "./index.module.scss";
 import { Row, Col, Spin, Pagination, Radio } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import { user as member } from "../../api/index";
+import { user as member, study, live } from "../../api/index";
 import { Empty, ThumbBar } from "../../components";
 import { useSelector } from "react-redux";
+import { CourseItemComp } from "./components/course-item";
+import { LiveItemComp } from "./components/live-item";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 
 export const StudyCenterPage = () => {
@@ -53,6 +55,180 @@ export const StudyCenterPage = () => {
     }
     setTabs(types);
   }, [configFunc]);
+
+  useEffect(() => {
+    if (currentStatus == 1) {
+      getViewStudy();
+    } else if (currentStatus == 2) {
+      getUserCourses();
+    } else if (currentStatus == 3) {
+      getLikeCourses();
+    }
+  }, [refresh, page, size, currentStatus, current]);
+
+  const getViewStudy = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    if (current === "vod") {
+      study
+        .courses({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "live") {
+      study
+        .live({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "topic") {
+      study
+        .topic({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "book") {
+      study
+        .book({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    }
+  };
+
+  const getUserCourses = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    if (current === "vod") {
+      member
+        .newCourses({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "live") {
+      live
+        .user({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "topic") {
+      member
+        .userBuyTopics({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data.data);
+          setTotal(res.data.data.total);
+          setLoading(false);
+        });
+    } else if (current === "book") {
+      member
+        .bookCourses({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    }
+  };
+
+  const getLikeCourses = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    if (current === "vod") {
+      member
+        .collects({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "live") {
+      study
+        .likeCourses({
+          page: page,
+          size: size,
+          type: "live",
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    } else if (current === "topic") {
+      study
+        .topicLikeCourses({
+          page: page,
+          size: size,
+        })
+        .then((res: any) => {
+          setList(res.data.data.data);
+          setTotal(res.data.data.total);
+          setLoading(false);
+        });
+    } else if (current === "book") {
+      study
+        .likeCourses({
+          page: page,
+          size: size,
+          type: "book",
+        })
+        .then((res: any) => {
+          setList(res.data.data);
+          setTotal(res.data.total);
+          setLoading(false);
+        });
+    }
+  };
+
+  const resetList = () => {
+    setPage(1);
+    setList([]);
+    setRefresh(!refresh);
+  };
 
   const onChange = (e: RadioChangeEvent) => {
     setCurrentStatus(e.target.value);
@@ -107,7 +283,22 @@ export const StudyCenterPage = () => {
                 <Empty></Empty>
               </Col>
             )}
-            {!loading && list.length > 0 && <></>}
+            {!loading && list.length > 0 && (
+              <>
+                {current === "vod" && (
+                  <CourseItemComp
+                    list={list}
+                    currentStatus={currentStatus}
+                  ></CourseItemComp>
+                )}
+                {current === "live" && (
+                  <LiveItemComp
+                    list={list}
+                    currentStatus={currentStatus}
+                  ></LiveItemComp>
+                )}
+              </>
+            )}
             {!loading && list.length > 0 && size < total && (
               <Col
                 span={24}

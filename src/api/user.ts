@@ -165,3 +165,15 @@ export function creditMallExchange(id: number, params: any) {
 export function certList(params: any) {
   return client.get("/addons/Cert/api/v1/member/cert", params);
 }
+
+export function userBuyTopics(params: any) {
+  return client.get("/addons/MeeduTopics/api/v1/user/buyTopics", params);
+}
+
+export function bookCourses(params: any) {
+  return client.get("/addons/MeeduBooks/api/v2/member/books", params);
+}
+
+export function collects(params: any) {
+  return client.get("/api/v3/member/courses/like", params);
+}
