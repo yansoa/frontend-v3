@@ -52,6 +52,7 @@ import { LearnPathPage } from "../pages/learnPath/index";
 import { LearnPathDetailPage } from "../pages/learnPath/detail";
 import { ErrorPage } from "../pages/error/index";
 import { WendaPage } from "../pages/wenda/index";
+import { WendaDetailPage } from "../pages/wenda/detail";
 import { SharePage } from "../pages/share";
 
 let RootPage: any = null;
@@ -275,6 +276,7 @@ const routes: RouteObject[] = [
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },
       { path: "/wenda", element: <WendaPage /> },
+      { path: "/wenda/detail", element: <WendaDetailPage /> },
       { path: "/share", element: <SharePage /> },
     ],
   },

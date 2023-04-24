@@ -29,27 +29,29 @@ interface Props {
 
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
-  const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
-  let showHeader = true;
-  let showFooter = true;
-  if (
-    pathname === "/live/video" ||
-    pathname === "/exam/papers/play" ||
-    pathname === "/exam/mockpaper/play" ||
-    pathname === "/exam/practice/play" ||
-    pathname === "/exam/wrongbook/play" ||
-    pathname === "/exam/collection/play" ||
-    pathname === "/error"
-  ) {
-    showHeader = false;
-    showFooter = false;
-  }
-  if (pathname === "/book/read") {
-    showHeader = false;
-    showFooter = true;
-  }
-
   const dispatch = useDispatch();
+  const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
+  const [showHeader, setShowHeader] = useState<boolean>(true);
+  const [showFooter, setShowFooter] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (
+      pathname === "/live/video" ||
+      pathname === "/exam/papers/play" ||
+      pathname === "/exam/mockpaper/play" ||
+      pathname === "/exam/practice/play" ||
+      pathname === "/exam/wrongbook/play" ||
+      pathname === "/exam/collection/play" ||
+      pathname === "/error"
+    ) {
+      setShowHeader(false);
+      setShowFooter(false);
+    }
+    if (pathname === "/book/read") {
+      setShowHeader(false);
+      setShowFooter(true);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     window.addEventListener("scroll", getHeight, true);
