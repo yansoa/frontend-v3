@@ -4,7 +4,7 @@ import { Row, Col, Spin, Pagination, Input, Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { topic as topicApi } from "../../api/index";
 import { useSelector } from "react-redux";
-import { HistoryRecord, ShareComp } from "../../components";
+import { HistoryRecord, ShareComp, Empty } from "../../components";
 import { changeTime, getCommentTime } from "../../utils/index";
 import voteIcon from "../../assets/img/commen/icon-vote-h.png";
 import noVoteIcon from "../../assets/img/commen/icon-vote-n.png";
@@ -448,6 +448,11 @@ export const TopicDetailPage = () => {
                 </div>
               )}
               <div className={styles["comments-list-box"]}>
+                {commentList.length === 0 && (
+                  <Col span={24}>
+                    <Empty></Empty>
+                  </Col>
+                )}
                 {commentList.length > 0 &&
                   commentList.map((item: any, index: number) => (
                     <div key={item.id} className={styles["comment-item"]}>

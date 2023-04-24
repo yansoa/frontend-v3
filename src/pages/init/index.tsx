@@ -39,11 +39,14 @@ export const InitPage = (props: Props) => {
     pathname === "/exam/practice/play" ||
     pathname === "/exam/wrongbook/play" ||
     pathname === "/exam/collection/play" ||
-    pathname === "/error" ||
-    pathname === "/book/read"
+    pathname === "/error"
   ) {
     showHeader = false;
     showFooter = false;
+  }
+  if (pathname === "/book/read") {
+    showHeader = false;
+    showFooter = true;
   }
 
   const dispatch = useDispatch();
