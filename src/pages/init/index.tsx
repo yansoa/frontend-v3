@@ -57,7 +57,6 @@ export const InitPage = (props: Props) => {
       setShowHeader(false);
       setShowFooter(true);
     }
-    console.log(pathname);
   }, [pathname]);
 
   useEffect(() => {
