@@ -29,7 +29,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
     <div className={styles["box"]}>
       {currentStatus === 1 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "book-learn"}>
             {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -67,7 +67,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 2 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "book-sub"}>
             {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -110,7 +110,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 3 &&
         list.map((item: any) => (
-          <div key={item.id} className={styles["item"]}>
+          <div key={item.id + "book-collect"} className={styles["item"]}>
             <div className={styles["left-item"]}>
               <ThumbBar
                 value={item.thumb}

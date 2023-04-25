@@ -24,7 +24,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
     <div className={styles["box"]}>
       {currentStatus === 1 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "topic-learn"}>
             {item.topic && item.topic.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -62,7 +62,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 2 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "topic-sub"}>
             {item.topic && item.topic.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -99,12 +99,12 @@ export const TopicItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 3 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "topic-collect"}>
             {item.topic && item.topic.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
                   <ThumbBar
-                    value={item.thumb}
+                    value={item.topic.thumb}
                     border={4}
                     width={160}
                     height={120}

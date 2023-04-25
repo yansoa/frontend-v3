@@ -42,7 +42,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
       ></DetailDialog>
       {currentStatus === 1 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "course-learn"}>
             {item.course && item.course.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -102,7 +102,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 2 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "course-sub"}>
             {item.course && item.course.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -148,7 +148,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 3 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "course-collect"}>
             {item.course && item.course.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>

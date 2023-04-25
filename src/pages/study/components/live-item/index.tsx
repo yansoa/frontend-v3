@@ -33,7 +33,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
     <div className={styles["box"]}>
       {currentStatus === 1 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "live-learn"}>
             {item.course && item.course.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -82,7 +82,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 2 &&
         list.map((item: any) => (
-          <div key={item.id}>
+          <div key={item.id + "live-sub"}>
             {item.course && item.course.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -130,7 +130,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 3 &&
         list.map((item: any) => (
-          <div key={item.id} className={styles["item"]}>
+          <div key={item.id + "live-collect"} className={styles["item"]}>
             <div className={styles["left-item"]}>
               <ThumbBar
                 value={item.thumb}
