@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { sign, viewBlock, home } from "../../api/index";
 import { SignComp } from "../../components";
-import { useNavigate, useLocation } from "react-router-dom";
-import { message, Row, Col, Spin, Carousel } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Row, Col, Spin, Carousel } from "antd";
 import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
@@ -21,13 +22,16 @@ const IndexPage = () => {
   const [sliders, setSliders] = useState<any>([]);
   const [blocks, setBlocks] = useState<any>([]);
   const [notice, setNotice] = useState<any>({});
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
-    getSignStatus();
+    if (isLogin) {
+      getSignStatus();
+    }
     getSliders();
     getPageBlocks();
     getNotice();
-  }, []);
+  }, [isLogin]);
 
   const getSignStatus = () => {
     sign.user().then((res: any) => {

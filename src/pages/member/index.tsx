@@ -54,7 +54,7 @@ export const MemberPage = () => {
     (state: any) => state.systemConfig.value.config
   );
   const [currentTab, setCurrentTab] = useState(1);
-  const [nickName, setNickName] = useState<string>(user.nick_name);
+  const [nickName, setNickName] = useState<string>(user && user.nick_name);
   const loginCode = result.get("login_code");
   const action = result.get("action");
   const errMsg = result.get("login_err_msg");
@@ -68,7 +68,7 @@ export const MemberPage = () => {
       id: 2,
     },
   ];
-  
+
   useEffect(() => {
     getSignStatus();
   }, []);

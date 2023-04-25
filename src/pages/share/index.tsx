@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import {
-  Input,
-  message,
-  Row,
-  Col,
-  Spin,
-  Button,
-  Pagination,
-} from "antd";
+import { Input, message, Row, Col, Spin, Button, Pagination } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { multiLevelShare } from "../../api/index";
@@ -208,50 +200,52 @@ export const SharePage = () => {
         }}
       ></WithdrawDialog>
       <div className={styles["box"]}>
-        <div className={styles["user-box"]}>
-          <div className={styles["user"]}>
-            <div className={styles["avatar"]}>
-              <img src={user.avatar} />
-            </div>
-            <div className={styles["user-info"]}>
-              <div className={styles["user-name"]}>{user.nick_name}</div>
-              <div className={styles["share-box"]}>
-                <Input
-                  value={inviteUrl}
-                  onChange={(e) => {
-                    setInviteUrl(e.target.value);
-                  }}
-                  className={styles["input"]}
-                ></Input>
-                <Button className={styles["btn-copy"]} onClick={() => copy()}>
-                  复制邀请链接
-                </Button>
+        {user && (
+          <div className={styles["user-box"]}>
+            <div className={styles["user"]}>
+              <div className={styles["avatar"]}>
+                <img src={user.avatar} />
+              </div>
+              <div className={styles["user-info"]}>
+                <div className={styles["user-name"]}>{user.nick_name}</div>
+                <div className={styles["share-box"]}>
+                  <Input
+                    value={inviteUrl}
+                    onChange={(e) => {
+                      setInviteUrl(e.target.value);
+                    }}
+                    className={styles["input"]}
+                  ></Input>
+                  <Button className={styles["btn-copy"]} onClick={() => copy()}>
+                    复制邀请链接
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles["item-box"]}>
-            <div className={styles["value"]}>{count}</div>
-            <div className={styles["tit"]}>邀请人数</div>
-          </div>
-          <div className={styles["item-box"]}>
-            <div className={styles["value"]}>
-              <span>{balance}</span>
+            <div className={styles["item-box"]}>
+              <div className={styles["value"]}>{count}</div>
+              <div className={styles["tit"]}>邀请人数</div>
             </div>
-            <div className={styles["tit"]}>邀请余额</div>
+            <div className={styles["item-box"]}>
+              <div className={styles["value"]}>
+                <span>{balance}</span>
+              </div>
+              <div className={styles["tit"]}>邀请余额</div>
+            </div>
+            <div
+              className={styles["withdraw-button"]}
+              onClick={() => {
+                if (balance === 0) {
+                  message.error("余额为0时不可提现");
+                  return;
+                }
+                setDialogStatus(true);
+              }}
+            >
+              提现
+            </div>
           </div>
-          <div
-            className={styles["withdraw-button"]}
-            onClick={() => {
-              if (balance === 0) {
-                message.error("余额为0时不可提现");
-                return;
-              }
-              setDialogStatus(true);
-            }}
-          >
-            提现
-          </div>
-        </div>
+        )}
         <div className={styles["bottom-box"]}>
           <div className={styles["project-box"]}>
             <div className={styles["btns"]}>

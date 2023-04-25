@@ -19,6 +19,7 @@ import {
   getSessionLoginCode,
   setToken,
   saveLoginCode,
+  getToken,
 } from "../../utils/index";
 
 interface Props {
@@ -33,6 +34,7 @@ export const InitPage = (props: Props) => {
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
+  const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -101,7 +103,6 @@ export const InitPage = (props: Props) => {
       codeLogin(loginCode);
     }
   }
-  // const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
 
   const msvBind = () => {
     let msv = getMsv();
@@ -127,20 +128,22 @@ export const InitPage = (props: Props) => {
   if (props.config) {
     dispatch(saveConfigAction(props.config));
   }
-
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));
   }
-  //强制实名认证
-  // if (
-  //   props.config &&
-  //   props.loginData &&
-  //   props.loginData.is_face_verify === false &&
-  //   props.config.member.enabled_face_verify === true
-  // ) {
-  //   console.log("实名认证");
-  //   setFaceCheckVisible(true);
-  // }
+
+  useEffect(() => {
+    //强制实名认证
+    if (
+      props.config &&
+      props.loginData &&
+      props.loginData.is_face_verify === false &&
+      props.config.member.enabled_face_verify === true
+    ) {
+      console.log("实名认证");
+      setFaceCheckVisible(true);
+    }
+  }, [props.loginData, props.config]);
 
   const getHeight = () => {
     let scrollTop =

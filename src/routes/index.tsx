@@ -168,6 +168,29 @@ if (getToken()) {
     });
   });
 } else {
+  const whiteRoutes = [
+    "/",
+    "/login",
+    "/courses",
+    "/courses/detail",
+    "/exam",
+    "/exam/papers",
+    "/exam/mockpaper",
+    "/exam/practice",
+    "/live",
+    "/live/detail",
+    "/book",
+    "/book/detail",
+    "/learnPath",
+    "/learnPath/detail",
+    "/topic",
+    "/topic/detail",
+    "/wenda",
+    "/wenda/detail",
+  ];
+  if (whiteRoutes.indexOf(window.location.pathname) === -1) {
+    window.location.href = "/login";
+  }
   RootPage = lazy(async () => {
     return new Promise<any>((resolve) => {
       system

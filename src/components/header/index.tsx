@@ -120,7 +120,6 @@ export const Header = () => {
       }
       setLoading(true);
       login.logout().then((res: any) => {
-        clearToken();
         message.success("安全退出成功");
         dispatch(logoutAction());
         setLoading(false);
