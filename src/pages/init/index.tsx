@@ -8,7 +8,8 @@ import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
-import { Header, Footer, BackTop } from "../../components";
+import { Header, Footer, BackTop, TencentFaceCheck } from "../../components";
+import { BindNewMobileDialog } from "../member/components/bind-new-mobile";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
@@ -19,7 +20,6 @@ import {
   getSessionLoginCode,
   setToken,
   saveLoginCode,
-  getToken,
 } from "../../utils/index";
 
 interface Props {
@@ -35,6 +35,8 @@ export const InitPage = (props: Props) => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
   const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
+  const [bindNewMobileVisible, setBindNewMobileVisible] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -133,6 +135,16 @@ export const InitPage = (props: Props) => {
   }
 
   useEffect(() => {
+    // 强制绑定手机号
+    if (
+      props.config &&
+      props.loginData &&
+      props.loginData.is_bind_mobile === 0 &&
+      props.config.member.enabled_mobile_bind_alert === 1
+    ) {
+      setBindNewMobileVisible(true);
+      return;
+    }
     //强制实名认证
     if (
       props.config &&
@@ -157,8 +169,43 @@ export const InitPage = (props: Props) => {
     }
   };
 
+  const getUser = () => {
+    user.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+      //强制实名认证
+      if (
+        props.config &&
+        loginData.is_face_verify === false &&
+        props.config.member.enabled_face_verify === true
+      ) {
+        console.log("实名认证");
+        setFaceCheckVisible(true);
+      }
+    });
+  };
+
   return (
     <>
+      <BindNewMobileDialog
+        scene="mobile_bind"
+        open={bindNewMobileVisible}
+        active={false}
+        onCancel={() => setBindNewMobileVisible(false)}
+        success={() => {
+          setBindNewMobileVisible(false);
+          getUser();
+        }}
+      ></BindNewMobileDialog>
+      <TencentFaceCheck
+        open={faceCheckVisible}
+        active={false}
+        onCancel={() => setFaceCheckVisible(false)}
+        success={() => {
+          setFaceCheckVisible(false);
+          getUser();
+        }}
+      />
       {showHeader && <Header></Header>}
       <Outlet />
       {showFooter && <Footer status={true}></Footer>}
