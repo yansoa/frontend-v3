@@ -39,6 +39,8 @@ export const InitPage = (props: Props) => {
     useState<boolean>(false);
 
   useEffect(() => {
+    setShowHeader(true);
+    setShowFooter(true);
     if (
       pathname === "/live/video" ||
       pathname === "/exam/papers/play" ||
@@ -55,6 +57,7 @@ export const InitPage = (props: Props) => {
       setShowHeader(false);
       setShowFooter(true);
     }
+    console.log(pathname);
   }, [pathname]);
 
   useEffect(() => {
