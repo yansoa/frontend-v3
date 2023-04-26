@@ -8,6 +8,7 @@ import { setToken, getMsv, getAppUrl } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 import iconQQ from "../../assets/img/commen/icon-qq.png";
 import iconWeixin from "../../assets/img/commen/icon-weixin.png";
+import closeIcon from "../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -204,6 +205,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           {items.map((item: any) => (
@@ -231,6 +233,14 @@ export const LoginDialog: React.FC<PropInterface> = ({
           >
             新用户注册&gt;&gt;
           </a>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              interval && clearInterval(interval);
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <Form
           form={form}

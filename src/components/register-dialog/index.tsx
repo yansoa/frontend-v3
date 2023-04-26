@@ -14,6 +14,7 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import styles from "./index.module.scss";
 import { login, system } from "../../api/index";
 import { getMsv } from "../../utils/index";
+import closeIcon from "../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -139,6 +140,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>用户注册</div>
@@ -151,6 +153,14 @@ export const RegisterDialog: React.FC<PropInterface> = ({
           >
             已有账号，立即登录&gt;&gt;
           </a>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              interval && clearInterval(interval);
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <Form
           form={form}
