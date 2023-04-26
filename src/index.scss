@@ -317,10 +317,20 @@ button:focus-visible {
   z-index: 100;
 }
 
+.ant-btn {
+  outline: none !important;
+  &:hover {
+    outline: none !important;
+  }
+}
+
 .ant-modal-confirm-btns > .ant-btn-default:hover {
   color: #3ca7fa !important;
   border-color: #3ca7fa;
   outline: none !important;
+  &:hover {
+    outline: none !important;
+  }
 }
 
 .ant-modal-confirm-btns > .ant-btn-primary {
@@ -328,7 +338,7 @@ button:focus-visible {
   color: #fff;
   outline: none !important;
   &:hover {
-    opacity: 0.8;
+    outline: none !important;
   }
 }
 
