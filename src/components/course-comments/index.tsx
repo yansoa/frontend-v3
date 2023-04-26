@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Input, Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Empty } from "../../components";
 import { course } from "../../api/index";
@@ -21,6 +22,7 @@ export const CourseComments: React.FC<PropInterface> = ({
   commentUsers,
   success,
 }) => {
+  const navigate = useNavigate();
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const [content, setContent] = useState<string>("");
@@ -70,7 +72,9 @@ export const CourseComments: React.FC<PropInterface> = ({
           </div>
         )}
         {!isLogin && (
-          <div className={styles["text"]}>未登录，请登录后再评论</div>
+          <div className={styles["text"]} onClick={() => navigate("/login")}>
+            未登录，请登录后再评论
+          </div>
         )}
       </div>
       <div className={styles["comment-top"]}>
