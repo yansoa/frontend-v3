@@ -12,13 +12,13 @@ export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
     if (item.goods_type === "course") {
-      navigate("/courses/detail?id=" + item.goods_id);
+      navigate("/courses/detail?id=" + item.other_id);
     } else if (item.goods_type === "live") {
-      navigate("/live/detail?id=" + item.goods_id);
+      navigate("/live/detail?id=" + item.other_id);
     } else if (item.goods_type === "book") {
-      navigate("/book/detail?id=" + item.goods_id);
+      navigate("/book/detail?id=" + item.other_id);
     } else if (item.goods_type === "learnPath") {
-      navigate("/learnPath/detail?id=" + item.goods_id);
+      navigate("/learnPath/detail?id=" + item.other_id);
     }
   };
 
