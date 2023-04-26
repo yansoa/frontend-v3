@@ -67,12 +67,18 @@ export const VodPlayPage = () => {
   ];
 
   useEffect(() => {
+    setVid(Number(result.get("id")));
+  }, [result.get("id")]);
+
+  useEffect(() => {
     getDetail();
     getComments();
     window.addEventListener("scroll", handleTabFix, true);
     return () => {
       clock && clearInterval(clock);
+      timer && clearInterval(timer);
       window.removeEventListener("scroll", handleTabFix, true);
+      window.player && window.player.destroy();
     };
   }, [vid]);
 
@@ -198,6 +204,7 @@ export const VodPlayPage = () => {
   };
 
   const initDPlayer = (playUrls: any, isTrySee: number) => {
+    savePlayId(String(result.get("id")));
     let dplayerUrls: any[] = [];
     playUrls.forEach((item: any) => {
       dplayerUrls.push({
@@ -245,8 +252,21 @@ export const VodPlayPage = () => {
     window.player.on("sub_course", () => {
       paySelect(1);
     });
-    savePlayId(String(vid));
+
     checkPlayer();
+  };
+
+  const checkPlayer = () => {
+    timer = setInterval(() => {
+      let playId = getPlayId();
+      if (parseInt(playId) !== Number(result.get("id"))) {
+        timer && clearInterval(timer);
+        window.player && window.player.destroy();
+        setCheckPlayerStatus(true);
+      } else {
+        setCheckPlayerStatus(false);
+      }
+    }, 5000);
   };
 
   const playTimeUpdate = (duration: number, isEnd: boolean) => {
@@ -279,17 +299,15 @@ export const VodPlayPage = () => {
     }
     clock && clearInterval(clock);
     setLastSeeValue(null);
-    setVid(item.id);
     setTotalTime(10);
-    navigate("/courses/video?id=" + item.id);
+    navigate("/courses/video?id=" + item.id, { replace: true });
   };
 
   const goNextVideo = (id: number) => {
     clock && clearInterval(clock);
     setLastSeeValue(null);
-    setVid(id);
     setTotalTime(10);
-    navigate("/courses/video?id=" + id);
+    navigate("/courses/video?id=" + id, { replace: true });
   };
 
   const paySelect = (val: number) => {
@@ -339,18 +357,6 @@ export const VodPlayPage = () => {
       setCommentUsers(res.data.users);
       setCommentLoading(false);
     });
-  };
-
-  const checkPlayer = () => {
-    timer = setInterval(() => {
-      let playId = getPlayId();
-      if (parseInt(playId) !== vid) {
-        window.player && window.player.destroy();
-        setCheckPlayerStatus(true);
-      } else {
-        setCheckPlayerStatus(false);
-      }
-    }, 5000);
   };
 
   const resetComments = () => {
