@@ -13,12 +13,12 @@ import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { login, home, user as member } from "../../api/index";
 import { clearToken } from "../../utils/index";
-
-const { Search } = Input;
+import searchIcon from "../../assets/img/commen/icon-search.png";
 
 export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [content, setContent] = useState<string>("");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const freshUnread = useSelector(
@@ -238,17 +238,20 @@ export const Header = () => {
           </Link>
           <div className={styles["content-box"]}>
             <div className={styles["search-box"]}>
-              <Search
+              <Input
                 placeholder="请输入关键字"
                 allowClear
-                onSearch={onSearch}
-                size="large"
-                style={{
-                  width: 250,
-                  borderRadius: 20,
-                  fontSize: 14,
-                  color: "#999999",
+                onChange={(e) => {
+                  setContent(e.target.value);
                 }}
+                value={content}
+                className={styles["search-input"]}
+                onPressEnter={() => onSearch(content)}
+              />
+              <img
+                className={styles["btn-search"]}
+                onClick={() => onSearch(content)}
+                src={searchIcon}
               />
             </div>
           </div>
