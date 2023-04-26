@@ -6,6 +6,7 @@ import { paper } from "../../../api/index";
 import { Empty, PaperCourseItem, FilterCategories } from "../../../components";
 
 export const ExamPaperPage = () => {
+  document.title = "在线考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);

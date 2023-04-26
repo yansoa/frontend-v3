@@ -10,6 +10,7 @@ import {
 } from "../../../components";
 
 export const ExamPracticePage = () => {
+  document.title = "练习模式";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);

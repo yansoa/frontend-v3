@@ -6,6 +6,7 @@ import { live } from "../../api/index";
 import { Empty, LiveCourseItem, FilterCategories } from "../../components";
 
 export const LivePage = () => {
+  document.title = "直播课";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -34,7 +35,7 @@ export const LivePage = () => {
     }
     setLoading(true);
     let category_id = 0;
-    if (child === 0) {
+    if (child === 0 || cid == 0) {
       category_id = cid;
     } else {
       category_id = child;
@@ -61,7 +62,7 @@ export const LivePage = () => {
         defaultChild={child}
         onSelected={(id: number, child: number) => {
           setCid(id);
-          setChild(id);
+          setChild(child);
           if (id === 0) {
             navigate("/live");
           } else {

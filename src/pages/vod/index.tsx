@@ -11,6 +11,7 @@ import {
 } from "../../components";
 
 const VodPage = () => {
+  document.title = "录播课";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -65,7 +66,7 @@ const VodPage = () => {
     }
     setLoading(true);
     let category_id = 0;
-    if (child === 0) {
+    if (child === 0 || cid == 0) {
       category_id = cid;
     } else {
       category_id = child;
@@ -91,7 +92,7 @@ const VodPage = () => {
         defaultChild={child}
         onSelected={(id: number, child: number) => {
           setCid(id);
-          setChild(id);
+          setChild(child);
           if (id === 0) {
             navigate("/courses?scene=" + scene);
           } else {

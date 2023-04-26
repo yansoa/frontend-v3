@@ -6,6 +6,7 @@ import { mock } from "../../../api/index";
 import { Empty, MockCourseItem, FilterCategories } from "../../../components";
 
 export const ExamMockPaperPage = () => {
+  document.title = "模拟考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);

@@ -9,6 +9,7 @@ import { Empty } from "../../components";
 import { WithdrawDialog } from "./components/withdraw-dialog";
 
 export const SharePage = () => {
+  document.title = "推广";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogStatus, setDialogStatus] = useState<boolean>(false);

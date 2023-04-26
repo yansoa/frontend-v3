@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { wrongbook } from "../../../api/index";
 
 export const ExamWrongbookPage = () => {
+  document.title = "考试错题本";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);

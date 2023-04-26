@@ -11,6 +11,7 @@ import {
 } from "../../components";
 
 export const BookPage = () => {
+  document.title = "电子书";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);

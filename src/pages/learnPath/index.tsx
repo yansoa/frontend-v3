@@ -6,6 +6,7 @@ import { path } from "../../api/index";
 import { Empty, LearnPathCourseItem, FilterCategories } from "../../components";
 
 export const LearnPathPage = () => {
+  document.title = "学习路径";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -39,7 +40,7 @@ export const LearnPathPage = () => {
     }
     setLoading(true);
     let category_id = 0;
-    if (child === 0) {
+    if (child === 0 || cid == 0) {
       category_id = cid;
     } else {
       category_id = child;
@@ -81,7 +82,7 @@ export const LearnPathPage = () => {
         defaultChild={child}
         onSelected={(id: number, child: number) => {
           setCid(id);
-          setChild(id);
+          setChild(child);
           if (id === 0) {
             navigate("/learnPath");
           } else {

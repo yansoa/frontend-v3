@@ -11,6 +11,7 @@ import {
 } from "../../components";
 
 export const TopicPage = () => {
+  document.title = "图文";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);

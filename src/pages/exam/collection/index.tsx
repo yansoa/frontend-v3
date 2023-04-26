@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { collection } from "../../../api/index";
 
 export const ExamCollectionPage = () => {
+  document.title = "收藏习题";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);

@@ -14,6 +14,7 @@ import {
 import { changeUserCredit } from "../../store/user/loginUserSlice";
 
 export const WendaPage = () => {
+  document.title = "在线问答";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -63,7 +64,7 @@ export const WendaPage = () => {
     }
     setLoading(true);
     let category_id = 0;
-    if (child === 0) {
+    if (child === 0 || cid == 0) {
       category_id = cid;
     } else {
       category_id = child;
@@ -116,7 +117,7 @@ export const WendaPage = () => {
         defaultChild={child}
         onSelected={(id: number, child: number) => {
           setCid(id);
-          setChild(id);
+          setChild(child);
           if (id === 0) {
             navigate("/wenda?scene=" + scene);
           } else {
