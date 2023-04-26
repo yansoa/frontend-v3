@@ -110,6 +110,7 @@ export const Header = () => {
       message.error("请输入关键字后再搜索");
       return;
     }
+    setContent("");
     navigate(`/search?keywords=${value}`);
   };
 
@@ -240,7 +241,6 @@ export const Header = () => {
             <div className={styles["search-box"]}>
               <Input
                 placeholder="请输入关键字"
-                allowClear
                 onChange={(e) => {
                   setContent(e.target.value);
                 }}
