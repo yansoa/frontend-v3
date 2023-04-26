@@ -60,11 +60,11 @@ export const DetailDialog: React.FC<PropInterface> = ({
                 src={closeIcon}
               />
             </div>
-            <div className={styles["box"]}>
+            <div className={styles["progress-box"]}>
               {list.length > 0 &&
                 list.map((item: any) => (
                   <div
-                    className={styles["item"]}
+                    className={styles["progress-item"]}
                     key={item.id}
                     onClick={() => goPlay(item)}
                   >

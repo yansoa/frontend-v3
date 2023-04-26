@@ -34,159 +34,161 @@ export const CourseItemComp: React.FC<PropInterface> = ({
   };
 
   return (
-    <div className={styles["box"]}>
+    <>
       <DetailDialog
         open={visiable}
         id={cid}
         onCancel={() => setVisiable(false)}
       ></DetailDialog>
-      {currentStatus === 1 &&
-        list.map((item: any) => (
-          <div key={item.id + "course-learn"}>
-            {item.course && item.course.id && (
-              <div className={styles["item"]}>
-                <div className={styles["left-item"]}>
-                  <ThumbBar
-                    value={item.course.thumb}
-                    border={4}
-                    width={160}
-                    height={120}
-                  ></ThumbBar>
-                  {item.is_subscribe === 1 && (
-                    <div className={styles["icon"]}>已订阅</div>
-                  )}
-                </div>
-                <div className={styles["right-item"]}>
-                  <div className={styles["item-title"]}>
-                    {item.course.title}
+      <div className={styles["box"]}>
+        {currentStatus === 1 &&
+          list.map((item: any) => (
+            <div key={item.id + "course-learn"}>
+              {item.course && item.course.id && (
+                <div className={styles["item"]}>
+                  <div className={styles["left-item"]}>
+                    <ThumbBar
+                      value={item.course.thumb}
+                      border={4}
+                      width={160}
+                      height={120}
+                    ></ThumbBar>
+                    {item.is_subscribe === 1 && (
+                      <div className={styles["icon"]}>已订阅</div>
+                    )}
                   </div>
-                  <div className={styles["item-info"]}>
-                    <div className={styles["item-text"]}>
-                      已学完：<span>{item.learned_count}课时</span> / 共
-                      {item.course.videos_count}课时
+                  <div className={styles["right-item"]}>
+                    <div className={styles["item-title"]}>
+                      {item.course.title}
+                    </div>
+                    <div className={styles["item-info"]}>
+                      <div className={styles["item-text"]}>
+                        已学完：<span>{item.learned_count}课时</span> / 共
+                        {item.course.videos_count}课时
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  className={styles["detail-button"]}
-                  onClick={() => {
-                    setCid(item.course_id);
-                    setVisiable(true);
-                  }}
-                >
-                  学习进度
-                </div>
-                {item.is_watched === 1 && (
                   <div
-                    className={styles["completed-button"]}
+                    className={styles["detail-button"]}
                     onClick={() => {
-                      goPlay(item);
+                      setCid(item.course_id);
+                      setVisiable(true);
                     }}
                   >
-                    学习完成
+                    学习进度
                   </div>
-                )}
-                {item.is_watched !== 1 && (
+                  {item.is_watched === 1 && (
+                    <div
+                      className={styles["completed-button"]}
+                      onClick={() => {
+                        goPlay(item);
+                      }}
+                    >
+                      学习完成
+                    </div>
+                  )}
+                  {item.is_watched !== 1 && (
+                    <div
+                      className={styles["continue-button"]}
+                      onClick={() => {
+                        goPlay(item);
+                      }}
+                    >
+                      继续学习
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        {currentStatus === 2 &&
+          list.map((item: any) => (
+            <div key={item.id + "course-sub"}>
+              {item.course && item.course.id && (
+                <div className={styles["item"]}>
+                  <div className={styles["left-item"]}>
+                    <ThumbBar
+                      value={item.course.thumb}
+                      border={4}
+                      width={160}
+                      height={120}
+                    ></ThumbBar>
+                    <div className={styles["icon"]}>已订阅</div>
+                  </div>
+                  <div className={styles["right-item"]}>
+                    <div className={styles["item-title"]}>
+                      {item.course.title}
+                    </div>
+                    <div className={styles["item-info"]}>
+                      <div className={styles["item-text"]}>
+                        已学完：<span>{item.learned_count}课时</span> / 共
+                        {item.course.videos_count}课时
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={styles["detail-button"]}
+                    onClick={() => {
+                      setCid(item.course_id);
+                      setVisiable(true);
+                    }}
+                  >
+                    学习进度
+                  </div>
                   <div
                     className={styles["continue-button"]}
                     onClick={() => {
-                      goPlay(item);
+                      goDetail(item.course_id);
                     }}
                   >
-                    继续学习
+                    课程目录
                   </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      {currentStatus === 2 &&
-        list.map((item: any) => (
-          <div key={item.id + "course-sub"}>
-            {item.course && item.course.id && (
-              <div className={styles["item"]}>
-                <div className={styles["left-item"]}>
-                  <ThumbBar
-                    value={item.course.thumb}
-                    border={4}
-                    width={160}
-                    height={120}
-                  ></ThumbBar>
-                  <div className={styles["icon"]}>已订阅</div>
                 </div>
-                <div className={styles["right-item"]}>
-                  <div className={styles["item-title"]}>
-                    {item.course.title}
+              )}
+            </div>
+          ))}
+        {currentStatus === 3 &&
+          list.map((item: any) => (
+            <div key={item.id + "course-collect"}>
+              {item.course && item.course.id && (
+                <div className={styles["item"]}>
+                  <div className={styles["left-item"]}>
+                    <ThumbBar
+                      value={item.course.thumb}
+                      border={4}
+                      width={160}
+                      height={120}
+                    ></ThumbBar>
                   </div>
-                  <div className={styles["item-info"]}>
-                    <div className={styles["item-text"]}>
-                      已学完：<span>{item.learned_count}课时</span> / 共
-                      {item.course.videos_count}课时
+                  <div className={styles["right-item"]}>
+                    <div className={styles["item-title"]}>
+                      {item.course.title}
                     </div>
-                  </div>
-                </div>
-                <div
-                  className={styles["detail-button"]}
-                  onClick={() => {
-                    setCid(item.course_id);
-                    setVisiable(true);
-                  }}
-                >
-                  学习进度
-                </div>
-                <div
-                  className={styles["continue-button"]}
-                  onClick={() => {
-                    goDetail(item.course_id);
-                  }}
-                >
-                  课程目录
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      {currentStatus === 3 &&
-        list.map((item: any) => (
-          <div key={item.id + "course-collect"}>
-            {item.course && item.course.id && (
-              <div className={styles["item"]}>
-                <div className={styles["left-item"]}>
-                  <ThumbBar
-                    value={item.course.thumb}
-                    border={4}
-                    width={160}
-                    height={120}
-                  ></ThumbBar>
-                </div>
-                <div className={styles["right-item"]}>
-                  <div className={styles["item-title"]}>
-                    {item.course.title}
-                  </div>
-                  <div className={styles["item-info"]}>
-                    <div className={styles["item-text"]}>
-                      已学完：<span>{item.learned_count}课时</span> / 共
-                      {item.course.videos_count}课时
-                    </div>
-                    {item.created_at && (
+                    <div className={styles["item-info"]}>
                       <div className={styles["item-text"]}>
-                        收藏时间：{dateFormat(item.created_at)}
+                        已学完：<span>{item.learned_count}课时</span> / 共
+                        {item.course.videos_count}课时
                       </div>
-                    )}
+                      {item.created_at && (
+                        <div className={styles["item-text"]}>
+                          收藏时间：{dateFormat(item.created_at)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    className={styles["continue-button"]}
+                    onClick={() => {
+                      goDetail(item.course_id);
+                    }}
+                  >
+                    详情
                   </div>
                 </div>
-                <div
-                  className={styles["continue-button"]}
-                  onClick={() => {
-                    goDetail(item.course_id);
-                  }}
-                >
-                  详情
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-    </div>
+              )}
+            </div>
+          ))}
+      </div>
+    </>
   );
 };
