@@ -20,7 +20,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
   const [cid, setCid] = useState(0);
 
   const goPlay = (item: any) => {
-    if (item.last_view_video.length !== 0) {
+    if (item.progress < 100 && item.last_view_video.length !== 0) {
       let vid = item.last_view_video.video_id;
       navigate("/courses/video?id=" + vid);
     } else {
