@@ -366,6 +366,13 @@ export const TopicDetailPage = () => {
               <div className={styles["topic-content"]}>
                 {isBuy && (
                   <div className="u-content md-content">
+                    {topic.free_content_render && (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: topic.free_content_render,
+                        }}
+                      ></div>
+                    )}
                     <div
                       dangerouslySetInnerHTML={{
                         __html: topic.render_content,
