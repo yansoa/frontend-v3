@@ -141,6 +141,7 @@ export const VodPlayPage = () => {
           if (1 + j >= videoBox.length) {
             setIsLastpage(true);
           } else {
+            setIsLastpage(false);
             setLastVideoId(videoBox[j + 1].id);
           }
         }
