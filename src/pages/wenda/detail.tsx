@@ -35,6 +35,7 @@ export const WendaDetailPage = () => {
   const [size, setSize] = useState(10000);
   const [total, setTotal] = useState(0);
   const [id, setId] = useState(Number(result.get("id")));
+  const [commentLoading, setCommentLoading] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
@@ -58,9 +59,13 @@ export const WendaDetailPage = () => {
   };
 
   const submitComment = () => {
+    if (commentLoading) {
+      return;
+    }
     if (content === "") {
       return;
     }
+    setCommentLoading(true);
     wenda
       .submitAnswer(id, {
         original_content: content,
@@ -70,7 +75,11 @@ export const WendaDetailPage = () => {
       .then((res: any) => {
         setContent("");
         message.success("评论成功");
+        setCommentLoading(false);
         getData();
+      })
+      .catch((e) => {
+        setCommentLoading(false);
       });
   };
 
@@ -136,6 +145,9 @@ export const WendaDetailPage = () => {
       });
   };
   const reply = (id: number, userId: any, nick_name: string, index: number) => {
+    if (commentLoading) {
+      return;
+    }
     if (!nick_name) {
       message.error("回复的用户不存在");
       return;
@@ -144,6 +156,7 @@ export const WendaDetailPage = () => {
       return;
     }
     setAnswerId(id);
+    setCommentLoading(true);
     wenda
       .submitComment(id, {
         original_content: replyContent,
@@ -194,6 +207,10 @@ export const WendaDetailPage = () => {
         arr1[index] = old;
         setReplyAnswers(arr1);
         setReplyContent("");
+        setCommentLoading(false);
+      })
+      .catch((e: any) => {
+        setCommentLoading(false);
       });
   };
 

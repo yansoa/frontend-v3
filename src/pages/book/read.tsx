@@ -209,7 +209,6 @@ export const BookReadPage = () => {
       })
       .catch((e: any) => {
         setCommentLoading(false);
-        message.error(e.message);
       });
   };
 

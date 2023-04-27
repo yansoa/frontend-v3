@@ -79,6 +79,9 @@ export const TopicDetailPage = () => {
         setCommentList(res.data.data.data);
         setTotal(res.data.data.total);
         setCommentLoading(false);
+      })
+      .catch((e) => {
+        setCommentLoading(false);
       });
   };
 
@@ -197,7 +200,6 @@ export const TopicDetailPage = () => {
       })
       .catch((e: any) => {
         setCommentLoading(false);
-        message.error(e.message);
       });
   };
 
