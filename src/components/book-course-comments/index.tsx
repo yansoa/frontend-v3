@@ -62,7 +62,7 @@ export const BookCourseComments: React.FC<PropInterface> = ({
             <Button
               type="primary"
               disabled={content.length === 0}
-              style={{ width: 72, height: 48, fontSize: 16 }}
+              style={{ width: 72, height: 48, fontSize: 16, border: "none" }}
               onClick={() => {
                 submitComment();
               }}
