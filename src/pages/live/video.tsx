@@ -63,10 +63,6 @@ export const LiveVideoPage = () => {
     } else if (video.status === 1 && !webrtc_play_url) {
       initLivePlayer();
     }
-    return () => {
-      livePlayer && livePlayer.destroy(true);
-      vodPlayer && vodPlayer.destroy();
-    };
   }, [video]);
 
   useEffect(() => {
@@ -80,7 +76,6 @@ export const LiveVideoPage = () => {
   useEffect(() => {
     getData();
     return () => {
-      livePlayer && livePlayer.destroy(true);
       vodPlayer && vodPlayer.destroy();
     };
   }, [id]);
@@ -238,7 +233,11 @@ export const LiveVideoPage = () => {
   };
 
   const goDetail = () => {
-    navigate("/live/detail?id=" + course.id + "&tab=3");
+    livePlayer && livePlayer.destroy(true);
+    vodPlayer && vodPlayer.destroy();
+    setTimeout(() => {
+      navigate("/live/detail?id=" + course.id + "&tab=3");
+    }, 500);
   };
 
   const tabChange = (id: number) => {
