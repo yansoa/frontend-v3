@@ -49,11 +49,18 @@ export function clearLoginCode() {
 }
 
 export function saveSessionLoginCode(code: string) {
+  if (!code) {
+    return;
+  }
   window.sessionStorage.setItem("login_code:" + code, code);
 }
 
 export function getSessionLoginCode(code: string) {
   return window.sessionStorage.getItem("login_code:" + code);
+}
+
+export function clearSessionLoginCode(code: string) {
+  return window.sessionStorage.removeItem("login_code:" + code);
 }
 
 export function getCommentTime(dateStr: string) {

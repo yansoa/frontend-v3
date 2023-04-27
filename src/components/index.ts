@@ -46,3 +46,4 @@ export * from "./create-question";
 export * from "./book-course-comments";
 export * from "./image-preview";
 export * from "./upload-wenda-images";
+export * from "./code-login-bind-mobile";

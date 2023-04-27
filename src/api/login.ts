@@ -30,3 +30,7 @@ export function destroyUser(params: any) {
 export function codeBind(params: any) {
   return client.post(`/api/v3/member/socialite/bindWithCode`, params);
 }
+
+export function codeBindMobile(params: any) {
+  return client.post(`/api/v3/auth/register/withSocialite`, params);
+}

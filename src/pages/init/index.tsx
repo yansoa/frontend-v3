@@ -8,7 +8,13 @@ import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
-import { Header, Footer, BackTop, TencentFaceCheck } from "../../components";
+import {
+  Header,
+  Footer,
+  BackTop,
+  TencentFaceCheck,
+  CodeLoginBindMobileDialog,
+} from "../../components";
 import { BindNewMobileDialog } from "../member/components/bind-new-mobile";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
@@ -18,6 +24,7 @@ import {
   clearMsv,
   saveSessionLoginCode,
   getSessionLoginCode,
+  clearSessionLoginCode,
   setToken,
   saveLoginCode,
 } from "../../utils/index";
@@ -31,11 +38,14 @@ interface Props {
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
   const dispatch = useDispatch();
+  const result = new URLSearchParams(useLocation().search);
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(true);
   const [showFooter, setShowFooter] = useState<boolean>(true);
   const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
   const [bindNewMobileVisible, setBindNewMobileVisible] =
+    useState<boolean>(false);
+  const [codebindmobileVisible, setCodebindmobileVisible] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -66,6 +76,23 @@ export const InitPage = (props: Props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (result) {
+      // msv分销id记录
+      let msv = result.get("msv");
+      if (msv) {
+        saveMsv(msv);
+      }
+      // 社交登录回调处理
+      let loginCode = result.get("login_code");
+      let action = result.get("action");
+
+      if (loginCode && action === "login") {
+        codeLogin(String(loginCode));
+      }
+    }
+  }, [result]);
+
   const codeLogin = (code: string) => {
     if (getSessionLoginCode(code)) {
       return;
@@ -84,7 +111,7 @@ export const InitPage = (props: Props) => {
         } else {
           if (res.data.action === "bind_mobile") {
             saveLoginCode(code);
-            console.log("bind_mobile");
+            setCodebindmobileVisible(true);
           }
         }
       })
@@ -92,21 +119,6 @@ export const InitPage = (props: Props) => {
         message.error(e.message);
       });
   };
-
-  const result = new URLSearchParams(useLocation().search);
-  if (result) {
-    // msv分销id记录
-    let msv = result.get("msv");
-    if (msv) {
-      saveMsv(msv);
-    }
-    // 社交登录回调处理
-    let loginCode = result.get("login_code");
-    let action = result.get("action");
-    if (loginCode && action === "login") {
-      codeLogin(loginCode);
-    }
-  }
 
   const msvBind = () => {
     let msv = getMsv();
@@ -199,6 +211,15 @@ export const InitPage = (props: Props) => {
           getUser();
         }}
       ></BindNewMobileDialog>
+      <CodeLoginBindMobileDialog
+        scene="mobile_bind"
+        open={codebindmobileVisible}
+        active={false}
+        onCancel={() => setCodebindmobileVisible(false)}
+        success={() => {
+          setCodebindmobileVisible(false);
+        }}
+      ></CodeLoginBindMobileDialog>
       <TencentFaceCheck
         open={faceCheckVisible}
         active={false}
