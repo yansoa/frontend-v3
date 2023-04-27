@@ -182,10 +182,11 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
             <a
               className={styles["linkTab"]}
               onClick={() => {
-                goLogout();
+                interval && clearInterval(interval);
+                onCancel();
               }}
             >
-              退出登录&gt;&gt;
+              取消绑定&gt;&gt;
             </a>
           )}
         </div>

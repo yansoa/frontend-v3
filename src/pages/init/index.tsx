@@ -214,7 +214,7 @@ export const InitPage = (props: Props) => {
       <CodeLoginBindMobileDialog
         scene="mobile_bind"
         open={codebindmobileVisible}
-        active={false}
+        active={true}
         onCancel={() => setCodebindmobileVisible(false)}
         success={() => {
           setCodebindmobileVisible(false);
