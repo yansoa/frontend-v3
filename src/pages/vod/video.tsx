@@ -45,7 +45,6 @@ export const VodPlayPage = () => {
   const [checkPlayerStatus, setCheckPlayerStatus] = useState<boolean>(false);
   const [totalTime, setTotalTime] = useState(10);
   const [playDuration, setPlayDuration] = useState(0);
-  const [dialog, setDialog] = useState(null);
   const [currentTab, setCurrentTab] = useState(4);
   const [isfixTab, setIsfixTab] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
