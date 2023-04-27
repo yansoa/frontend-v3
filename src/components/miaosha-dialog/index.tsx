@@ -78,7 +78,6 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
           captcha: "",
         });
         getCaptcha();
-        message.error(e.message);
       });
   };
 
@@ -98,6 +97,9 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         okText="立即秒杀"
+        onOk={() => {
+          form.submit();
+        }}
         maskClosable={false}
       >
         <div className={styles["tabs"]}>
