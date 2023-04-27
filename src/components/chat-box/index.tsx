@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Button, message } from "antd";
+import { Button, message as Message } from "antd";
 import { goMeedu } from "../../api/index";
 import styles from "./index.module.scss";
 import { getToken } from "../../utils/index";
@@ -142,7 +142,7 @@ export const ChatBox: React.FC<PropInterface> = ({
           setUserDisabled(false);
           change(userDisabled, messageDisabled);
         } else if (message.t === "room-over") {
-          message.success("当前直播已结束");
+          Message.success("当前直播已结束");
           setTimeout(() => {
             window.location.reload();
           }, 1500);
@@ -162,7 +162,7 @@ export const ChatBox: React.FC<PropInterface> = ({
         chanEvt("enter_fail");
       };
     } else {
-      message.error("您的浏览器不支持 WebSocket!");
+      Message.error("您的浏览器不支持 WebSocket!");
     }
   };
 
