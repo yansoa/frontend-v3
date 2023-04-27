@@ -504,7 +504,7 @@ export const VodPlayPage = () => {
                           )}
                           {isWatch && isLastpage && (
                             <div className={styles["last-video"]}>
-                              恭喜你看完本套课程！
+                              恭喜你学完最后一节
                             </div>
                           )}
                         </>
