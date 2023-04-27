@@ -107,6 +107,7 @@ export const TopicPage = () => {
                     display: "flex",
                     flexDirection: "row",
                     padding: "20px 30px",
+                    boxSizing: "border-box",
                     marginBottom: 10,
                   }}
                 >
@@ -149,6 +150,7 @@ export const TopicPage = () => {
                     flexDirection: "row",
                     padding: "20px 30px",
                     marginBottom: 10,
+                    boxSizing: "border-box",
                   }}
                 >
                   <Skeleton.Button
