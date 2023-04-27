@@ -192,7 +192,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
         </div>
         <Form
           form={form}
-          name="bind-new-mobile-dialog"
+          name="code-bind-new-mobile-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}

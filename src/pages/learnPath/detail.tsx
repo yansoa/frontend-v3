@@ -46,7 +46,7 @@ export const LearnPathDetailPage = () => {
       setLearn(res.data.data);
       setSteps(res.data.steps);
       setIsBuy(res.data.is_buy);
-      if (res.data.is_buy && configFunc["miaosha"]) {
+      if (!res.data.is_buy && configFunc["miaosha"]) {
         getMsDetail();
       } else if (!res.data.is_buy && configFunc["tuangou"]) {
         getTgDetail();
@@ -55,7 +55,7 @@ export const LearnPathDetailPage = () => {
   };
 
   const getMsDetail = () => {
-    if (steps.charge === 0) {
+    if (learn.charge === 0) {
       return;
     }
     miaosha
