@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Spin, Pagination } from "antd";
+import { Row, Col, Skeleton, Pagination } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { topic } from "../../api/index";
 import {
@@ -94,8 +94,74 @@ export const TopicPage = () => {
         <div className={styles["left-contanier"]}>
           {loading && (
             <Row>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
+              <div
+                style={{
+                  width: 769,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <div
+                  style={{
+                    width: 769,
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "20px 30px",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 133,
+                      height: 100,
+                      borderRadius: 8,
+                      marginRight: 20,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
+                <div
+                  style={{
+                    width: 769,
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "20px 30px",
+                    marginBottom: 10,
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 133,
+                      height: 100,
+                      borderRadius: 8,
+                      marginRight: 20,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
+                <div
+                  style={{
+                    width: 769,
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "20px 30px",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 133,
+                      height: 100,
+                      borderRadius: 8,
+                      marginRight: 20,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
               </div>
             </Row>
           )}
@@ -143,15 +209,59 @@ export const TopicPage = () => {
           )}
         </div>
         <div className={styles["right-contanier"]}>
-          {loading2 && (
-            <Row>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
-              </div>
-            </Row>
-          )}
           <div className={styles["right-list"]}>
             <div className={styles["tit"]}>推荐阅读</div>
+            {loading2 && (
+              <Row>
+                <div
+                  style={{
+                    width: 400,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 400,
+                      display: "flex",
+                      flexDirection: "row",
+                      marginBottom: 30,
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 133,
+                        height: 100,
+                        borderRadius: 8,
+                        marginRight: 20,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                  </div>
+                  <div
+                    style={{
+                      width: 400,
+                      display: "flex",
+                      flexDirection: "row",
+                      marginBottom: 30,
+                    }}
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 133,
+                        height: 100,
+                        borderRadius: 8,
+                        marginRight: 20,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                  </div>
+                </div>
+              </Row>
+            )}
             {!loading2 && hotList.length === 0 && (
               <Col span={24}>
                 <Empty></Empty>
