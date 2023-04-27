@@ -74,7 +74,7 @@ export const WendaPage = () => {
         page: page,
         size: size,
         scene: scene,
-        category_id: category_id,
+        cid: category_id,
       })
       .then((res: any) => {
         setCategories(res.data.categories);
