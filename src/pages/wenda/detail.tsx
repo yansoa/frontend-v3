@@ -36,6 +36,7 @@ export const WendaDetailPage = () => {
   const [total, setTotal] = useState(0);
   const [id, setId] = useState(Number(result.get("id")));
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
@@ -74,6 +75,8 @@ export const WendaDetailPage = () => {
       })
       .then((res: any) => {
         setContent("");
+        setImages([]);
+        setRefresh(!refresh);
         message.success("评论成功");
         setCommentLoading(false);
         getData();
@@ -332,6 +335,7 @@ export const WendaDetailPage = () => {
               <div className={styles["upload-body"]}>
                 <UploadWendaImagesComp
                   open={isUploadShow}
+                  fresh={refresh}
                   onUpdate={(thumbs: any[]) => {
                     setImages(thumbs);
                   }}

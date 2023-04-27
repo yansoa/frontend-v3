@@ -9,15 +9,21 @@ import { getToken } from "../../utils/index";
 
 interface PropInterface {
   open: boolean;
+  fresh: boolean;
   onUpdate: (thumbs: any[]) => void;
 }
 
 export const UploadWendaImagesComp: React.FC<PropInterface> = ({
   open,
+  fresh,
   onUpdate,
 }) => {
   const [thumbs, setThumbs] = useState<any>([]);
   const user = useSelector((state: any) => state.loginUser.value.user);
+
+  useEffect(() => {
+    setThumbs([]);
+  }, [fresh]);
 
   const props: UploadProps = {
     name: "file",
