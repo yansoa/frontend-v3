@@ -13,6 +13,7 @@ import { VodPlayPage } from "../pages/vod/video";
 import { LivePage } from "../pages/live/index";
 import { LiveDetailPage } from "../pages/live/detail";
 import { LiveVideoPage } from "../pages/live/video";
+import { AnnouncementPage } from "../pages/announcement/index";
 import { ExamPage } from "../pages/exam/index";
 import { ExamPaperPage } from "../pages/exam/paper/index";
 import { ExamPaperDetailPage } from "../pages/exam/paper/detail";
@@ -187,6 +188,7 @@ if (getToken()) {
     "/topic/detail",
     "/wenda",
     "/wenda/detail",
+    "/announcement",
   ];
   if (whiteRoutes.indexOf(window.location.pathname) === -1) {
     window.location.href = "/login";
@@ -258,6 +260,7 @@ const routes: RouteObject[] = [
       { path: "/live", element: <LivePage /> },
       { path: "/live/detail", element: <LiveDetailPage /> },
       { path: "/live/video", element: <LiveVideoPage /> },
+      { path: "/announcement", element: <AnnouncementPage /> },
       { path: "/exam", element: <ExamPage /> },
       { path: "/exam/papers", element: <ExamPaperPage /> },
       { path: "/exam/papers/detail", element: <ExamPaperDetailPage /> },
