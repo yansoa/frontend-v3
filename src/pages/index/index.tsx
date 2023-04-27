@@ -4,7 +4,7 @@ import { sign, viewBlock, home } from "../../api/index";
 import { SignComp } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Row, Col, Spin, Carousel, Skeleton } from "antd";
+import { Row, Carousel, Skeleton } from "antd";
 import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
