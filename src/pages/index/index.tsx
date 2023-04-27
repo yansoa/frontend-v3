@@ -4,7 +4,7 @@ import { sign, viewBlock, home } from "../../api/index";
 import { SignComp } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Row, Col, Spin, Carousel } from "antd";
+import { Row, Col, Spin, Carousel, Skeleton } from "antd";
 import { VodComp } from "./components/vod-v1";
 import { LiveComp } from "./components/live-v1";
 import { BookComp } from "./components/book-v1";
@@ -99,8 +99,170 @@ const IndexPage = () => {
       ></SignComp>
       {loading && (
         <Row>
-          <div className="float-left d-j-flex mt-50">
-            <Spin size="large" />
+          <Skeleton.Button
+            active
+            style={{
+              width: 1200,
+              height: 400,
+              borderRadius: "16px 16px 0 0",
+            }}
+          ></Skeleton.Button>
+          <Skeleton active paragraph={{ rows: 0 }}></Skeleton>
+          <div style={{ width: 1200, textAlign: "center" }}>
+            <Skeleton.Button
+              active
+              style={{ height: 30, width: 120, marginTop: 75 }}
+            ></Skeleton.Button>
+          </div>
+          <div
+            style={{
+              width: 1200,
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              marginTop: 50,
+            }}
+          >
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 30,
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 30,
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 30,
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
+            <div
+              style={{
+                width: 264,
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 30,
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 264,
+                  height: 198,
+                  borderRadius: "8px 8px 0 0",
+                }}
+              ></Skeleton.Button>
+              <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+            </div>
           </div>
         </Row>
       )}
