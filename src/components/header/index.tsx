@@ -11,6 +11,7 @@ import { LoginDialog } from "../login-dailog";
 import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
+import { ForgetPasswordDialog } from "../forget-password-dialog";
 import { login, home, user as member } from "../../api/index";
 import { clearToken } from "../../utils/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
@@ -37,6 +38,7 @@ export const Header = () => {
   const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
     useState<boolean>(false);
   const [hasMessage, setHasMessage] = useState<boolean>(false);
+  const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
   const [list, setList] = useState<MenuProps["items"]>([]);
   const [current, setCurrent] = useState(pathname);
 
@@ -166,7 +168,7 @@ export const Header = () => {
   };
 
   const goForget = () => {
-    console.log(333);
+    setForgetVisiale(true);
   };
 
   const goWeixinLogin = () => {
@@ -230,6 +232,16 @@ export const Header = () => {
         open={weixinBindMobileVisiale}
         onCancel={() => {
           setWeixinBindMobileVisiale(false);
+        }}
+      />
+      <ForgetPasswordDialog
+        open={forgetVisiale}
+        changeLogin={() => {
+          setForgetVisiale(false);
+          setVisiale(true);
+        }}
+        onCancel={() => {
+          setForgetVisiale(false);
         }}
       />
       <div className={styles["main-header"]}>

@@ -34,3 +34,7 @@ export function codeBind(params: any) {
 export function codeBindMobile(params: any) {
   return client.post(`/api/v3/auth/register/withSocialite`, params);
 }
+
+export function noLoginPasswordForget(params: any) {
+  return client.post("/api/v2/password/reset", params);
+}
