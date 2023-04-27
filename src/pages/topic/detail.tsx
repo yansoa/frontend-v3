@@ -157,9 +157,13 @@ export const TopicDetailPage = () => {
   };
 
   const submitComment = () => {
+    if (commentLoading) {
+      return;
+    }
     if (content === "") {
       return;
     }
+    setCommentLoading(true);
     topicApi
       .submitComment(id, { content: content })
       .then((res: any) => {
@@ -189,8 +193,10 @@ export const TopicDetailPage = () => {
         keys.unshift(false);
         setConfigkey(keys);
         setContent("");
+        setCommentLoading(false);
       })
       .catch((e: any) => {
+        setCommentLoading(false);
         message.error(e.message);
       });
   };
@@ -232,6 +238,9 @@ export const TopicDetailPage = () => {
     nick_name: string,
     index: number
   ) => {
+    if (commentLoading) {
+      return;
+    }
     if (!nick_name) {
       message.error("回复的用户不存在");
       return;
@@ -240,6 +249,7 @@ export const TopicDetailPage = () => {
       return;
     }
     setAnswerId(id);
+    setCommentLoading(true);
     topicApi
       .releaseComments(topic.id, {
         parent_id: parentId,
@@ -249,6 +259,7 @@ export const TopicDetailPage = () => {
       .then((res: any) => {
         setConfigInput([]);
         message.success("回复成功");
+        setCommentLoading(false);
         let item;
         if (id) {
           item = {
@@ -322,6 +333,9 @@ export const TopicDetailPage = () => {
               setReplyAnswers(arr1);
             });
         }
+      })
+      .catch((e: any) => {
+        setCommentLoading(false);
       });
   };
 

@@ -26,19 +26,26 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const [content, setContent] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const submitComment = () => {
+    if (loading) {
+      return;
+    }
     if (content === "") {
       return;
     }
+    setLoading(true);
     course
       .submitVideoComment(vid, { content: content })
       .then(() => {
         message.success("成功");
         setContent("");
+        setLoading(false);
         success();
       })
       .catch((e) => {
+        setLoading(false);
         message.error(e.message);
       });
   };

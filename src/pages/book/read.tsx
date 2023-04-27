@@ -170,9 +170,13 @@ export const BookReadPage = () => {
   };
 
   const submitComment = () => {
+    if (commentLoading) {
+      return;
+    }
     if (content === "") {
       return;
     }
+    setCommentLoading(true);
     bookApi
       .submitComment(id, { content: content })
       .then((res: any) => {
@@ -201,8 +205,10 @@ export const BookReadPage = () => {
         keys.unshift(false);
         setConfigkey(keys);
         setContent("");
+        setCommentLoading(false);
       })
       .catch((e: any) => {
+        setCommentLoading(false);
         message.error(e.message);
       });
   };
@@ -248,6 +254,9 @@ export const BookReadPage = () => {
     nick_name: string,
     index: number
   ) => {
+    if (commentLoading) {
+      return;
+    }
     if (!nick_name) {
       message.error("回复的用户不存在");
       return;
@@ -256,6 +265,7 @@ export const BookReadPage = () => {
       return;
     }
     setAnswerId(id);
+    setCommentLoading(true);
     bookApi
       .submitComment(list.id, {
         parent_id: parentId,
@@ -266,6 +276,7 @@ export const BookReadPage = () => {
         let articleId = list.id;
         setConfigInput([]);
         message.success("回复成功");
+        setCommentLoading(false);
         let item;
         if (id) {
           item = {
@@ -338,6 +349,9 @@ export const BookReadPage = () => {
               setReplyAnswers(arr1);
             });
         }
+      })
+      .catch((e: any) => {
+        setCommentLoading(false);
       });
   };
 
