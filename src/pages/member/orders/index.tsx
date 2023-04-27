@@ -342,14 +342,14 @@ export const MemberOrdersPage = () => {
                         <div className={styles["item-thumb"]}>
                           {item.goods.goods_type === "book" ? (
                             <ThumbBar
-                              value={item.goods[0].goods_thumb}
+                              value={item.goods.goods_thumb}
                               width={75}
                               height={100}
                               border={8}
                             />
                           ) : (
                             <ThumbBar
-                              value={item.goods[0].goods_thumb}
+                              value={item.goods.goods_thumb}
                               width={133}
                               height={100}
                               border={8}
@@ -405,14 +405,14 @@ export const MemberOrdersPage = () => {
                         <div className={styles["item-thumb"]}>
                           {item.goods.goods_type === "book" ? (
                             <ThumbBar
-                              value={item.goods[0].goods_thumb}
+                              value={item.goods.goods_thumb}
                               width={75}
                               height={100}
                               border={8}
                             />
                           ) : (
                             <ThumbBar
-                              value={item.goods[0].goods_thumb}
+                              value={item.goods.goods_thumb}
                               width={133}
                               height={100}
                               border={8}

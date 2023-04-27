@@ -3,6 +3,7 @@ import { Modal, Form, Input, message, Space, Image } from "antd";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { miaosha, system } from "../../api/index";
+import closeIcon from "../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   msData: any;
@@ -101,9 +102,17 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
           form.submit();
         }}
         maskClosable={false}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>秒杀活动</div>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <Form
           form={form}
