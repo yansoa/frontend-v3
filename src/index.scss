@@ -393,13 +393,14 @@ button:focus-visible {
   width: 100%;
   text-align: left;
   height: auto;
-  margin-top: 10px;
   .ant-menu-horizontal {
     border-bottom: none;
   }
   .ant-menu > .ant-menu-item {
+    padding-top: 9px;
+    padding-bottom: 9px;
     &:first-child {
-      margin-left: -16px;
+      margin-left: -25px;
     }
     .ant-menu-submenu-title {
       font-size: 16px !important;
@@ -1191,4 +1192,11 @@ li {
   cursor: pointer;
   font-size: 14px;
   color: #333;
+}
+
+:where(.css-dev-only-do-not-override-1op9nkv).ant-menu-horizontal
+  .ant-menu-item,
+:where(.css-dev-only-do-not-override-1op9nkv).ant-menu-horizontal
+  .ant-menu-submenu {
+  padding-inline: 25px;
 }
