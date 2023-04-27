@@ -60,10 +60,10 @@ export const LiveVideoPage = () => {
   useEffect(() => {
     if (video.status === 1 && webrtc_play_url) {
       initLiveTencentPlayer();
-    } else if (video.status === 1 && !webrtc_play_url) {
+    } else if (video.status === 1 && !webrtc_play_url && playUrl) {
       initLivePlayer();
     }
-  }, [video]);
+  }, [video, webrtc_play_url, playUrl]);
 
   useEffect(() => {
     myRef.current = timeValue;
@@ -236,7 +236,7 @@ export const LiveVideoPage = () => {
     livePlayer && livePlayer.destroy(true);
     vodPlayer && vodPlayer.destroy();
     setTimeout(() => {
-      navigate("/live/detail?id=" + course.id + "&tab=3");
+      navigate("/live/detail?id=" + course.id + "&tab=3", { replace: true });
     }, 500);
   };
 
@@ -278,6 +278,8 @@ export const LiveVideoPage = () => {
   };
 
   const reloadPlayer = () => {
+    livePlayer && livePlayer.destroy(true);
+    setNoTeacher(false);
     setCourse({});
     setVideo({});
     setPlayUrl("");
@@ -434,12 +436,14 @@ export const LiveVideoPage = () => {
                           </div>
                         </div>
                       )}
-                      <div className={styles["play"]}>
-                        <div
-                          id="meedu-live-player"
-                          style={{ width: "100%", height: "100%" }}
-                        ></div>
-                      </div>
+                      {!noTeacher && (
+                        <div className={styles["play"]}>
+                          <div
+                            id="meedu-live-player"
+                            style={{ width: "100%", height: "100%" }}
+                          ></div>
+                        </div>
+                      )}
                     </>
                   )}
                   {video.status === 0 && (
