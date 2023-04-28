@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   Modal,
@@ -32,17 +32,22 @@ export const SignDialog: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const [loading, setLoading] = useState<boolean>(false);
-  const [count, setCount] = useState<any>("");
+  const [count, setCount] = useState<number>(0);
   const [num, setNum] = useState<number>(0);
+  const myRef = useRef(0);
 
   useEffect(() => {
     getCount();
     return () => {
       timer && clearInterval(timer);
       timer = null;
-      setCount("");
+      setCount(0);
     };
   }, [cid, vid, records]);
+
+  useEffect(() => {
+    myRef.current = count;
+  }, [count]);
 
   const getCount = () => {
     let end_at = records.end_at;
@@ -58,12 +63,12 @@ export const SignDialog: React.FC<PropInterface> = ({
     if (!timer) {
       setCount(TIME_COUNT);
       timer = setInterval(() => {
-        let num = count;
+        let num = Math.floor(myRef.current);
         if (num > 0 && num <= TIME_COUNT) {
           num--;
           setCount(num);
         } else {
-          setCount("");
+          setCount(0);
           timer && clearInterval(timer);
           timer = null;
           onCancel();
@@ -72,16 +77,15 @@ export const SignDialog: React.FC<PropInterface> = ({
     }
   };
 
-  const confirm = () => {
+  const onConfirm = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-
     goMeedu
       .sign(cid, vid, records.id)
       .then(() => {
-        setCount("");
+        setCount(0);
         timer && clearInterval(timer);
         timer = null;
         setLoading(false);
@@ -90,7 +94,6 @@ export const SignDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         setLoading(false);
-        message.error(e.message);
       });
   };
 
@@ -103,7 +106,7 @@ export const SignDialog: React.FC<PropInterface> = ({
           </div>
           <div className={styles["dialog-body"]}>
             <div className={styles["count"]}>{count}</div>
-            <div className={styles["button"]} onClick={() => confirm}>
+            <div className={styles["button"]} onClick={() => onConfirm()}>
               点击签到
             </div>
           </div>
