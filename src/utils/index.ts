@@ -170,13 +170,14 @@ export function random(minNum: number, maxNum: number) {
 
 export function getShareHost() {
   let hash = window.location.hash;
+
   if (hash.match("#")) {
     hash = "/#/";
   } else {
-    hash = "";
+    hash = "/";
   }
+  
   let host = window.location.protocol + "//" + window.location.host + hash;
-
   return host;
 }
 
