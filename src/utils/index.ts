@@ -88,7 +88,6 @@ export function getCommentTime(dateStr: string) {
 
 export function changeTime(dateStr: string) {
   const interval = moment().diff(moment(dateStr), "seconds");
-  console.log(interval);
   if (interval < 60) {
     return "刚刚";
   } else if (interval < 60 * 60) {
