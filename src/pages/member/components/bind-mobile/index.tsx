@@ -75,7 +75,6 @@ export const BindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
 

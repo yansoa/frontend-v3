@@ -82,7 +82,6 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
   const onFinish = (values: any) => {
@@ -111,7 +110,6 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         setLoading(false);
-        message.error(e.message);
       });
   };
 

@@ -88,7 +88,6 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
 
@@ -156,7 +155,6 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e) => {
         setLoading(false);
-        message.error("网络错误");
       });
   };
 

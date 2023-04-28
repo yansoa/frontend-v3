@@ -75,7 +75,6 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
   const onFinish = (values: any) => {

@@ -74,7 +74,6 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
 
@@ -96,7 +95,6 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         setLoading(false);
-        message.error(e.message);
       });
   };
 
