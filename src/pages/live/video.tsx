@@ -535,6 +535,7 @@ export const LiveVideoPage = () => {
                       messageDisabled: boolean
                     ) => {
                       if (userDisabled || messageDisabled) {
+                        console.log(userDisabled, messageDisabled);
                         setMessageDisabled(true);
                       } else {
                         setMessageDisabled(false);

@@ -125,22 +125,22 @@ export const ChatBox: React.FC<PropInterface> = ({
           endSign();
         } else if (message.t === "room-ban") {
           setMessageDisabled(true);
-          change(userDisabled, messageDisabled);
+          change(userDisabled, true);
         } else if (
           message.t === "room-user-ban" &&
           message.params[0] === user.id
         ) {
           setUserDisabled(true);
-          change(userDisabled, messageDisabled);
+          change(true, messageDisabled);
         } else if (message.t === "room-un-ban") {
           setMessageDisabled(false);
-          change(userDisabled, messageDisabled);
+          change(userDisabled, false);
         } else if (
           message.t === "room-user-un-ban" &&
           message.params[0] === user.id
         ) {
           setUserDisabled(false);
-          change(userDisabled, messageDisabled);
+          change(false, messageDisabled);
         } else if (message.t === "room-over") {
           Message.success("当前直播已结束");
           setTimeout(() => {
