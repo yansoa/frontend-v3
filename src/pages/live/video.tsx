@@ -75,9 +75,6 @@ export const LiveVideoPage = () => {
 
   useEffect(() => {
     getData();
-    return () => {
-      vodPlayer && vodPlayer.destroy();
-    };
   }, [id]);
 
   const getData = () => {
@@ -278,6 +275,7 @@ export const LiveVideoPage = () => {
   };
 
   const reloadPlayer = () => {
+    vodPlayer && vodPlayer.destroy();
     livePlayer && livePlayer.destroy(true);
     setNoTeacher(false);
     setCourse({});

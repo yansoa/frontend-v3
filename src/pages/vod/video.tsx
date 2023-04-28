@@ -67,6 +67,7 @@ export const VodPlayPage = () => {
 
   useEffect(() => {
     setVid(Number(result.get("id")));
+    window.player && window.player.destroy();
   }, [result.get("id")]);
 
   useEffect(() => {
@@ -77,7 +78,6 @@ export const VodPlayPage = () => {
       clock && clearInterval(clock);
       timer && clearInterval(timer);
       window.removeEventListener("scroll", handleTabFix, true);
-      window.player && window.player.destroy();
     };
   }, [vid]);
 
