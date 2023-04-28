@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Modal, Spin, Button, Pagination } from "antd";
+import { Row, Col, Modal, Skeleton, Spin, Button, Pagination } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
@@ -149,9 +149,40 @@ export const WendaPage = () => {
       <div className={styles["contanier"]}>
         <div className={styles["qa-box"]}>
           {loading && (
-            <Row style={{ width: 1200 }}>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
+            <Row>
+              <div
+                style={{
+                  width: 769,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <div
+                  style={{
+                    width: 769,
+                    height: 134,
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "4px 20px 20px 20px",
+                    boxSizing: "border-box",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
+                <div
+                  style={{
+                    width: 769,
+                    height: 134,
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "4px 20px 20px 20px",
+                    boxSizing: "border-box",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
               </div>
             </Row>
           )}
