@@ -80,14 +80,15 @@ export function getCommentTime(dateStr: string) {
     let tempTime = Math.floor(interval / (60 * 60 * 24));
     return `${tempTime}天前`;
   } else if (interval < 60 * 60 * 24 * 365) {
-    return moment(interval).format("MM-DD");
+    return moment(interval * 1000).format("MM-DD");
   } else {
-    return moment(interval).format("YYYY-MM-DD");
+    return moment(interval * 1000).format("YYYY-MM-DD");
   }
 }
 
 export function changeTime(dateStr: string) {
   const interval = moment().diff(moment(dateStr), "seconds");
+  console.log(interval);
   if (interval < 60) {
     return "刚刚";
   } else if (interval < 60 * 60) {
@@ -100,9 +101,9 @@ export function changeTime(dateStr: string) {
     let tempTime = Math.floor(interval / (60 * 60 * 24));
     return `${tempTime}天前`;
   } else if (interval < 60 * 60 * 24 * 365) {
-    return moment(interval).format("MM-DD HH:mm");
+    return moment(interval * 1000).format("MM-DD HH:mm");
   } else {
-    return moment(interval).format("YYYY-MM-DD HH:mm");
+    return moment(interval * 1000).format("YYYY-MM-DD HH:mm");
   }
 }
 
