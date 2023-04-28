@@ -103,7 +103,7 @@ export const ExamMockPaperPlayPage = () => {
     const today: any = new Date();
     const now = Date.parse(today);
     let remaining: number = (timestamp - now) / 1000;
-    if (remaining < 0) {
+    if (remaining <= 0) {
       finish();
       return;
     }
@@ -124,15 +124,13 @@ export const ExamMockPaperPlayPage = () => {
         });
       } else {
         finish();
-        timer && clearInterval(timer);
       }
     }, 1000);
   };
 
   const finish = () => {
-    if (userPaper.status === 0) {
-      submitHandle();
-    }
+    timer && clearInterval(timer);
+    submitHandle();
   };
 
   const submitHandle = () => {

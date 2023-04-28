@@ -106,7 +106,7 @@ export const ExamPaperPlayPage = () => {
     const today: any = new Date();
     const now = Date.parse(today);
     let remaining: number = (timestamp - now) / 1000;
-    if (remaining < 0) {
+    if (remaining <= 0) {
       let workTime = parseInt(paper.expired_minutes) * 60;
       setWorkTime(workTime);
       finish();
@@ -132,15 +132,13 @@ export const ExamPaperPlayPage = () => {
           parseInt(paper.expired_minutes) * 60 - Math.floor(remaining);
         setWorkTime(workTime);
         finish();
-        timer && clearInterval(timer);
       }
     }, 1000);
   };
 
   const finish = () => {
-    if (userPaper.status === 1) {
-      submitHandle();
-    }
+    timer && clearInterval(timer);
+    submitHandle();
   };
 
   const submitHandle = () => {
