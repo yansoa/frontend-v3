@@ -80,7 +80,7 @@ export const WithdrawDialog: React.FC<PropInterface> = ({
         channel_address: channelAddress,
       })
       .then((res: any) => {
-        message.success("提现成功");
+        message.success("提现申请已提交，请耐心等待管理员转账");
         onSuccess();
         setLoading(false);
       });
