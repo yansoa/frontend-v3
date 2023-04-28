@@ -57,17 +57,20 @@
             height: 34px;
             border-radius: 4px 0px 0px 4px;
             border: 1px solid #ffffff;
+            border-right: none;
             background: linear-gradient(270deg, #3ca7fa 0%, #1483e6 80%);
             outline: none;
             padding-left: 15px;
             font-size: 14px;
             font-weight: 400;
             color: #ffffff;
+            box-sizing: border-box;
           }
           .btn-copy {
             width: 104px;
             height: 34px;
             background: #ffffff;
+            box-sizing: border-box;
             border-radius: 0px 4px 4px 0px;
             display: flex;
             align-items: center;
@@ -76,6 +79,7 @@
             font-size: 14px;
             font-weight: 400;
             color: #3ca7fa;
+            border: none;
             &:hover {
               opacity: 0.8;
             }
