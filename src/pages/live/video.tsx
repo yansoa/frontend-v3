@@ -267,6 +267,7 @@ export const LiveVideoPage = () => {
 
   const showVodPlayer = () => {
     if (record_exists === 1 && playUrl.length > 0) {
+      vodPlayer && vodPlayer.destroy();
       initVodPlayer(playUrl, course.poster);
     } else {
       setVodPlayerStatus(false);
