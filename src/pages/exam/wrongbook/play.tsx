@@ -96,6 +96,9 @@ export const ExamWrongbookPlayPage = () => {
         setQuestion(res.data.first_question);
         setQidArr(res.data.questions_ids);
         setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -103,14 +106,13 @@ export const ExamWrongbookPlayPage = () => {
     if (loading) {
       return;
     }
-    setLoading(true);
     setQuestion([]);
     setAnswerContent([]);
     let questionId = qidArr[activeQid - 1];
     if (!questionId) {
       return;
     }
-
+    setLoading(true);
     wrongbook
       .newQuestion(questionId, {
         from: "wrongbook",
@@ -119,6 +121,9 @@ export const ExamWrongbookPlayPage = () => {
         let data = res.data.question;
         data.answer_content = "";
         setQuestion(data);
+        setLoading(false);
+      })
+      .catch((e) => {
         setLoading(false);
       });
   };
@@ -183,11 +188,8 @@ export const ExamWrongbookPlayPage = () => {
   const keyDown = () => {
     document.onkeydown = (e) => {
       let e1 = e || event || window.event;
-
+      setLoading(false);
       //键盘按键判断:左箭头-37;上箭头-38；右箭头-39;下箭头-40
-      if (loading) {
-        return;
-      }
       if (e1 && e1.keyCode == 37) {
         if (activeQid === 1) {
           message.error("没有上一题了");

@@ -98,6 +98,9 @@ export const ExamCollectionPlayPage = () => {
         setQidArr(res.data.questions_ids);
         collectStatus(res.data.first_question);
         setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -132,6 +135,9 @@ export const ExamCollectionPlayPage = () => {
         data.answer_content = "";
         setQuestion(data);
         collectStatus(data);
+        setLoading(false);
+      })
+      .catch((e) => {
         setLoading(false);
       });
   };
@@ -169,9 +175,7 @@ export const ExamCollectionPlayPage = () => {
       let e1 = e || event || window.event;
 
       //键盘按键判断:左箭头-37;上箭头-38；右箭头-39;下箭头-40
-      if (loading) {
-        return;
-      }
+      setLoading(false);
       if (e1 && e1.keyCode == 37) {
         if (activeQid === 1) {
           message.error("没有上一题了");
