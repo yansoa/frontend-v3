@@ -367,7 +367,7 @@ export const OrderPage = () => {
     } else {
       if (payment === "alipay") {
         let host = getAppUrl();
-        let redirect = encodeURIComponent(host + "/order/success");
+        let redirect = encodeURIComponent(host + "/success");
         let indexUrl = encodeURIComponent(host + "/");
         window.location.href =
           systemConfig.url +

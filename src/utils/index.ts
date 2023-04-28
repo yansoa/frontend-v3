@@ -154,7 +154,7 @@ export function getAppUrl() {
   if (pathname && pathname !== "/") {
     host += pathname;
   }
-  return host + "/#";
+  return host;
 }
 
 export function random(minNum: number, maxNum: number) {
