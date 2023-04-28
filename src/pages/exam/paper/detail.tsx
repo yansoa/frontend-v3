@@ -16,7 +16,7 @@ export const ExamPaperDetailPage = () => {
   const [canJoin, setCanJoin] = useState<boolean>(false);
   const [joinCount, setJoinCount] = useState<number>(0);
   const [requiredCourses, setRequiredCourses] = useState<any>([]);
-  const [surplus, setSurplus] = useState<number>(99999);
+  const [surplus, setSurplus] = useState<number>(0);
   const [sumQuestion, setSumQuestion] = useState<number>(0);
   const [joinLoading, setJoinLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")) || 0);
@@ -35,6 +35,10 @@ export const ExamPaperDetailPage = () => {
   }, [questions]);
 
   const getDetail = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     paper.paperDetail(id).then((res: any) => {
       document.title = res.data.paper.title;
       setList(res.data.paper);
@@ -46,7 +50,10 @@ export const ExamPaperDetailPage = () => {
       if (res.data.paper.try_times !== 0) {
         let surplus = res.data.paper.try_times - res.data.join_count;
         setSurplus(surplus);
+      } else {
+        setSurplus(99999);
       }
+      setLoading(false);
     });
   };
 
