@@ -89,7 +89,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         getCaptcha();
-        message.error(e.message);
       });
   };
 
@@ -113,7 +112,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
         })
         .catch((e: any) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (tabKey === 1) {
       login
@@ -134,7 +132,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
         })
         .catch((e: any) => {
           setLoading(false);
-          message.error(e.message);
         });
     }
   };
