@@ -357,10 +357,13 @@ export const MemberOrdersPage = () => {
                           )}
                         </div>
                       )}
+                      {(!item.goods || item.goods.length === 0) && (
+                        <div className={styles["item-thumb"]}></div>
+                      )}
                       <div className={styles["item-info"]}>
                         <div className={styles["item-top"]}>
                           <div className={styles["item-name"]}>
-                            {item.goods.goods_title}
+                            {item.goods.goods_title || "商品已删除"}
                           </div>
                           <div className={styles["order-num"]}>
                             类型：{item.goods.goods_type_text}
@@ -420,10 +423,13 @@ export const MemberOrdersPage = () => {
                           )}
                         </div>
                       )}
+                      {(!item.goods || item.goods.length === 0) && (
+                        <div className={styles["item-thumb"]}></div>
+                      )}
                       <div className={styles["item-info"]}>
                         <div className={styles["item-top"]}>
                           <div className={styles["item-name"]}>
-                            {item.goods.goods_title}
+                            {item.goods.goods_title || "商品已删除"}
                           </div>
                           <div className={styles["order-num"]}>
                             类型：{item.goods.goods_type_text}
