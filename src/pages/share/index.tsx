@@ -258,7 +258,12 @@ export const SharePage = () => {
                       ? styles["active-btn-title"]
                       : styles["btn-title"]
                   }
-                  onClick={() => setProjectType(item.id)}
+                  onClick={() => {
+                    if (loading) {
+                      return;
+                    }
+                    setProjectType(item.id);
+                  }}
                 >
                   {item.name}
                   {projectType === item.id && (
