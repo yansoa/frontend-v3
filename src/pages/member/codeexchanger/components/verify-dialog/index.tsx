@@ -77,6 +77,10 @@ export const VerifyDialog: React.FC<PropInterface> = ({
         }
         checkSuccess(res.data.activity, buttonStatus);
         setLoading(false);
+      })
+      .catch((e) => {
+        getCaptcha();
+        setLoading(false);
       });
   };
 
