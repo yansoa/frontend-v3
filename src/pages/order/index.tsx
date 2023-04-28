@@ -150,6 +150,7 @@ export const OrderPage = () => {
       setConfigTip(0);
       return;
     }
+    setConfigTip(999);
     setLoading(true);
     order
       .promoCodeCheck(promoCode)
