@@ -27,6 +27,8 @@ import {
   clearSessionLoginCode,
   setToken,
   saveLoginCode,
+  isMobile,
+  SPAUrlAppend,
 } from "../../utils/index";
 
 interface Props {
@@ -143,6 +145,16 @@ export const InitPage = (props: Props) => {
   }
   if (props.config) {
     dispatch(saveConfigAction(props.config));
+
+    // 手机设备访问PC站点自动跳转到H5端口地址
+    if (isMobile() && props.config.h5_url) {
+      let url = props.config.h5_url;
+      if (result.get("msv")) {
+        //如果存在msv的话则跳转携带上msv参数
+        url = SPAUrlAppend(props.config.h5_url, "msv=" + result.get("msv"));
+      }
+      window.location.href = url;
+    }
   }
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));

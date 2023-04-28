@@ -179,3 +179,23 @@ export function getShareHost() {
 
   return host;
 }
+
+export function isMobile() {
+  let flag = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  );
+  return flag;
+}
+
+export function SPAUrlAppend(baseUrl: string, queryParams: any) {
+  let parseBaseUrl = new URL(baseUrl);
+  return (
+    parseBaseUrl.protocol +
+    "//" +
+    parseBaseUrl.host +
+    parseBaseUrl.pathname +
+    "#/?" +
+    (parseBaseUrl.search ? parseBaseUrl.search + "&" : "") +
+    queryParams
+  );
+}
