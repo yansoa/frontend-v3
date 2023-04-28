@@ -218,7 +218,7 @@ export const SharePage = () => {
                     className={styles["input"]}
                   ></Input>
                   <Button className={styles["btn-copy"]} onClick={() => copy()}>
-                    复制邀请链接
+                    复制您的专属邀请链接
                   </Button>
                 </div>
               </div>
