@@ -59,11 +59,11 @@ export const SignDialog: React.FC<PropInterface> = ({
   };
 
   const countDown = (duration: number) => {
-    const TIME_COUNT = duration;
+    const TIME_COUNT = Math.floor(duration);
     if (!timer) {
       setCount(TIME_COUNT);
       timer = setInterval(() => {
-        let num = Math.floor(myRef.current);
+        let num = myRef.current;
         if (num > 0 && num <= TIME_COUNT) {
           num--;
           setCount(num);
