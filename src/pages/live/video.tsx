@@ -458,10 +458,16 @@ export const LiveVideoPage = () => {
                       <div className={styles["play"]}>
                         {record_exists === 1 && !vodPlayerStatus && (
                           <div className={styles["alert-message"]}>
-                            <div className={styles["message"]}>
-                              直播已结束，
-                              <a onClick={() => showVodPlayer()}>点击回看</a>
-                            </div>
+                            {playUrl.length > 0 ? (
+                              <div className={styles["message"]}>
+                                直播已结束，
+                                <a onClick={() => showVodPlayer()}>点击回看</a>
+                              </div>
+                            ) : (
+                              <div className={styles["message"]}>
+                                直播已结束
+                              </div>
+                            )}
                           </div>
                         )}
                         <div
