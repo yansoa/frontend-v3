@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import styles from "./index.module.scss";
-import { useSelector } from "react-redux";
-import { saveUnread } from "../../store/user/loginUserSlice";
-import { user as member } from "../../api/index";
 
 interface PropInterface {
   page: number;
