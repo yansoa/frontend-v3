@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Spin, Pagination, Input, Button, message } from "antd";
+import { Row, Col, Spin, Skeleton, Input, Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { topic as topicApi } from "../../api/index";
 import { useSelector } from "react-redux";
@@ -56,6 +56,7 @@ export const TopicDetailPage = () => {
       setIsBuy(res.data.is_buy);
       setIsLike(res.data.is_collect);
       setIsVote(res.data.is_vote);
+      setLoading(false);
     });
   };
 
@@ -345,41 +346,87 @@ export const TopicDetailPage = () => {
     <>
       <div className="container">
         <div className="bread-nav">
-          <a
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            首页
-          </a>{" "}
-          /
-          <a
-            onClick={() => {
-              navigate("/topic");
-            }}
-          >
-            图文
-          </a>{" "}
-          /<span>{topic.title}</span>
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1200,
+                height: 14,
+                marginLeft: 0,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <>
+              <a
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                首页
+              </a>{" "}
+              /
+              <a
+                onClick={() => {
+                  navigate("/topic");
+                }}
+              >
+                图文
+              </a>{" "}
+              /<span>{topic.title}</span>
+            </>
+          )}
         </div>
         <div className={styles["box"]}>
           <div className={styles["topic-box"]}>
             <div className={styles["topic"]}>
               <HistoryRecord id={topic.id} title={topic.title} type="topic" />
-              <div className={styles["topic-title"]}>{topic.title}</div>
-              <div className={styles["topic-stat"]}>
-                <span className={styles["div-times"]}>
-                  {changeTime(topic.created_at)}
-                </span>
-                <span className={styles["div-times"]}>
-                  {topic.view_times}次阅读
-                </span>
-                <span className={styles["div-times"]}>
-                  {topic.vote_count}人赞过
-                </span>
-              </div>
+              {loading && (
+                <div
+                  style={{
+                    width: 806,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 806,
+                      height: 48,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 806,
+                      height: 14,
+                      marginTop: 10,
+                    }}
+                  ></Skeleton.Button>
+                </div>
+              )}
+              {!loading && (
+                <>
+                  <div className={styles["topic-title"]}>{topic.title}</div>
+                  <div className={styles["topic-stat"]}>
+                    <span className={styles["div-times"]}>
+                      {changeTime(topic.created_at)}
+                    </span>
+                    <span className={styles["div-times"]}>
+                      {topic.view_times}次阅读
+                    </span>
+                    <span className={styles["div-times"]}>
+                      {topic.vote_count}人赞过
+                    </span>
+                  </div>
+                </>
+              )}
               <div className={styles["line"]}></div>
               <div className={styles["topic-content"]}>
+                {loading && (
+                  <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+                )}
                 {isBuy && (
                   <div className="u-content md-content">
                     {topic.free_content_render && (
