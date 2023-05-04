@@ -302,22 +302,36 @@ export const LiveDetailPage = () => {
       )}
       <div className="container">
         <div className="bread-nav">
-          <a
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            首页
-          </a>{" "}
-          /
-          <a
-            onClick={() => {
-              navigate("/live");
-            }}
-          >
-            直播课
-          </a>{" "}
-          /<span>{course.title}</span>
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1200,
+                height: 14,
+                marginLeft: 0,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <>
+              <a
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                首页
+              </a>{" "}
+              /
+              <a
+                onClick={() => {
+                  navigate("/live");
+                }}
+              >
+                直播课
+              </a>{" "}
+              /<span>{course.title}</span>
+            </>
+          )}
         </div>
         <HistoryRecord id={course.id} title={course.title} type="live" />
         {!isBuy && msData && (

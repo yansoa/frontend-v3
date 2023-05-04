@@ -327,22 +327,36 @@ export const BookDetailPage = () => {
       )}
       <div className="container">
         <div className="bread-nav">
-          <a
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            首页
-          </a>{" "}
-          /
-          <a
-            onClick={() => {
-              navigate("/book");
-            }}
-          >
-            电子书
-          </a>{" "}
-          /<span>{book.name}</span>
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1200,
+                height: 14,
+                marginLeft: 0,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <>
+              <a
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                首页
+              </a>{" "}
+              /
+              <a
+                onClick={() => {
+                  navigate("/book");
+                }}
+              >
+                电子书
+              </a>{" "}
+              /<span>{book.name}</span>
+            </>
+          )}
         </div>
         <HistoryRecord id={book.id} title={book.name} type="book" />
         {!isBuy && msData && (

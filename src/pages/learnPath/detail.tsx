@@ -173,22 +173,36 @@ export const LearnPathDetailPage = () => {
   return (
     <div className="container">
       <div className="bread-nav">
-        <a
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          首页
-        </a>{" "}
-        /
-        <a
-          onClick={() => {
-            navigate("/learnPath");
-          }}
-        >
-          学习路径
-        </a>{" "}
-        /<span>{learn.name}</span>
+        {loading && (
+          <Skeleton.Button
+            active
+            style={{
+              width: 1200,
+              height: 14,
+              marginLeft: 0,
+            }}
+          ></Skeleton.Button>
+        )}
+        {!loading && (
+          <>
+            <a
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              首页
+            </a>{" "}
+            /
+            <a
+              onClick={() => {
+                navigate("/learnPath");
+              }}
+            >
+              学习路径
+            </a>{" "}
+            /<span>{learn.name}</span>
+          </>
+        )}
       </div>
       {!isBuy && msData && (
         <MiaoshaDialog
