@@ -89,6 +89,8 @@ const IndexPage = () => {
     height: "400px",
     textAlign: "center",
     borderRadius: "16px 16px 0 0",
+    cursor: "pointer",
+    border: "none",
   };
 
   return (
@@ -269,7 +271,11 @@ const IndexPage = () => {
       {!loading && sliders.length > 0 && (
         <Carousel autoplay>
           {sliders.map((item: any) => (
-            <div key={item.sort} onClick={() => sliderClcik(item.url)}>
+            <div
+              key={item.sort}
+              onClick={() => sliderClcik(item.url)}
+              style={{ border: "none", outline: "none" }}
+            >
               <img src={item.thumb} style={contentStyle} />
             </div>
           ))}
