@@ -171,6 +171,9 @@ export const LoginDialog: React.FC<PropInterface> = ({
 
   const changeQQ = () => {
     let successRedirectUrl = window.document.location.href;
+    if (successRedirectUrl.indexOf("/#/") !== -1) {
+      successRedirectUrl = successRedirectUrl.replace("/#/", "/");
+    }
     if (pathname === "/login") {
       let appUrl = getAppUrl();
       if (params.redirect) {
