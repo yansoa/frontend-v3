@@ -142,10 +142,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
       let num = res.data;
       if (num === 0) {
         setHasMessage(false);
-        saveUnread(false);
       } else {
         setHasMessage(true);
       }
+      saveUnread(false);
     });
   };
 
