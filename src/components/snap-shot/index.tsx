@@ -90,18 +90,18 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       } catch (err: any) {
         console.log("err:" + err);
         setOpenCamera(false);
+        //停止摄像头
+        if (video_ref.current) {
+          let video: any = video_ref.current;
+          const stream = video.srcObject;
+          if ("getTracks" in stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach((track: any) => {
+              track.stop();
+            });
+          }
+        }
       }
-    }
-  };
-
-  const closeMedia = () => {
-    const video: any = video_ref.current;
-    const stream = video.srcObject;
-    if ("getTracks" in stream) {
-      const tracks = stream.getTracks();
-      tracks.forEach((track: any) => {
-        track.stop();
-      });
     }
   };
 
