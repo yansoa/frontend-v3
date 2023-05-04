@@ -62,7 +62,7 @@ export const MemberCredit1FreePage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={18}></NavMember>
+        <NavMember cid={18} refresh={true}></NavMember>
         <div className={styles["right-box"]}>
           <div className={styles["exchange-box"]}>
             <div className="member-tabs">

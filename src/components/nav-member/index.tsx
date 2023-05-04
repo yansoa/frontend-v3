@@ -7,9 +7,10 @@ import { user as member } from "../../api/index";
 
 interface PropInterface {
   cid: number;
+  refresh: boolean;
 }
 
-export const NavMember: React.FC<PropInterface> = ({ cid }) => {
+export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
   const navigate = useNavigate();
   const [id, setId] = useState(cid);
   const [menus, setMenus] = useState<any>([]);
@@ -130,7 +131,7 @@ export const NavMember: React.FC<PropInterface> = ({ cid }) => {
     if (isLogin && freshUnread) {
       getUnread();
     }
-  }, [freshUnread, isLogin]);
+  }, [freshUnread, isLogin, refresh]);
 
   const setScene = (val: any) => {
     navigate(val);
@@ -141,10 +142,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid }) => {
       let num = res.data;
       if (num === 0) {
         setHasMessage(false);
+        saveUnread(false);
       } else {
         setHasMessage(true);
       }
-      saveUnread(false);
     });
   };
 

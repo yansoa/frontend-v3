@@ -329,7 +329,7 @@ export const MemberPage = () => {
         }}
       ></BindWeixinDialog>
       <div className={styles["box"]}>
-        <NavMember cid={0}></NavMember>
+        <NavMember cid={0} refresh={true}></NavMember>
         <div className={styles["project-box"]}>
           <div className={styles["user-box"]}>
             <div className={styles["avatar"]}>

@@ -11,6 +11,7 @@ export const MemberMessagesPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
+  const [mesRefresh, setMesRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(20);
   const [total, setTotal] = useState(0);
@@ -46,6 +47,7 @@ export const MemberMessagesPage = () => {
     member.readMessageAll().then(() => {
       getList();
       saveUnread(false);
+      setMesRefresh(!mesRefresh);
     });
   };
 
@@ -57,14 +59,14 @@ export const MemberMessagesPage = () => {
       const arr = [...list];
       arr[index].read_at = 1;
       setList(arr);
-      saveUnread(false);
+      setMesRefresh(!mesRefresh);
     });
   };
 
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={7}></NavMember>
+        <NavMember cid={7} refresh={mesRefresh}></NavMember>
         <div className={styles["messages-box"]}>
           <div className={styles["btn-top"]}>
             <div className={styles["btn-title"]}>我的消息</div>

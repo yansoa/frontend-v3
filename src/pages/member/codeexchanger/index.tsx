@@ -101,7 +101,7 @@ export const MemberExchangerPage = () => {
         onCancel={() => setConfirmStatus(false)}
       ></ConfirmDialog>
       <div className={styles["box"]}>
-        <NavMember cid={15}></NavMember>
+        <NavMember cid={15} refresh={true}></NavMember>
         <div className={styles["right-box"]}>
           <div className={styles["exchange-box"]}>
             <div className={styles["tit"]}>兑换码</div>

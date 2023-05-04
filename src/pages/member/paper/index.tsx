@@ -66,7 +66,7 @@ export const MemberPaperPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={9}></NavMember>
+        <NavMember cid={9} refresh={true}></NavMember>
         <div className={styles["project-box"]}>
           <div className={styles["btn-title"]}>我的考试</div>
           {loading && (

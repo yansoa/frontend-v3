@@ -76,7 +76,7 @@ export const MemberQuestionsPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={13}></NavMember>
+        <NavMember cid={13} refresh={true}></NavMember>
         <div className={styles["project-box"]}>
           <div className="member-tabs">
             {tabs.map((item: any) => (

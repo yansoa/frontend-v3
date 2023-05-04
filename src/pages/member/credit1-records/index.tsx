@@ -138,7 +138,7 @@ export const MemberCredit1RecordsPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={16}></NavMember>
+        <NavMember cid={16} refresh={true}></NavMember>
         <div className={styles["right-box"]}>
           <div className={styles["exchange-box"]}>
             <div className="member-tabs">

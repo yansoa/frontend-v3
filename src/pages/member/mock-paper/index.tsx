@@ -66,7 +66,7 @@ export const MemberMockPaperPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={11}></NavMember>
+        <NavMember cid={11} refresh={true}></NavMember>
         <div className={styles["project-box"]}>
           <div className={styles["btn-title"]}>我的模考</div>
           {loading && (

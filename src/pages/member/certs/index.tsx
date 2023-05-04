@@ -50,7 +50,7 @@ export const MemberCertsPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <NavMember cid={20}></NavMember>
+        <NavMember cid={20} refresh={true}></NavMember>
         <div className={styles["project-box"]}>
           <div className={styles["btn-title"]}>所有证书</div>
           <div className={styles["project-content"]}>
