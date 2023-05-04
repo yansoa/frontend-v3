@@ -54,8 +54,8 @@ export const BookCourseComments: React.FC<PropInterface> = ({
     <div className={styles["course-comments-box"]}>
       <div className={styles["comment-divider"]}>全部评论</div>
       <div className={styles["line"]}></div>
-      <div className={styles["replybox"]}>
-        {isLogin && isBuy && (
+      {isLogin && isBuy && (
+        <div className={styles["replybox"]}>
           <div className={styles["reply"]}>
             <img className={styles["user-avatar"]} src={user.avatar} />
             <Input
@@ -77,13 +77,15 @@ export const BookCourseComments: React.FC<PropInterface> = ({
               评论
             </Button>
           </div>
-        )}
-        {!isLogin && (
+        </div>
+      )}
+      {!isLogin && (
+        <div className={styles["replybox"]}>
           <div className={styles["text"]} onClick={() => navigate("/login")}>
             未登录，请登录后再评论
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <div className={styles["comment-top"]}>
         {comments.length === 0 && <Empty></Empty>}
         {comments.length > 0 &&

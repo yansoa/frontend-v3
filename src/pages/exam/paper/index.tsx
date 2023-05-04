@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Spin, Skeleton, Pagination } from "antd";
+import { Row, Col, Skeleton, Pagination } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
 import { Empty, PaperCourseItem, FilterCategories } from "../../../components";
