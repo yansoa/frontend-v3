@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveUnread } from "../../store/user/loginUserSlice";
 import { user as member } from "../../api/index";
 
@@ -12,6 +12,7 @@ interface PropInterface {
 
 export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [id, setId] = useState(cid);
   const [menus, setMenus] = useState<any>([]);
   const [hasMessage, setHasMessage] = useState<boolean>(false);
@@ -128,10 +129,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
   }, [configFunc]);
 
   useEffect(() => {
-    if (isLogin && freshUnread) {
+    if (isLogin) {
       getUnread();
     }
-  }, [freshUnread, isLogin, refresh]);
+  }, [isLogin, refresh]);
 
   const setScene = (val: any) => {
     navigate(val);
@@ -142,10 +143,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
       let num = res.data;
       if (num === 0) {
         setHasMessage(false);
+        dispatch(saveUnread(false));
       } else {
         setHasMessage(true);
       }
-      saveUnread(false);
     });
   };
 

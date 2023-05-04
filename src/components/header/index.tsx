@@ -100,10 +100,10 @@ export const Header = () => {
       let num = res.data;
       if (num === 0) {
         setHasMessage(false);
+        dispatch(saveUnread(false));
       } else {
         setHasMessage(true);
       }
-      saveUnread(false);
     });
   };
 

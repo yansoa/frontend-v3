@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, Pagination } from "antd";
+import { useDispatch } from "react-redux";
 import styles from "./index.module.scss";
 import { NavMember, Empty } from "../../../components";
 import { user as member } from "../../../api/index";
@@ -8,6 +9,7 @@ import { getCommentTime } from "../../../utils/index";
 
 export const MemberMessagesPage = () => {
   document.title = "我的消息";
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -46,8 +48,8 @@ export const MemberMessagesPage = () => {
   const readAll = () => {
     member.readMessageAll().then(() => {
       getList();
-      saveUnread(false);
       setMesRefresh(!mesRefresh);
+      dispatch(saveUnread(false));
     });
   };
 
