@@ -51,14 +51,10 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       setSaveConfig(res.data);
       let status = res.data.status[resourceType] === 1;
       setOpen(status);
-      if (status) {
-        getCamera();
-      }
     });
   };
 
   const getCamera = () => {
-    setOpenCamera(true);
     let video: any = video_ref.current;
     let captureVideo: any = capture_video_ref.current;
     if (
@@ -76,14 +72,15 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         })
         .then((mediaStream: any) => {
           window.snapShortMediaStream = mediaStream;
-          if ("srcObject" in video) {
+          console.log(video)
+          if (video) {
             video.srcObject = mediaStream;
             video.onloadedmetadata = () => {
               video.play();
             };
           }
 
-          if ("srcObject" in captureVideo) {
+          if (captureVideo) {
             captureVideo.srcObject = mediaStream;
             captureVideo.onloadedmetadata = () => {
               captureVideo.play();
@@ -97,6 +94,17 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
           console.log("err:" + err);
           setOpenCamera(false);
         });
+    }
+  };
+
+  const closeMedia = () => {
+    const video: any = video_ref.current;
+    const stream = video.srcObject;
+    if ("getTracks" in stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach((track: any) => {
+        track.stop();
+      });
     }
   };
 
@@ -130,24 +138,26 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const uploadShotImage = () => {
     let canvas: any = canvasRef.current;
     let captureVideo: any = capture_video_ref.current;
-    canvas.getContext("2d").drawImage(captureVideo, 0, 0, 1920, 1440);
-    canvas.toBlob((blob: any) => {
-      let formData = new FormData();
-      formData.append("file", blob);
-      formData.append("duration", String(duration));
-      formData.append("resource_id", String(id));
-      formData.append("resource_type", resourceType);
-      snapshot
-        .uploadImages(formData)
-        .then(() => {
-          let num = count;
-          num++;
-          setCount(num);
-        })
-        .catch((e) => {
-          message.error(e.message || "上传错误");
-        });
-    });
+    if (canvas) {
+      canvas.getContext("2d").drawImage(captureVideo, 0, 0, 1920, 1440);
+      canvas.toBlob((blob: any) => {
+        let formData = new FormData();
+        formData.append("file", blob);
+        formData.append("duration", String(duration));
+        formData.append("resource_id", String(id));
+        formData.append("resource_type", resourceType);
+        snapshot
+          .uploadImages(formData)
+          .then(() => {
+            let num = count;
+            num++;
+            setCount(num);
+          })
+          .catch((e) => {
+            message.error(e.message || "上传错误");
+          });
+      });
+    }
   };
 
   const getList = () => {
@@ -243,7 +253,13 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
           {!showList && (
             <div
               className={styles["tabIcon"]}
-              onClick={() => setShowList(true)}
+              onClick={() => {
+                setShowList(true);
+                if (open) {
+                  getCamera();
+                  setOpenCamera(true);
+                }
+              }}
             >
               <img src={tabIcon} />
             </div>
