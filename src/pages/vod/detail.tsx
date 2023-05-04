@@ -17,7 +17,7 @@ import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
-import { getToken } from "../../utils/index";
+import { getToken, latexRender, codeRender } from "../../utils/index";
 
 export const VodDetailPage = () => {
   const navigate = useNavigate();
@@ -73,6 +73,11 @@ export const VodDetailPage = () => {
     };
   }, [cid]);
 
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+    codeRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
+
   const tabChange = (id: number) => {
     setCurrentTab(id);
   };
@@ -113,6 +118,7 @@ export const VodDetailPage = () => {
       else if (!res.data.isBuy && configFunc["tuangou"]) {
         getTgDetail();
       }
+
       setLoading(false);
     });
   };
@@ -495,6 +501,7 @@ export const VodDetailPage = () => {
           <div className={styles["coursr-desc"]}>
             <div
               className="u-content md-content"
+              id="desc"
               dangerouslySetInnerHTML={{ __html: course.render_desc }}
             ></div>
           </div>

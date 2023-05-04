@@ -4,7 +4,12 @@ import { Row, Col, Spin, Skeleton, message, Input, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi } from "../../api/index";
-import { changeTime, getCommentTime } from "../../utils/index";
+import {
+  changeTime,
+  getCommentTime,
+  latexRender,
+  codeRender,
+} from "../../utils/index";
 import { Empty } from "../../components";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
@@ -44,6 +49,11 @@ export const BookReadPage = () => {
     getData();
     getComments();
   }, [id]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+    codeRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
 
   const getData = () => {
     if (loading) {
@@ -485,6 +495,7 @@ export const BookReadPage = () => {
                 <div className={styles["line"]}></div>
                 <div
                   className="u-content md-content"
+                  id="desc"
                   dangerouslySetInnerHTML={{ __html: list.render_content }}
                 ></div>
               </div>

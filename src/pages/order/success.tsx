@@ -11,7 +11,7 @@ export const OrderSuccessPage = () => {
   );
 
   return (
-    <div className="contanier">
+    <div className="container">
       <div className={styles["pay-success-box"]}>
         <div className={styles["success-info"]}>
           <img src={successIcon} />

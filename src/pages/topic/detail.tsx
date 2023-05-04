@@ -50,6 +50,11 @@ export const TopicDetailPage = () => {
     getComments();
   }, [id]);
 
+  useEffect(() => {
+    latexRender(document.getElementById("math"));
+    codeRender(document.getElementById("math"));
+  }, [document.getElementById("math")]);
+
   const getDetail = () => {
     if (loading) {
       return;
@@ -62,8 +67,6 @@ export const TopicDetailPage = () => {
       setIsLike(res.data.is_collect);
       setIsVote(res.data.is_vote);
       setLoading(false);
-      latexRender(document.getElementById("math"));
-      codeRender(document.getElementById("math"));
     });
   };
 

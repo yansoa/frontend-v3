@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { Row, Col, Spin, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { home } from "../../api/index";
-import { changeTime } from "../../utils/index";
+import { changeTime, latexRender, codeRender } from "../../utils/index";
 
 export const AnnouncementPage = () => {
   const navigate = useNavigate();
@@ -17,6 +17,11 @@ export const AnnouncementPage = () => {
   useEffect(() => {
     setId(Number(result.get("id")));
   }, [result.get("id")]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+    codeRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
 
   useEffect(() => {
     getData();
@@ -78,6 +83,7 @@ export const AnnouncementPage = () => {
               <div className={styles["line"]}></div>
               <div
                 className="u-content md-content"
+                id="desc"
                 dangerouslySetInnerHTML={{ __html: notice.announcement }}
               ></div>
             </div>

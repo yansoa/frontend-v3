@@ -203,6 +203,9 @@ export function SPAUrlAppend(baseUrl: string, queryParams: any) {
 }
 
 export function codeRender(el: any) {
+  if (!el) {
+    return;
+  }
   let blocks = el.querySelectorAll("pre") || el.querySelectorAll("code");
   blocks.forEach((block: any) => {
     window.hljs.highlightBlock(block);
@@ -211,6 +214,9 @@ export function codeRender(el: any) {
 }
 
 export function latexRender(el: any) {
+  if (!el) {
+    return;
+  }
   var reg1 = new RegExp("&nbsp;", "g");
   var reg2 = new RegExp("&amp;", "g");
   var reg3 = new RegExp("nbsp;", "g");

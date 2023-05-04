@@ -12,6 +12,7 @@ import {
   TuangouList,
   BookCourseComments,
 } from "../../components";
+import { latexRender, codeRender } from "../../utils/index";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 
@@ -62,6 +63,11 @@ export const BookDetailPage = () => {
       window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [bid]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+    codeRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
 
   const getDetail = () => {
     if (loading) {
@@ -524,6 +530,7 @@ export const BookDetailPage = () => {
           <div className={styles["book-desc"]}>
             <div
               className="u-content md-content"
+              id="desc"
               dangerouslySetInnerHTML={{ __html: book.render_desc }}
             ></div>
           </div>

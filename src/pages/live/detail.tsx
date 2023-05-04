@@ -13,6 +13,7 @@ import {
   TuangouList,
   LiveCourseComments,
 } from "../../components";
+import { latexRender, codeRender } from "../../utils/index";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 import { VideoListComp } from "./components/detail/video-list";
@@ -66,6 +67,11 @@ export const LiveDetailPage = () => {
       window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [cid]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+    codeRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
 
   const getDetail = () => {
     if (loading) {
@@ -516,6 +522,7 @@ export const LiveDetailPage = () => {
             <div className={styles["coursr-desc"]}>
               <div
                 className="u-content md-content"
+                id="desc"
                 dangerouslySetInnerHTML={{ __html: course.render_desc }}
               ></div>
             </div>
