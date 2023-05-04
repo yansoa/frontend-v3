@@ -1200,9 +1200,7 @@ li {
   color: #333;
 }
 
-:where(.css-dev-only-do-not-override-1op9nkv).ant-menu-horizontal
-  .ant-menu-item,
-:where(.css-dev-only-do-not-override-1op9nkv).ant-menu-horizontal
-  .ant-menu-submenu {
+.header-menu > .ant-menu-horizontal .ant-menu-item,
+.header-menu > .ant-menu-horizontal .ant-menu-submenu {
   padding-inline: 25px;
 }
