@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Spin, Pagination } from "antd";
+import { Row, Col, Skeleton, Pagination } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { mock } from "../../../api/index";
 import { Empty, MockCourseItem, FilterCategories } from "../../../components";
@@ -73,14 +73,28 @@ export const ExamMockPaperPage = () => {
   return (
     <div className="container">
       <div className="bread-nav">
-        <a
-          onClick={() => {
-            navigate("/exam");
-          }}
-        >
-          考试练习
-        </a>{" "}
-        /<span>模拟考试</span>
+        {loading && (
+          <Skeleton.Button
+            active
+            style={{
+              width: 1200,
+              height: 14,
+              marginLeft: 0,
+            }}
+          ></Skeleton.Button>
+        )}
+        {!loading && (
+          <>
+            <a
+              onClick={() => {
+                navigate("/exam");
+              }}
+            >
+              考试练习
+            </a>{" "}
+            /<span>模拟考试</span>
+          </>
+        )}
       </div>
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>
@@ -97,8 +111,43 @@ export const ExamMockPaperPage = () => {
         </div>
         {loading && (
           <Row style={{ width: 1200 }}>
-            <div className="float-left d-j-flex mt-50">
-              <Spin size="large" />
+            <div
+              style={{
+                width: 1200,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1200,
+                  height: 116,
+                  borderRadius: 8,
+                  marginTop: 30,
+                  marginBottom: 10,
+                }}
+              ></Skeleton.Button>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1200,
+                  height: 116,
+                  borderRadius: 8,
+                  marginTop: 30,
+                  marginBottom: 10,
+                }}
+              ></Skeleton.Button>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1200,
+                  height: 116,
+                  borderRadius: 8,
+                  marginTop: 30,
+                  marginBottom: 10,
+                }}
+              ></Skeleton.Button>
             </div>
           </Row>
         )}
