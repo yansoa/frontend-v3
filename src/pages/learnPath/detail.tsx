@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, message } from "antd";
+import { Button, Skeleton, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { path, miaosha, tuangou } from "../../api/index";
@@ -51,6 +51,7 @@ export const LearnPathDetailPage = () => {
       } else if (!res.data.is_buy && configFunc["tuangou"]) {
         getTgDetail();
       }
+      setLoading(false);
     });
   };
 
@@ -199,6 +200,16 @@ export const LearnPathDetailPage = () => {
       <div className={styles["book-info"]}>
         <div className={styles["book-info-box"]}>
           <div className={styles["book-thumb"]}>
+            {loading && (
+              <Skeleton.Button
+                active
+                style={{
+                  width: 320,
+                  height: 240,
+                  borderRadius: 8,
+                }}
+              ></Skeleton.Button>
+            )}
             <ThumbBar
               value={learn.thumb}
               width={320}
@@ -207,6 +218,32 @@ export const LearnPathDetailPage = () => {
             />
           </div>
           <div className={styles["info"]}>
+            {loading && (
+              <div
+                style={{
+                  width: 710,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 710,
+                    height: 30,
+                    marginTop: 20,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 710,
+                    height: 16,
+                    marginTop: 21,
+                  }}
+                ></Skeleton.Button>
+              </div>
+            )}
             <div className={styles["book-info-title"]}>{learn.name}</div>
             <p className={styles["desc"]}>{learn.desc}</p>
             <div className={styles["btn-box"]}>

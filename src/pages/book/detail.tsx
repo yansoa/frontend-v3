@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { message } from "antd";
+import { Skeleton, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi, miaosha, tuangou } from "../../api/index";
@@ -355,6 +355,16 @@ export const BookDetailPage = () => {
         <div className={styles["book-info"]}>
           <div className={styles["book-info-box"]}>
             <div className={styles["book-thumb"]}>
+              {loading && (
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 240,
+                    height: 320,
+                    borderRadius: 8,
+                  }}
+                ></Skeleton.Button>
+              )}
               <ThumbBar
                 value={book.thumb}
                 width={240}
@@ -363,6 +373,32 @@ export const BookDetailPage = () => {
               />
             </div>
             <div className={styles["info"]}>
+              {loading && (
+                <div
+                  style={{
+                    width: 710,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 710,
+                      height: 30,
+                      marginTop: 20,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 710,
+                      height: 16,
+                      marginTop: 21,
+                    }}
+                  ></Skeleton.Button>
+                </div>
+              )}
               <div className={styles["book-info-title"]}>{book.name}</div>
               {isLike && (
                 <img

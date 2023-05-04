@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, message } from "antd";
+import { Button, Skeleton, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { live, miaosha, tuangou } from "../../api/index";
@@ -331,6 +331,16 @@ export const LiveDetailPage = () => {
         <div className={styles["course-info"]}>
           <div className={styles["course-info-box"]}>
             <div className={styles["course-thumb"]}>
+              {loading && (
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 320,
+                    height: 240,
+                    borderRadius: 8,
+                  }}
+                ></Skeleton.Button>
+              )}
               <ThumbBar
                 value={course.thumb}
                 width={320}
@@ -342,6 +352,32 @@ export const LiveDetailPage = () => {
               </div>
             </div>
             <div className={styles["info"]}>
+              {loading && (
+                <div
+                  style={{
+                    width: 710,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 710,
+                      height: 30,
+                      marginTop: 20,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 710,
+                      height: 16,
+                      marginTop: 21,
+                    }}
+                  ></Skeleton.Button>
+                </div>
+              )}
               <div className={styles["course-info-title"]}>{course.title}</div>
               {isLike && (
                 <img
