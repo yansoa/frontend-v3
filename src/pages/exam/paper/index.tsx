@@ -84,16 +84,29 @@ export const ExamPaperPage = () => {
       </div>
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>
-          <FilterCategories
-            categories={categories}
-            defaultKey={cid}
-            defaultChild={child}
-            onSelected={(id: number, child: number) => {
-              setCid(id);
-              setChild(child);
-              resetList();
-            }}
-          />
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1140,
+                height: 24,
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <FilterCategories
+              categories={categories}
+              defaultKey={cid}
+              defaultChild={child}
+              onSelected={(id: number, child: number) => {
+                setCid(id);
+                setChild(child);
+                resetList();
+              }}
+            />
+          )}
         </div>
         {loading && (
           <Row style={{ width: 1200 }}>
