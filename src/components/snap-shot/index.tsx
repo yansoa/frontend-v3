@@ -69,7 +69,6 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
           },
         });
         window.snapShortMediaStream = mediaStream;
-        console.log(video_ref.current);
         if (video_ref.current) {
           let video: any = video_ref.current;
           video.srcObject = mediaStream;
@@ -77,7 +76,6 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
             video.play();
           };
         }
-
         if (capture_video_ref.current) {
           let captureVideo: any = capture_video_ref.current;
           captureVideo.srcObject = mediaStream;
