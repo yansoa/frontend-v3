@@ -96,8 +96,8 @@ export const MemberMessagesPage = () => {
                   key={item.id}
                   className={
                     item.read_at
-                      ? styles["message-item-readed"]
-                      : styles["message-item"]
+                      ? styles["message-item"]
+                      : styles["message-item-readed"]
                   }
                   onClick={() => read(item, index)}
                 >
