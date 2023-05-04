@@ -52,7 +52,7 @@ export const Footer = (props: Props) => {
       }
     >
       <div className={styles["footer-box"]}>
-        {list.length > 0 && (
+        {list.length > 0 && pathname === "/" && (
           <div>
             <div className={styles["tit"]}>友情链接</div>
             <div className={styles["links"]}>
