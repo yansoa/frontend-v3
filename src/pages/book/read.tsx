@@ -13,6 +13,7 @@ import {
 import { Empty } from "../../components";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
+import appConfig from "../../js/config";
 
 export const BookReadPage = () => {
   const navigate = useNavigate();
@@ -511,14 +512,16 @@ export const BookReadPage = () => {
                     订阅电子书￥{book.charge}
                   </div>
                 )}
-                {book.charge > 0 && book.is_vip_free === 1 && (
-                  <div
-                    className={styles["buy-button"]}
-                    onClick={() => goRole()}
-                  >
-                    会员免费看
-                  </div>
-                )}
+                {book.charge > 0 &&
+                  book.is_vip_free === 1 &&
+                  !appConfig.disable_vip && (
+                    <div
+                      className={styles["buy-button"]}
+                      onClick={() => goRole()}
+                    >
+                      会员免费看
+                    </div>
+                  )}
               </>
             )}
           </div>

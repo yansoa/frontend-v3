@@ -18,6 +18,7 @@ import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
+import appConfig from "../../js/config";
 
 export const LiveDetailPage = () => {
   const navigate = useNavigate();
@@ -454,14 +455,15 @@ export const LiveDetailPage = () => {
                             订阅课程￥{course.charge}
                           </div>
                         )}
-                        {course.vip_can_view === 1 && (
-                          <div
-                            className={styles["role-button"]}
-                            onClick={() => goRole()}
-                          >
-                            会员免费看
-                          </div>
-                        )}
+                        {course.vip_can_view === 1 &&
+                          !appConfig.disable_vip && (
+                            <div
+                              className={styles["role-button"]}
+                              onClick={() => goRole()}
+                            >
+                              会员免费看
+                            </div>
+                          )}
                         {tgData &&
                           tgData.goods &&
                           (!tgData.join_item ||

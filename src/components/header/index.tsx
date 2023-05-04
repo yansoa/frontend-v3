@@ -15,6 +15,7 @@ import { ForgetPasswordDialog } from "../forget-password-dialog";
 import { login, home, user as member } from "../../api/index";
 import { clearToken } from "../../utils/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
+import appConfig from "../../js/config";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -268,7 +269,7 @@ export const Header = () => {
             </div>
           </div>
           <div className={styles["user-box"]}>
-            {configFunc.vip && (
+            {configFunc.vip && !appConfig.disable_vip && (
               <Link to="/vip" className={styles["vip-icon"]}>
                 <img
                   src={vipIcon}

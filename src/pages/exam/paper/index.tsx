@@ -73,28 +73,14 @@ export const ExamPaperPage = () => {
   return (
     <div className="container">
       <div className="bread-nav">
-        {loading && (
-          <Skeleton.Button
-            active
-            style={{
-              width: 1200,
-              height: 14,
-              marginLeft: 0,
-            }}
-          ></Skeleton.Button>
-        )}
-        {!loading && (
-          <>
-            <a
-              onClick={() => {
-                navigate("/exam");
-              }}
-            >
-              考试练习
-            </a>{" "}
-            /<span>在线考试</span>
-          </>
-        )}
+        <a
+          onClick={() => {
+            navigate("/exam");
+          }}
+        >
+          考试练习
+        </a>{" "}
+        /<span>在线考试</span>
       </div>
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>

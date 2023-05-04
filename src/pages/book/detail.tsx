@@ -15,6 +15,7 @@ import {
 import { latexRender, codeRender } from "../../utils/index";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
+import appConfig from "../../js/config";
 
 export const BookDetailPage = () => {
   const navigate = useNavigate();
@@ -483,14 +484,16 @@ export const BookDetailPage = () => {
                             订阅电子书￥{book.charge}
                           </div>
                         )}
-                        {book.charge > 0 && book.is_vip_free === 1 && (
-                          <div
-                            className={styles["role-button"]}
-                            onClick={() => goRole()}
-                          >
-                            会员免费看
-                          </div>
-                        )}
+                        {book.charge > 0 &&
+                          book.is_vip_free === 1 &&
+                          !appConfig.disable_vip && (
+                            <div
+                              className={styles["role-button"]}
+                              onClick={() => goRole()}
+                            >
+                              会员免费看
+                            </div>
+                          )}
                         {tgData &&
                           tgData.goods &&
                           (!tgData.join_item ||
