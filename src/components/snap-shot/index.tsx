@@ -72,13 +72,11 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         })
         .then((mediaStream: any) => {
           window.snapShortMediaStream = mediaStream;
-          console.log(video)
-          if (video) {
-            video.srcObject = mediaStream;
-            video.onloadedmetadata = () => {
-              video.play();
-            };
-          }
+          console.log(video);
+          video.srcObject = mediaStream;
+          video.onloadedmetadata = () => {
+            video.play();
+          };
 
           if (captureVideo) {
             captureVideo.srcObject = mediaStream;
