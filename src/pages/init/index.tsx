@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { message } from "antd";
-import { Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 // import styles from "./index.module.scss";
 import { loginAction } from "../../store/user/loginUserSlice";
 import {
@@ -39,6 +39,7 @@ interface Props {
 
 export const InitPage = (props: Props) => {
   const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const result = new URLSearchParams(useLocation().search);
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
@@ -108,7 +109,8 @@ export const InitPage = (props: Props) => {
           user.detail().then((res: any) => {
             let loginData = res.data;
             dispatch(loginAction(loginData));
-            location.reload();
+            let path = window.location.pathname + window.location.search;
+            navigate(path, { replace: true });
           });
         } else {
           if (res.data.action === "bind_mobile") {
@@ -145,7 +147,6 @@ export const InitPage = (props: Props) => {
   }
   if (props.config) {
     dispatch(saveConfigAction(props.config));
-
     // 手机设备访问PC站点自动跳转到H5端口地址
     if (isMobile() && props.config.h5_url) {
       let url = props.config.h5_url;
