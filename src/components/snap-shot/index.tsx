@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button, message, Upload } from "antd";
 import type { UploadProps } from "antd";
@@ -16,13 +16,15 @@ interface PropInterface {
 }
 
 var intervalId: any = null;
-var canvasRef: any = null;
 declare const window: any;
 export const SnaoShotDialog: React.FC<PropInterface> = ({
   id,
   resourceType,
   duration,
 }) => {
+  const video_ref = useRef(null);
+  const capture_video_ref = useRef(null);
+  const canvasRef = useRef(null);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [changeBox, setChangeBox] = useState<boolean>(false);
@@ -56,10 +58,9 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   };
 
   const getCamera = () => {
-    let video = document.getElementById("videos") as HTMLVideoElement;
-    let captureVideo = document.getElementById(
-      "capture-video"
-    ) as HTMLVideoElement;
+    setOpenCamera(true);
+    let video: any = video_ref.current;
+    let captureVideo: any = capture_video_ref.current;
     if (
       window.navigator.mediaDevices &&
       window.navigator.mediaDevices.getUserMedia
@@ -75,19 +76,21 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         })
         .then((mediaStream: any) => {
           window.snapShortMediaStream = mediaStream;
+          if ("srcObject" in video) {
+            video.srcObject = mediaStream;
+            video.onloadedmetadata = () => {
+              video.play();
+            };
+          }
 
-          video.srcObject = mediaStream;
-          video.onloadedmetadata = () => {
-            video.play();
-          };
-
-          captureVideo.srcObject = mediaStream;
-          captureVideo.onloadedmetadata = () => {
-            captureVideo.play();
-          };
+          if ("srcObject" in captureVideo) {
+            captureVideo.srcObject = mediaStream;
+            captureVideo.onloadedmetadata = () => {
+              captureVideo.play();
+            };
+          }
 
           // 开启定时任务
-          setOpenCamera(true);
           startTask();
         })
         .catch((err: any) => {
@@ -125,10 +128,8 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   };
 
   const uploadShotImage = () => {
-    let canvas = canvasRef.current;
-    let captureVideo = document.getElementById(
-      "capture-video"
-    ) as HTMLVideoElement;
+    let canvas: any = canvasRef.current;
+    let captureVideo: any = capture_video_ref.current;
     canvas.getContext("2d").drawImage(captureVideo, 0, 0, 1920, 1440);
     canvas.toBlob((blob: any) => {
       let formData = new FormData();
@@ -320,20 +321,18 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
                               id="canvas"
                             ></canvas>
                             <video
-                              id="capture-video"
                               width={1920}
                               height={1440}
                               autoPlay={true}
-                              ref={"capture-video"}
+                              ref={capture_video_ref}
                             ></video>
                           </>
                         )}
                         <video
-                          id="videos"
                           width={290}
                           height={164}
                           autoPlay={true}
-                          ref={"videos"}
+                          ref={video_ref}
                         ></video>
                       </div>
                       {!openCamera && (
