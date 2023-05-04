@@ -108,6 +108,9 @@ export const MemberCredit1RecordsPage = () => {
   };
 
   const tabChange = (id: number) => {
+    if (loading) {
+      return;
+    }
     setCurrentTab(id);
     setGoodStatus(false);
     resetData();

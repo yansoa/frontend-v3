@@ -105,6 +105,9 @@ export const MemberOrdersPage = () => {
   };
 
   const tabChange = (id: number) => {
+    if (loading) {
+      return;
+    }
     setCurrentTab(id);
     resetData();
   };

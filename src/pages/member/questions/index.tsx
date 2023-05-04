@@ -69,6 +69,9 @@ export const MemberQuestionsPage = () => {
   };
 
   const tabChange = (id: number) => {
+    if (loading) {
+      return;
+    }
     setCurrentTab(id);
     resetData();
   };
