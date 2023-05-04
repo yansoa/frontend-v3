@@ -256,8 +256,8 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
               onClick={() => {
                 setShowList(true);
                 if (open) {
-                  getCamera();
                   setOpenCamera(true);
+                  getCamera();
                 }
               }}
             >
