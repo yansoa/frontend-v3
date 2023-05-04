@@ -323,6 +323,11 @@ button:focus-visible {
     outline: none !important;
   }
 }
+.ant-btn-primary {
+  &:hover {
+    border: none;
+  }
+}
 
 .ant-modal-confirm-btns > .ant-btn-default:hover {
   color: #3ca7fa !important;
@@ -339,6 +344,7 @@ button:focus-visible {
   outline: none !important;
   &:hover {
     outline: none !important;
+    border: none;
   }
 }
 
@@ -1200,4 +1206,3 @@ li {
   .ant-menu-submenu {
   padding-inline: 25px;
 }
-
