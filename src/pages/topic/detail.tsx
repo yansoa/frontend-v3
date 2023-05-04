@@ -5,7 +5,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { topic as topicApi } from "../../api/index";
 import { useSelector } from "react-redux";
 import { HistoryRecord, ShareComp, Empty } from "../../components";
-import { changeTime, getCommentTime } from "../../utils/index";
+import {
+  changeTime,
+  getCommentTime,
+  latexRender,
+  codeRender,
+} from "../../utils/index";
 import voteIcon from "../../assets/img/commen/icon-vote-h.png";
 import noVoteIcon from "../../assets/img/commen/icon-vote-n.png";
 import likeIcon from "../../assets/img/commen/icon-collect-h.png";
@@ -57,6 +62,8 @@ export const TopicDetailPage = () => {
       setIsLike(res.data.is_collect);
       setIsVote(res.data.is_vote);
       setLoading(false);
+      latexRender(document.getElementById("math"));
+      codeRender(document.getElementById("math"));
     });
   };
 
@@ -431,12 +438,14 @@ export const TopicDetailPage = () => {
                   <div className="u-content md-content">
                     {topic.free_content_render && (
                       <div
+                        id="math"
                         dangerouslySetInnerHTML={{
                           __html: topic.free_content_render,
                         }}
                       ></div>
                     )}
                     <div
+                      id="math"
                       dangerouslySetInnerHTML={{
                         __html: topic.render_content,
                       }}
@@ -447,6 +456,7 @@ export const TopicDetailPage = () => {
                   <>
                     <div className="free-content u-content md-content">
                       <div
+                        id="math"
                         dangerouslySetInnerHTML={{
                           __html: topic.free_content_render,
                         }}
