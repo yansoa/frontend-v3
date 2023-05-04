@@ -166,7 +166,7 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
         </div>
         <Form
           form={form}
-          name="login-dialog"
+          name="password-login-dialog"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}

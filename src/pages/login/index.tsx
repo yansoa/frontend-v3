@@ -94,7 +94,7 @@ const LoginPage = () => {
         </div>
         <Form
           form={form}
-          name="login-dialog"
+          name="login-page"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
