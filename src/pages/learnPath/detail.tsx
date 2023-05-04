@@ -260,68 +260,70 @@ export const LearnPathDetailPage = () => {
             )}
             <div className={styles["book-info-title"]}>{learn.name}</div>
             <p className={styles["desc"]}>{learn.desc}</p>
-            <div className={styles["btn-box"]}>
-              {isBuy && <div className={styles["has-button"]}>已购买</div>}
-              {learn.charge === 0 && !isBuy && (
-                <div className={styles["has-button"]}>本路径免费</div>
-              )}
-              {!isBuy && learn.charge !== 0 && (
-                <>
-                  {msData && msData.data && (
-                    <>
-                      {msData.order && msData.order.status === 0 && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => goMsOrder(msData.order.id)}
-                        >
-                          已获得秒杀资格，请尽快支付
-                        </div>
-                      )}
-                      {!msData.data.is_over && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => openMsDialog()}
-                        >
-                          立即秒杀￥{msData.data.charge}
-                        </div>
-                      )}
-                    </>
-                  )}
-                  {(!msData || !msData.data) && (
-                    <>
-                      {hideButton && (
-                        <div className={styles["has-button"]}>正在拼团中</div>
-                      )}
-                      {!hideButton && learn.charge > 0 && (
-                        <div
-                          className={styles["buy-button"]}
-                          onClick={() => buyCourse()}
-                        >
-                          购买套餐￥{learn.charge}（共{learn.courses_count}
-                          课程）
-                        </div>
-                      )}
-                      {tgData &&
-                        tgData.goods &&
-                        (!tgData.join_item ||
-                          tgData.join_item.length === 0) && (
+            {!loading && (
+              <div className={styles["btn-box"]}>
+                {isBuy && <div className={styles["has-button"]}>已购买</div>}
+                {learn.charge === 0 && !isBuy && (
+                  <div className={styles["has-button"]}>本路径免费</div>
+                )}
+                {!isBuy && learn.charge !== 0 && (
+                  <>
+                    {msData && msData.data && (
+                      <>
+                        {msData.order && msData.order.status === 0 && (
                           <div
-                            className={styles["role-button"]}
-                            onClick={() => goPay(0)}
+                            className={styles["buy-button"]}
+                            onClick={() => goMsOrder(msData.order.id)}
                           >
-                            单独开团￥{tgData.goods.charge}
+                            已获得秒杀资格，请尽快支付
                           </div>
                         )}
-                    </>
-                  )}
-                  {!hideButton && (
-                    <div className={styles["original"]}>
-                      原价:￥{learn.original_charge}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+                        {!msData.data.is_over && (
+                          <div
+                            className={styles["buy-button"]}
+                            onClick={() => openMsDialog()}
+                          >
+                            立即秒杀￥{msData.data.charge}
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {(!msData || !msData.data) && (
+                      <>
+                        {hideButton && (
+                          <div className={styles["has-button"]}>正在拼团中</div>
+                        )}
+                        {!hideButton && learn.charge > 0 && (
+                          <div
+                            className={styles["buy-button"]}
+                            onClick={() => buyCourse()}
+                          >
+                            购买套餐￥{learn.charge}（共{learn.courses_count}
+                            课程）
+                          </div>
+                        )}
+                        {tgData &&
+                          tgData.goods &&
+                          (!tgData.join_item ||
+                            tgData.join_item.length === 0) && (
+                            <div
+                              className={styles["role-button"]}
+                              onClick={() => goPay(0)}
+                            >
+                              单独开团￥{tgData.goods.charge}
+                            </div>
+                          )}
+                      </>
+                    )}
+                    {!hideButton && (
+                      <div className={styles["original"]}>
+                        原价:￥{learn.original_charge}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
         {!isBuy && msData && <MiaoshaList msData={msData} />}
@@ -331,8 +333,8 @@ export const LearnPathDetailPage = () => {
           </div>
         )}
       </div>
-      <div className={styles["book-chapter-box"]}>
-        {steps.length > 0 && (
+      {steps.length > 0 && (
+        <div className={styles["book-chapter-box"]}>
           <div className={styles["steps-box"]}>
             {steps.map((item: any) => (
               <div key={item.id} className={styles["step-item"]}>
@@ -409,8 +411,8 @@ export const LearnPathDetailPage = () => {
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
