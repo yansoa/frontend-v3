@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./read.module.scss";
-import { Row, Col, Spin, message, Input, Button } from "antd";
+import { Row, Col, Spin, Skeleton, message, Input, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi } from "../../api/index";
@@ -466,11 +466,18 @@ export const BookReadPage = () => {
           )}
           <div className={styles["right-box"]}>
             {loading && (
-              <Row>
-                <div className="float-left d-j-flex mt-50">
-                  <Spin size="large" />
-                </div>
-              </Row>
+              <div className={styles["read"]}>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 806,
+                    height: 48,
+                    marginBottom: 30,
+                  }}
+                ></Skeleton.Button>
+                <div className={styles["line"]}></div>
+                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+              </div>
             )}
             {!loading && canSee && (
               <div className={styles["read"]}>
