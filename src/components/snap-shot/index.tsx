@@ -54,44 +54,43 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     });
   };
 
-  const getCamera = () => {
-    let video: any = video_ref.current;
-    let captureVideo: any = capture_video_ref.current;
+  const getCamera = async () => {
     if (
       window.navigator.mediaDevices &&
       window.navigator.mediaDevices.getUserMedia
     ) {
-      window.navigator.mediaDevices
-        .getUserMedia({
+      try {
+        const mediaStream = await window.navigator.mediaDevices.getUserMedia({
           audio: false,
           video: {
             facingMode: "user",
             width: 290,
             height: 164,
           },
-        })
-        .then((mediaStream: any) => {
-          window.snapShortMediaStream = mediaStream;
-          console.log(video);
+        });
+        window.snapShortMediaStream = mediaStream;
+        console.log(video_ref.current);
+        if (video_ref.current) {
+          let video: any = video_ref.current;
           video.srcObject = mediaStream;
           video.onloadedmetadata = () => {
             video.play();
           };
+        }
 
-          if (captureVideo) {
-            captureVideo.srcObject = mediaStream;
-            captureVideo.onloadedmetadata = () => {
-              captureVideo.play();
-            };
-          }
-
-          // 开启定时任务
-          startTask();
-        })
-        .catch((err: any) => {
-          console.log("err:" + err);
-          setOpenCamera(false);
-        });
+        if (capture_video_ref.current) {
+          let captureVideo: any = capture_video_ref.current;
+          captureVideo.srcObject = mediaStream;
+          captureVideo.onloadedmetadata = () => {
+            captureVideo.play();
+          };
+        }
+        // 开启定时任务
+        startTask();
+      } catch (err: any) {
+        console.log("err:" + err);
+        setOpenCamera(false);
+      }
     }
   };
 
