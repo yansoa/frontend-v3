@@ -118,6 +118,7 @@ const LoginPage = () => {
             rules={[{ required: true, message: "请输入密码!" }]}
           >
             <Input.Password
+              onPressEnter={() => form.submit()}
               style={{ width: 440, height: 54, fontSize: 16, marginTop: 30 }}
               autoComplete="off"
               placeholder="请输入密码"
