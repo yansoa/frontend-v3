@@ -110,11 +110,12 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const taskHandler = () => {
     console.info("开始拍照啦...");
     let randomInt = random(0, 100);
-    if (randomInt <= saveConfig.rate && count < saveConfig.max_times) {
+    let num = count;
+    if (randomInt <= saveConfig.rate && num < saveConfig.max_times) {
       uploadShotImage();
     }
 
-    if (count >= saveConfig.max_times) {
+    if (num >= saveConfig.max_times) {
       // 超过最大次数
       intervalId && clearInterval(intervalId);
     }
