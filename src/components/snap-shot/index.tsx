@@ -43,6 +43,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     getConfig();
     return () => {
       intervalId && clearInterval(intervalId);
+      stopCamera();
     };
   }, []);
 
@@ -88,17 +89,17 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       } catch (err: any) {
         console.log("err:" + err);
         setOpenCamera(false);
-        //停止摄像头
-        if (video_ref.current) {
-          let video: any = video_ref.current;
-          const stream = video.srcObject;
-          if ("getTracks" in stream) {
-            const tracks = stream.getTracks();
-            tracks.forEach((track: any) => {
-              track.stop();
-            });
-          }
-        }
+        stopCamera();
+      }
+    }
+  };
+
+  const stopCamera = () => {
+    if (window.snapShortMediaStream) {
+      if (typeof window.snapShortMediaStream.stop === "function") {
+        window.snapShortMediaStream.stop();
+      } else {
+        window.snapShortMediaStream.getTracks()[0].stop();
       }
     }
   };
