@@ -60,7 +60,7 @@ export const ExamPracticePlayPage = () => {
       practice.practiceDayPlay(pid).then((res: any) => {
         document.title = res.data.practice.name;
         setList(res.data.practice);
-        setHasPracticeQuestionIds(res.data.has_practice_question_ids);
+        setHasPracticeQuestionIds([]);
         setQuestion(res.data.first_question);
         setQidArr(res.data.qid_arr);
         setLoading(false);
