@@ -157,6 +157,52 @@ export const InitPage = (props: Props) => {
           window.location.search +
           "&course_type=topic";
       }
+      if (window.location.pathname.indexOf("/courses/detail") !== -1) {
+        url = url + "/#/pages/course/show" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/courses/video") !== -1) {
+        url = url + "/#/pages/course/video" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/live/detail") !== -1) {
+        url = url + "/#/packageA/live/show" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/live/video") !== -1) {
+        url = url + "/#/packageA/live/video" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/book/detail") !== -1) {
+        url = url + "/#/packageA/book/show" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/book/read") !== -1) {
+        url =
+          url +
+          "/#/pages/webview/webview" +
+          window.location.search +
+          "&course_type=book";
+      }
+      if (window.location.pathname.indexOf("/learnPath/detail") !== -1) {
+        url = url + "/#/packageA/learnPath/show" + window.location.search;
+      }
+      if (window.location.pathname.indexOf("/exam/papers/detail") !== -1) {
+        url =
+          url +
+          "/#/pages/webview/webview" +
+          window.location.search +
+          "&course_type=paperRead";
+      }
+      if (window.location.pathname.indexOf("/exam/practice/detail") !== -1) {
+        url =
+          url +
+          "/#/pages/webview/webview" +
+          window.location.search +
+          "&course_type=practiceRead";
+      }
+      if (window.location.pathname.indexOf("/exam/mockpaper/detail") !== -1) {
+        url =
+          url +
+          "/#/pages/webview/webview" +
+          window.location.search +
+          "&course_type=mockRead";
+      }
       if (result.get("msv")) {
         //如果存在msv的话则跳转携带上msv参数
         url = SPAUrlAppend(props.config.h5_url, "msv=" + result.get("msv"));
