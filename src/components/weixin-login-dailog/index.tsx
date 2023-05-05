@@ -54,7 +54,6 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
         user.detail().then((res: any) => {
           let loginData = res.data;
           dispatch(loginAction(loginData));
-          timer && clearInterval(timer);
           redirectHandler();
         });
       } else if (
