@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { ThumbBar } from "../thumb-bar";
 import backIcon from "../../assets/img/icon-back-n.png";
+import { latexRender } from "../../utils/index";
 
 interface PropInterface {
   text: any;
@@ -16,6 +17,10 @@ export const QuestionContentRender: React.FC<PropInterface> = ({
 }) => {
   const [thumb, setThumb] = useState<string>("");
   const [previewImage, setPreviewImage] = useState<boolean>(false);
+
+  useEffect(() => {
+    latexRender(document.getElementById("questionCont"));
+  }, [document.getElementById("questionCont")]);
 
   const newPreviewImage = (item: string) => {
     setThumb(item);
@@ -39,7 +44,9 @@ export const QuestionContentRender: React.FC<PropInterface> = ({
           </div>
         </div>
       )}
-      <div className="content-render">{text}</div>
+      <div className="content-render" id="questionCont">
+        {text}
+      </div>
       {(images.length > 0 || iframes.length > 0) && (
         <div className="images-render">
           {images.length > 0 && (

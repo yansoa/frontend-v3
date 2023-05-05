@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
 import { ImagePreview, UploadWendaImagesComp, Empty } from "../../components";
-import { changeTime, getCommentTime } from "../../utils/index";
+import { changeTime, getCommentTime, latexRender } from "../../utils/index";
 import questionIcon from "../../assets/img/commen/icon-question.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
 import idoptIcon from "../../assets/img/commen/icon-adopt.png";
@@ -43,6 +43,10 @@ export const WendaDetailPage = () => {
   useEffect(() => {
     getData();
   }, [id]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("desc"));
+  }, [document.getElementById("desc")]);
 
   const getData = () => {
     if (loading) {
@@ -425,6 +429,7 @@ export const WendaDetailPage = () => {
                     </div>
                     <div
                       className={styles["text"]}
+                      id="desc"
                       dangerouslySetInnerHTML={{ __html: item.render_content }}
                     ></div>
                     {item.images_list.length > 0 && (
