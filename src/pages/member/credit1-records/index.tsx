@@ -323,13 +323,11 @@ export const MemberCredit1RecordsPage = () => {
                   <div className={styles["rules-item"]}>
                     <p>
                       • 下单成功 +金额*
-                      {Math.floor(config.credit1_reward.paid_order / 100)}% 积分
+                      {Math.floor(
+                        Number(config.credit1_reward.paid_order) * 100
+                      )}
+                      % 积分
                     </p>
-                  </div>
-                )}
-                {config.credit1_reward.invite !== 0 && (
-                  <div className={styles["rules-item"]}>
-                    <p>• 邀请好友注册 +{config.credit1_reward.invite} 积分</p>
                   </div>
                 )}
                 <div className={styles["rules-item"]}>
