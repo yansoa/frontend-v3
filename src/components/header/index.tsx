@@ -42,7 +42,6 @@ export const Header = () => {
   const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
   const [list, setList] = useState<MenuProps["items"]>([]);
   const [current, setCurrent] = useState(pathname);
-  const [hoverKey, setHoverKey] = useState<any>(null);
 
   useEffect(() => {
     setCurrent(pathname);
