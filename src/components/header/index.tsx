@@ -315,7 +315,11 @@ export const Header = () => {
             )}
             {isLogin && user && (
               <Button.Group className={styles["button-group"]}>
-                <Dropdown menu={{ items, onClick }} placement="bottomRight">
+                <Dropdown
+                  menu={{ items, onClick }}
+                  overlayStyle={{ minWidth: 120, textAlign: "center" }}
+                  placement="bottomRight"
+                >
                   <div className="d-flex" style={{ cursor: "pointer" }}>
                     <img
                       style={{ width: 40, height: 40, borderRadius: "50%" }}
