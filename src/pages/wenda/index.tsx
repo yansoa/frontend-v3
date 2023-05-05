@@ -248,7 +248,7 @@ export const WendaPage = () => {
               <Skeleton
                 style={{ marginTop: 30 }}
                 active
-                paragraph={{ rows: 1 }}
+                paragraph={{ rows: 2 }}
               ></Skeleton>
             )}
             {!loading && (
