@@ -1,34 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { TencentFaceCheck } from "../../../../components";
-import { user as member } from "../../../../api/index";
-import { loginAction } from "../../../../store/user/loginUserSlice";
 import faceSuccessIcon from "../../../../assets/img/commen/faceSuccess.png";
 import noFacecheckIcon from "../../../../assets/img/commen/no-facecheck.png";
+interface PropInterface {
+  refresh: () => void;
+}
 
-export const ProfileComp = () => {
+export const ProfileComp: React.FC<PropInterface> = ({ refresh }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [init, setInit] = useState<boolean>(false);
   const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
-
-  const getData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    setInit(false);
-    member.detail().then((res: any) => {
-      let loginData = res.data;
-      dispatch(loginAction(loginData));
-      setLoading(false);
-      setInit(true);
-    });
-  };
 
   const showFaceCheck = () => {
     setFaceCheckVisible(true);
@@ -36,7 +19,7 @@ export const ProfileComp = () => {
 
   const faceChecksuccess = () => {
     setFaceCheckVisible(false);
-    getData();
+    refresh();
   };
 
   return (

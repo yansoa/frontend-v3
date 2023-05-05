@@ -557,7 +557,7 @@ export const MemberPage = () => {
             )}
             {currentTab === 2 && (
               <div className={styles["project-content"]}>
-                <ProfileComp></ProfileComp>
+                <ProfileComp refresh={() => resetData()}></ProfileComp>
               </div>
             )}
           </div>
