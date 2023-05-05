@@ -362,9 +362,20 @@ body {
   }
 }
 
-.ant-menu-submenu-popup .ant-menu-vertical.ant-menu-sub{
+.ant-menu-submenu-popup .ant-menu-vertical.ant-menu-sub {
   min-width: 120px;
-  text-align:center;
+  text-align: center;
+}
+
+.ant-menu-light.ant-menu-horizontal > .ant-menu-overflow-item::after {
+  border: none;
+}
+
+.ant-menu-light.ant-menu-horizontal > .ant-menu-overflow-item:hover {
+  color: #3ca7fa !important;
+  .ant-menu-submenu-title {
+    color: #3ca7fa !important;
+  }
 }
 
 .bread-nav {
