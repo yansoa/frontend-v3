@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, Pagination, message } from "antd";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavMember, Empty } from "../../../components";
 import { user as member } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
+import { loginAction } from "../../../store/user/loginUserSlice";
 import { GoodsDetailComp } from "./components/goods-detail";
 
 export const MemberCredit1RecordsPage = () => {
   document.title = "积分商城";
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -46,6 +48,7 @@ export const MemberCredit1RecordsPage = () => {
     } else if (currentTab === 3) {
       getOrders();
     }
+    getUser();
   }, [page, size, refresh, currentTab]);
 
   const getData = () => {
@@ -114,6 +117,13 @@ export const MemberCredit1RecordsPage = () => {
     setCurrentTab(id);
     setGoodStatus(false);
     resetData();
+  };
+
+  const getUser = () => {
+    member.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+    });
   };
 
   const statusType = (is_v: number, type: string) => {
