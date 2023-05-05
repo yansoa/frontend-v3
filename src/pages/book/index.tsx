@@ -77,6 +77,7 @@ export const BookPage = () => {
   return (
     <>
       <FilterCategories
+        loading={loading}
         categories={categories}
         defaultKey={cid}
         defaultChild={0}

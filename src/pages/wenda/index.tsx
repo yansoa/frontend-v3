@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Modal, Skeleton, Spin, Button, Pagination } from "antd";
+import { Row, Col, Skeleton, Button, Pagination } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
@@ -112,6 +112,7 @@ export const WendaPage = () => {
   return (
     <>
       <FilterCategories
+        loading={loading}
         categories={categories}
         defaultKey={cid}
         defaultChild={child}
@@ -243,11 +244,22 @@ export const WendaPage = () => {
             >
               我要提问
             </Button>
-            {pcDiyContent && pcDiyContent !== "" && (
-              <div
-                className={styles["wenda-tips"]}
-                dangerouslySetInnerHTML={{ __html: pcDiyContent }}
-              ></div>
+            {loading && (
+              <Skeleton
+                style={{ marginTop: 30 }}
+                active
+                paragraph={{ rows: 1 }}
+              ></Skeleton>
+            )}
+            {!loading && (
+              <>
+                {pcDiyContent && pcDiyContent !== "" && (
+                  <div
+                    className={styles["wenda-tips"]}
+                    dangerouslySetInnerHTML={{ __html: pcDiyContent }}
+                  ></div>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -87,6 +87,7 @@ const VodPage = () => {
   return (
     <>
       <FilterCategories
+        loading={loading}
         categories={categories}
         defaultKey={cid}
         defaultChild={child}

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { Skeleton } from "antd";
 
 interface PropInterface {
+  loading: boolean;
   categories: any[];
   defaultKey: number;
   defaultChild: number;
@@ -10,10 +12,12 @@ interface PropInterface {
 
 export const FilterCategories: React.FC<PropInterface> = ({
   categories,
+  loading,
   defaultKey,
   defaultChild,
   onSelected,
 }) => {
+  const [init, setInit] = useState<boolean>(false);
   const [cid, setCid] = useState(defaultKey);
   const [child, setChild] = useState(defaultChild);
   const [cateIndex, setCateIndex] = useState(0);
@@ -27,36 +31,53 @@ export const FilterCategories: React.FC<PropInterface> = ({
     }
     setCateIndex(index);
   }, [cid]);
+
   return (
     <div className={styles["category-box"]}>
       <div className={styles["categories"]}>
         <div className={styles["box"]}>
-          <div className={styles["label"]}>分类：</div>
-          <div className={styles["item-box"]}>
-            <div
-              className={cid === 0 ? styles["active-item"] : styles["item"]}
-              onClick={() => {
-                setCid(0);
-                onSelected(0, child);
+          {loading && !init && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1140,
+                height: 34,
+                marginBottom: 10,
               }}
-            >
-              全部
-            </div>
-            {categories.map((item: any) => (
-              <div
-                key={item.id}
-                className={
-                  cid === item.id ? styles["active-item"] : styles["item"]
-                }
-                onClick={() => {
-                  setCid(item.id);
-                  onSelected(item.id, child);
-                }}
-              >
-                <span>{item.name}</span>
+            ></Skeleton.Button>
+          )}
+          {(!loading || init) && (
+            <>
+              <div className={styles["label"]}>分类：</div>
+              <div className={styles["item-box"]}>
+                <div
+                  className={cid === 0 ? styles["active-item"] : styles["item"]}
+                  onClick={() => {
+                    setInit(true);
+                    setCid(0);
+                    onSelected(0, child);
+                  }}
+                >
+                  全部
+                </div>
+                {categories.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className={
+                      cid === item.id ? styles["active-item"] : styles["item"]
+                    }
+                    onClick={() => {
+                      setInit(true);
+                      setCid(item.id);
+                      onSelected(item.id, child);
+                    }}
+                  >
+                    <span>{item.name}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </div>
         {cid !== 0 &&
           categories[cateIndex] &&

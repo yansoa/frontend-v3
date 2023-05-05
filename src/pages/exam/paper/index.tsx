@@ -97,6 +97,7 @@ export const ExamPaperPage = () => {
           )}
           {!loading && (
             <FilterCategories
+              loading={loading}
               categories={categories}
               defaultKey={cid}
               defaultChild={child}

@@ -89,6 +89,7 @@ export const ExamPracticePage = () => {
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>
           <FilterCategories
+            loading={loading}
             categories={categories}
             defaultKey={cid}
             defaultChild={child}
