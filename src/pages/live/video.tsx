@@ -418,7 +418,13 @@ export const LiveVideoPage = () => {
                     {video.status === 2 && <>已结束</>}
                   </span>
                 </div>
-                <div className={styles["live-item-video"]}>
+                <div
+                  className={styles["live-item-video"]}
+                  style={{
+                    backgroundImage: "url(" + course.poster + ")",
+                    backgroundSize: "100% 100%",
+                  }}
+                >
                   {video.status === 1 && (
                     <>
                       {noTeacher && (

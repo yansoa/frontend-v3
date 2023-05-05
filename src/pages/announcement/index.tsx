@@ -76,9 +76,9 @@ export const AnnouncementPage = () => {
                 <span className={styles["div-times"]}>
                   {changeTime(notice.created_at)}
                 </span>
-                <span className={styles["div-times"]}>
+                {/* <span className={styles["div-times"]}>
                   {notice.view_times}次阅读
-                </span>
+                </span> */}
               </div>
               <div className={styles["line"]}></div>
               <div
@@ -115,9 +115,9 @@ export const AnnouncementPage = () => {
                   <div className={styles["item-time"]}>
                     {changeTime(item.created_at)}
                   </div>
-                  <div className={styles["item-time"]}>
+                  {/* <div className={styles["item-time"]}>
                     {item.view_times}次阅读
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
