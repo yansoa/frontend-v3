@@ -42,6 +42,7 @@ export const Header = () => {
   const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
   const [list, setList] = useState<MenuProps["items"]>([]);
   const [current, setCurrent] = useState(pathname);
+  const [hoverKey, setHoverKey] = useState<any>(null);
 
   useEffect(() => {
     setCurrent(pathname);
@@ -69,7 +70,9 @@ export const Header = () => {
 
         if (item.children.length > 0) {
           arr.push({
-            label: item.name,
+            label: (
+              <span onClick={() => onMenuClick(item.url)}>{item.name}</span>
+            ),
             key: item.url,
             children: checkArr(item.children),
           });
@@ -183,6 +186,11 @@ export const Header = () => {
   const checkNav: MenuProps["onClick"] = (e) => {
     setCurrent(e.key);
     navigate(e.key);
+  };
+
+  const onMenuClick = (e: any) => {
+    setCurrent(e);
+    navigate(e);
   };
 
   return (
