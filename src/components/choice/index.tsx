@@ -6,6 +6,7 @@ import rightIcon from "../../assets/img/exam/icon-right.png";
 import wrongIcon from "../../assets/img/exam/icon-Wrong.png";
 import foldIcon from "../../assets/img/exam/fold.png";
 import unfoldIcon from "../../assets/img/exam/unfold.png";
+import { latexRender } from "../../utils/index";
 
 interface PropInterface {
   question: any;
@@ -54,6 +55,10 @@ export const ChoiceComp: React.FC<PropInterface> = ({
       setRemarkStatus(false);
     }
   }, [reply, wrongBook]);
+
+  useEffect(() => {
+    latexRender(document.getElementById("questionCont"));
+  }, [document.getElementById("questionCont")]);
 
   const change = (index: any) => {
     if (isOver) {
@@ -144,6 +149,7 @@ export const ChoiceComp: React.FC<PropInterface> = ({
                       <div
                         className={styles["content-render"]}
                         onClick={(event) => PreviewImage(event)}
+                        id="questionCont"
                         dangerouslySetInnerHTML={{
                           __html: question["option" + item],
                         }}
@@ -160,6 +166,7 @@ export const ChoiceComp: React.FC<PropInterface> = ({
                       <div
                         className={styles["content-render"]}
                         onClick={(event) => PreviewImage(event)}
+                        id="questionCont"
                         dangerouslySetInnerHTML={{
                           __html: question["option" + item],
                         }}
