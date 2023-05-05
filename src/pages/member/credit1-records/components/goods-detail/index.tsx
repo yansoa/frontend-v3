@@ -44,6 +44,33 @@ export const GoodsDetailComp: React.FC<PropInterface> = ({
     }
   }, [open, id, isV]);
 
+  useEffect(() => {
+    if (
+      addressForm &&
+      addressForm.name &&
+      addressForm.mobile &&
+      addressForm.province &&
+      addressForm.city &&
+      addressForm.area &&
+      addressForm.street
+    ) {
+      let value =
+        addressForm.name +
+        " " +
+        addressForm.mobile +
+        " " +
+        addressForm.province +
+        " " +
+        addressForm.city +
+        " " +
+        addressForm.area +
+        " " +
+        addressForm.street;
+      setAddress(value);
+      setAddressId(0);
+    }
+  }, [addressForm]);
+
   const getDetail = () => {
     if (id === 0) {
       return;
@@ -175,7 +202,6 @@ export const GoodsDetailComp: React.FC<PropInterface> = ({
             open={dialogStatus}
             onCancel={() => {
               setDialogStatus(false);
-              getDetail();
             }}
           ></EditAddressDialog>
           <div className={styles["btn-title"]} onClick={() => onCancel()}>
