@@ -131,10 +131,10 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     });
   };
 
-  const uploadShotImage = () => {
-    let canvas: any = canvasRef.current;
-    let captureVideo: any = capture_video_ref.current;
-    if (canvas) {
+  const uploadShotImage = async () => {
+    if (canvasRef.current) {
+      let canvas: any = canvasRef.current;
+      let captureVideo: any = capture_video_ref.current;
       canvas.getContext("2d").drawImage(captureVideo, 0, 0, 1920, 1440);
       canvas.toBlob((blob: any) => {
         let formData = new FormData();
@@ -324,22 +324,20 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
                   {openCamera && (
                     <>
                       <div className={styles["content"]} id="contentHolder">
-                        {false && (
-                          <>
-                            <canvas
-                              ref={canvasRef}
-                              width="1920"
-                              height="1440"
-                              id="canvas"
-                            ></canvas>
-                            <video
-                              width={1920}
-                              height={1440}
-                              autoPlay={true}
-                              ref={capture_video_ref}
-                            ></video>
-                          </>
-                        )}
+                        <div style={{ display: "none" }}>
+                          <canvas
+                            ref={canvasRef}
+                            width="1920"
+                            height="1440"
+                            id="canvas"
+                          ></canvas>
+                          <video
+                            width={1920}
+                            height={1440}
+                            autoPlay={true}
+                            ref={capture_video_ref}
+                          ></video>
+                        </div>
                         <video
                           width={290}
                           height={164}
