@@ -70,6 +70,10 @@ export const InitPage = (props: Props) => {
       setShowHeader(false);
       setShowFooter(true);
     }
+    if (pathname === "/login") {
+      setShowHeader(true);
+      setShowFooter(false);
+    }
   }, [pathname]);
 
   useEffect(() => {
