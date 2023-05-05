@@ -53,6 +53,10 @@ export const VerifyDialog: React.FC<PropInterface> = ({
         message.success("兑换成功");
         setLoading(false);
         onSuccess();
+      })
+      .catch((e) => {
+        getCaptcha();
+        setLoading(false);
       });
   };
 
