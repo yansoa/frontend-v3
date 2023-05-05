@@ -183,7 +183,7 @@ export const LiveVideoPage = () => {
     livePlayer = new window.TcPlayer("meedu-live-player", {
       m3u8: webrtc_play_url,
       autoplay: true,
-      poster: course.poster || config.player.cover,
+      poster: { src: course.poster || config.player.cover, style: "stretch" },
       width: 950,
       height: 535,
       wording: {
