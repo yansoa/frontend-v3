@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, message, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
 import { user, system } from "../../../../api/index";
+import closeIcon from "../../../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -114,9 +115,18 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>验证原手机号</div>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              interval && clearInterval(interval);
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <Form
           form={form}

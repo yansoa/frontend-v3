@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import styles from "./index.module.scss";
 import { login, user, system } from "../../../../api/index";
 import { logoutAction } from "../../../../store/user/loginUserSlice";
+import closeIcon from "../../../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -160,7 +161,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
-        closable={!active}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>绑定新手机号</div>
@@ -173,6 +174,16 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
             >
               退出登录&gt;&gt;
             </a>
+          )}
+          {!active && (
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                interval && clearInterval(interval);
+                onCancel();
+              }}
+              src={closeIcon}
+            />
           )}
         </div>
         <Form

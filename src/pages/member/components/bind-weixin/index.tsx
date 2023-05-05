@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { message, Modal, Image } from "antd";
 import { user } from "../../../../api/index";
+import closeIcon from "../../../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -60,9 +61,18 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>绑定微信</div>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              timer && clearInterval(timer);
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <div className={styles["box"]}>
           <Image width={300} height={300} src={qrode} preview={false} />
