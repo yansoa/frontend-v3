@@ -166,6 +166,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
             let num = count;
             num++;
             setCount(num);
+            getList();
           })
           .catch((e) => {
             message.error(e.message || "上传错误");
@@ -179,7 +180,6 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    setChangeBox(true);
     snapshot
       .imagesList({
         resource_id: id,
@@ -192,6 +192,9 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         } else {
           setImagesList([]);
         }
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -386,7 +389,10 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
               {!changeBox && (
                 <div
                   className={styles["upload-image-snapshot"]}
-                  onClick={() => getList()}
+                  onClick={() => {
+                    setChangeBox(true);
+                    getList();
+                  }}
                 >
                   学习照片管理
                 </div>
