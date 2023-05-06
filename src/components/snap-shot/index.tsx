@@ -178,25 +178,17 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   };
 
   const getList = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
     snapshot
       .imagesList({
         resource_id: id,
         resource_type: resourceType,
       })
       .then((res: any) => {
-        setLoading(false);
         if (res.data.data) {
           setImagesList(res.data.data);
         } else {
           setImagesList([]);
         }
-      })
-      .catch((e) => {
-        setLoading(false);
       });
   };
 
