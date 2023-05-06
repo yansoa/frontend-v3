@@ -347,41 +347,41 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
                     ))}
                 </div>
               )}
-              {!changeBox && (
-                <div className={styles["camera-box"]}>
-                  {openCamera && (
-                    <>
-                      <div className={styles["content"]} id="contentHolder">
-                        <div style={{ display: "none" }}>
-                          <canvas
-                            ref={canvasRef}
-                            width="1920"
-                            height="1440"
-                            id="canvas"
-                          ></canvas>
-                          <video
-                            width={1920}
-                            height={1440}
-                            autoPlay={true}
-                            ref={capture_video_ref}
-                          ></video>
-                        </div>
+
+              <div
+                style={{ display: !changeBox ? "flex" : "none" }}
+                className={styles["camera-box"]}
+              >
+                {openCamera && (
+                  <>
+                    <div className={styles["content"]} id="contentHolder">
+                      <div style={{ display: "none" }}>
+                        <canvas
+                          ref={canvasRef}
+                          width="1920"
+                          height="1440"
+                          id="canvas"
+                        ></canvas>
                         <video
-                          width={290}
-                          height={164}
+                          width={1920}
+                          height={1440}
                           autoPlay={true}
-                          ref={video_ref}
+                          ref={capture_video_ref}
                         ></video>
                       </div>
-                      {!openCamera && (
-                        <span className={styles["tip"]}>
-                          摄像头未捕捉到画面
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              )}
+                      <video
+                        width={290}
+                        height={164}
+                        autoPlay={true}
+                        ref={video_ref}
+                      ></video>
+                    </div>
+                    {!openCamera && (
+                      <span className={styles["tip"]}>摄像头未捕捉到画面</span>
+                    )}
+                  </>
+                )}
+              </div>
               {changeBox && (
                 <Upload {...props} showUploadList={false}>
                   <div className={styles["upload-image-snapshot"]}>

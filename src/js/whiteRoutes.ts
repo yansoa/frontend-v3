@@ -1,0 +1,22 @@
+const whiteRoutes = [
+  "/",
+  "/login",
+  "/courses",
+  "/courses/detail",
+  "/exam",
+  "/exam/papers",
+  "/exam/mockpaper",
+  "/exam/practice",
+  "/live",
+  "/live/detail",
+  "/book",
+  "/book/detail",
+  "/learnPath",
+  "/learnPath/detail",
+  "/topic",
+  "/topic/detail",
+  "/wenda",
+  "/wenda/detail",
+  "/announcement",
+];
+export default whiteRoutes;

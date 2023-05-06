@@ -16,6 +16,7 @@ import { login, home, user as member } from "../../api/index";
 import { clearToken } from "../../utils/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
 import appConfig from "../../js/config";
+import whiteRoutes from "../../js/whiteRoutes";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -183,13 +184,21 @@ export const Header = () => {
   };
 
   const checkNav: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
-    navigate(e.key);
+    if (whiteRoutes.indexOf(e.key) === -1) {
+      window.location.href = "/login";
+    } else {
+      setCurrent(e.key);
+      navigate(e.key);
+    }
   };
 
   const onMenuClick = (e: any) => {
-    setCurrent(e);
-    navigate(e);
+    if (whiteRoutes.indexOf(e) === -1) {
+      window.location.href = "/login";
+    } else {
+      setCurrent(e);
+      navigate(e);
+    }
   };
 
   return (

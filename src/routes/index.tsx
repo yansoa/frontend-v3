@@ -56,6 +56,7 @@ import { WendaPage } from "../pages/wenda/index";
 import { WendaDetailPage } from "../pages/wenda/detail";
 import { SharePage } from "../pages/share";
 import { StudyCenterPage } from "../pages/study/index";
+import whiteRoutes from "../js/whiteRoutes";
 
 let RootPage: any = null;
 let configFunc = {
@@ -169,27 +170,6 @@ if (getToken()) {
     });
   });
 } else {
-  const whiteRoutes = [
-    "/",
-    "/login",
-    "/courses",
-    "/courses/detail",
-    "/exam",
-    "/exam/papers",
-    "/exam/mockpaper",
-    "/exam/practice",
-    "/live",
-    "/live/detail",
-    "/book",
-    "/book/detail",
-    "/learnPath",
-    "/learnPath/detail",
-    "/topic",
-    "/topic/detail",
-    "/wenda",
-    "/wenda/detail",
-    "/announcement",
-  ];
   if (whiteRoutes.indexOf(window.location.pathname) === -1) {
     window.location.href = "/login";
   }
