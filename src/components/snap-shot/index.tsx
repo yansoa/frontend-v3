@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Button, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import styles from "./index.module.scss";
+import { useLocation } from "react-router-dom";
 import { SnaoShotPreview } from "../snapshot-preview";
 import { random, getToken } from "../../utils/index";
 import { snapshot } from "../../api/index";
@@ -25,6 +25,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const video_ref = useRef(null);
   const capture_video_ref = useRef(null);
   const canvasRef = useRef(null);
+  const pathname = useLocation().pathname;
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [changeBox, setChangeBox] = useState<boolean>(false);
@@ -56,6 +57,11 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       getCamera();
     }
   }, [changeBox]);
+
+  useEffect(() => {
+    intervalId && clearInterval(intervalId);
+    stopCamera();
+  }, [pathname]);
 
   const getConfig = () => {
     snapshot.config().then((res: any) => {
