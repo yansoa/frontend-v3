@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 import { QRCode, Modal, message } from "antd";
 import { user, login } from "../../api/index";
 import { logoutAction } from "../../store/user/loginUserSlice";
+import closeIcon from "../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -108,7 +109,7 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
           onCancel();
         }}
         maskClosable={false}
-        closable={active}
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}></div>
@@ -122,6 +123,16 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
             >
               退出登录&gt;&gt;
             </a>
+          )}
+          {active && (
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                timer && clearInterval(timer);
+                onCancel();
+              }}
+              src={closeIcon}
+            />
           )}
         </div>
         <div className={styles["box"]}>

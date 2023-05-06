@@ -5,6 +5,7 @@ import styles from "./index.module.scss";
 import { message, Modal } from "antd";
 import { login } from "../../../../api/index";
 import { logoutAction } from "../../../../store/user/loginUserSlice";
+import closeIcon from "../../../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
   open: boolean;
@@ -55,9 +56,17 @@ export const DestroyUserDialog: React.FC<PropInterface> = ({
         maskClosable={false}
         okText="确认注销"
         cancelText="暂不注销"
+        closable={false}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>账号注销</div>
+          <img
+            className={styles["btn-close"]}
+            onClick={() => {
+              onCancel();
+            }}
+            src={closeIcon}
+          />
         </div>
         <div className={styles["box"]}>
           <div className={styles["input-item"]}>
