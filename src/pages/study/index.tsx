@@ -81,6 +81,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data);
           setTotal(res.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "live") {
       study
@@ -91,6 +94,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data);
           setTotal(res.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     } else if (current === "topic") {
@@ -103,6 +109,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data);
           setTotal(res.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "book") {
       study
@@ -113,6 +122,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data);
           setTotal(res.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     }
@@ -133,6 +145,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data);
           setTotal(res.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "live") {
       live
@@ -143,6 +158,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data);
           setTotal(res.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     } else if (current === "topic") {
@@ -155,6 +173,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data.data);
           setTotal(res.data.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "book") {
       member
@@ -165,6 +186,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data);
           setTotal(res.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     }
@@ -185,6 +209,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data);
           setTotal(res.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "live") {
       study
@@ -197,6 +224,9 @@ export const StudyCenterPage = () => {
           setList(res.data.data);
           setTotal(res.data.total);
           setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
         });
     } else if (current === "topic") {
       study
@@ -207,6 +237,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data.data);
           setTotal(res.data.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     } else if (current === "book") {
@@ -219,6 +252,9 @@ export const StudyCenterPage = () => {
         .then((res: any) => {
           setList(res.data.data);
           setTotal(res.data.total);
+          setLoading(false);
+        })
+        .catch((e) => {
           setLoading(false);
         });
     }
@@ -255,7 +291,12 @@ export const StudyCenterPage = () => {
                       ? styles["active-tab-item"]
                       : styles["tab-item"]
                   }
-                  onClick={() => setCurrent(tab.value)}
+                  onClick={() => {
+                    if (loading) {
+                      return;
+                    }
+                    setCurrent(tab.value);
+                  }}
                 >
                   {tab.name}
                 </div>
