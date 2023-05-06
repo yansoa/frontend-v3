@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { message } from "antd";
+import { Skeleton, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
@@ -39,22 +39,27 @@ export const ExamPaperDetailPage = () => {
       return;
     }
     setLoading(true);
-    paper.paperDetail(id).then((res: any) => {
-      document.title = res.data.paper.title;
-      setList(res.data.paper);
-      setQuestions(res.data.questions);
-      setJoinRecords(res.data.user_papers);
-      setCanJoin(res.data.can_join);
-      setJoinCount(res.data.join_count);
-      setRequiredCourses(res.data.required_courses);
-      if (res.data.paper.try_times !== 0) {
-        let surplus = res.data.paper.try_times - res.data.join_count;
-        setSurplus(surplus);
-      } else {
-        setSurplus(99999);
-      }
-      setLoading(false);
-    });
+    paper
+      .paperDetail(id)
+      .then((res: any) => {
+        document.title = res.data.paper.title;
+        setList(res.data.paper);
+        setQuestions(res.data.questions);
+        setJoinRecords(res.data.user_papers);
+        setCanJoin(res.data.can_join);
+        setJoinCount(res.data.join_count);
+        setRequiredCourses(res.data.required_courses);
+        if (res.data.paper.try_times !== 0) {
+          let surplus = res.data.paper.try_times - res.data.join_count;
+          setSurplus(surplus);
+        } else {
+          setSurplus(99999);
+        }
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const join = (records: any) => {
@@ -138,42 +143,86 @@ export const ExamPaperDetailPage = () => {
         /<span>{list.title}</span>
       </div>
       <div className={styles["banner-box"]}>
-        <div className={styles["title"]}>{list.title}</div>
-        <div className={styles["info"]}>
-          <div className={styles["info-item"]}>总分：{list.score}分</div>
-          <i></i>
-          <div className={styles["info-item"]}>及格分：{list.pass_score}分</div>
-          <i></i>
-          <div className={styles["info-item"]}>题数：{sumQuestion}道</div>
-          <i></i>
-          {list.try_times === 0 && (
-            <div className={styles["info-item"]}>可考试次数：不限</div>
-          )}
-          {list.try_times !== 0 && (
-            <div className={styles["info-item"]}>剩余可考试次数：{surplus}</div>
-          )}
-        </div>
-        {surplus !== 0 && (
-          <div className={styles["btn-box"]}>
-            <>
-              {!canJoin && list.charge > 0 && (
-                <div
-                  className={styles["charge-button"]}
-                  onClick={() => payOrder()}
-                >
-                  购买试卷 ￥{list.charge}
-                </div>
-              )}
-              {canJoin && surplus && surplus !== 0 && (
-                <div
-                  className={styles["join-button"]}
-                  onClick={() => join(undefined)}
-                >
-                  立即考试
-                </div>
-              )}
-            </>
+        {loading && (
+          <div
+            style={{
+              width: 1200,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Skeleton.Button
+              active
+              style={{
+                width: 300,
+                height: 28,
+                marginTop: 50,
+                marginBottom: 30,
+              }}
+            ></Skeleton.Button>
+            <Skeleton.Button
+              active
+              style={{
+                width: 600,
+                height: 14,
+                marginBottom: 50,
+              }}
+            ></Skeleton.Button>
+            <Skeleton.Button
+              active
+              style={{
+                width: 104,
+                height: 40,
+                borderRadius: 4,
+              }}
+            ></Skeleton.Button>
           </div>
+        )}
+        {!loading && (
+          <>
+            <div className={styles["title"]}>{list.title}</div>
+            <div className={styles["info"]}>
+              <div className={styles["info-item"]}>总分：{list.score}分</div>
+              <i></i>
+              <div className={styles["info-item"]}>
+                及格分：{list.pass_score}分
+              </div>
+              <i></i>
+              <div className={styles["info-item"]}>题数：{sumQuestion}道</div>
+              <i></i>
+              {list.try_times === 0 && (
+                <div className={styles["info-item"]}>可考试次数：不限</div>
+              )}
+              {list.try_times !== 0 && (
+                <div className={styles["info-item"]}>
+                  剩余可考试次数：{surplus}
+                </div>
+              )}
+            </div>
+            {surplus !== 0 && (
+              <div className={styles["btn-box"]}>
+                <>
+                  {!canJoin && list.charge > 0 && (
+                    <div
+                      className={styles["charge-button"]}
+                      onClick={() => payOrder()}
+                    >
+                      购买试卷 ￥{list.charge}
+                    </div>
+                  )}
+                  {canJoin && surplus && surplus !== 0 && (
+                    <div
+                      className={styles["join-button"]}
+                      onClick={() => join(undefined)}
+                    >
+                      立即考试
+                    </div>
+                  )}
+                </>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className={styles["records-box"]}>

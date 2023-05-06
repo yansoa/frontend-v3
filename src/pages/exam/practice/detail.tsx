@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { message } from "antd";
+import { Skeleton, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { practice } from "../../../api/index";
@@ -35,14 +35,24 @@ export const ExamPracticeDetailPage = () => {
   }, [questions]);
 
   const getDetail = () => {
-    practice.detail(id).then((res: any) => {
-      document.title = res.data.practice.name;
-      setList(res.data.practice);
-      setChapters(res.data.chapters);
-      setCanJoin(res.data.can);
-      setPracticeUserRecord(res.data.practice_user_record);
-      setUserChapterRecords(res.data.user_chapter_records);
-    });
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    practice
+      .detail(id)
+      .then((res: any) => {
+        document.title = res.data.practice.name;
+        setList(res.data.practice);
+        setChapters(res.data.chapters);
+        setCanJoin(res.data.can);
+        setPracticeUserRecord(res.data.practice_user_record);
+        setUserChapterRecords(res.data.user_chapter_records);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const chapterSubmitCount = (chapter: any) => {
@@ -142,30 +152,71 @@ export const ExamPracticeDetailPage = () => {
         /<span>{list.name}</span>
       </div>
       <div className={styles["banner-box"]}>
-        <div className={styles["title"]}>{list.name}</div>
-        <div className={styles["info"]}>
-          <div className={styles["info-item"]}>
-            已练习：{practiceUserRecord ? practiceUserRecord.submit_count : 0}/
-            {list.question_count || 0}
+        {loading && (
+          <div
+            style={{
+              width: 1200,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Skeleton.Button
+              active
+              style={{
+                width: 300,
+                height: 28,
+                marginTop: 50,
+                marginBottom: 30,
+              }}
+            ></Skeleton.Button>
+            <Skeleton.Button
+              active
+              style={{
+                width: 600,
+                height: 14,
+                marginBottom: 50,
+              }}
+            ></Skeleton.Button>
+            <Skeleton.Button
+              active
+              style={{
+                width: 104,
+                height: 40,
+                borderRadius: 4,
+              }}
+            ></Skeleton.Button>
           </div>
-        </div>
-        <div className={styles["btn-box"]}>
+        )}
+        {!loading && (
           <>
-            {!canJoin && list.charge > 0 && (
-              <div
-                className={styles["charge-button"]}
-                onClick={() => payOrder()}
-              >
-                购买练习 ￥{list.charge}
+            <div className={styles["title"]}>{list.name}</div>
+            <div className={styles["info"]}>
+              <div className={styles["info-item"]}>
+                已练习：
+                {practiceUserRecord ? practiceUserRecord.submit_count : 0}/
+                {list.question_count || 0}
               </div>
-            )}
-            {canJoin && surplus && surplus !== 0 && (
-              <div className={styles["join-button"]} onClick={() => join()}>
-                每日20题
-              </div>
-            )}
+            </div>
+            <div className={styles["btn-box"]}>
+              <>
+                {!canJoin && list.charge > 0 && (
+                  <div
+                    className={styles["charge-button"]}
+                    onClick={() => payOrder()}
+                  >
+                    购买练习 ￥{list.charge}
+                  </div>
+                )}
+                {canJoin && surplus && surplus !== 0 && (
+                  <div className={styles["join-button"]} onClick={() => join()}>
+                    每日20题
+                  </div>
+                )}
+              </>
+            </div>
           </>
-        </div>
+        )}
       </div>
       <div className={styles["records-box"]}>
         <div className={styles["records"]}>
