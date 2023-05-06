@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, Pagination } from "antd";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavMember, Empty } from "../../../components";
-import { user as member } from "../../../api/index";
+import { user as member, system } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
+import { loginAction } from "../../../store/user/loginUserSlice";
+import { saveConfigAction } from "../../../store/system/systemConfigSlice";
 
 export const MemberCredit1FreePage = () => {
   document.title = "我的积分";
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -34,6 +37,8 @@ export const MemberCredit1FreePage = () => {
     if (currentTab === 2) {
       getData();
     }
+    getUser();
+    getConfig();
   }, [page, size, refresh, currentTab]);
 
   const getData = () => {
@@ -57,6 +62,20 @@ export const MemberCredit1FreePage = () => {
   const tabChange = (id: number) => {
     setCurrentTab(id);
     resetData();
+  };
+
+  const getUser = () => {
+    member.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+    });
+  };
+
+  const getConfig = () => {
+    system.config().then((res: any) => {
+      let config = res.data;
+      dispatch(saveConfigAction(config));
+    });
   };
 
   return (

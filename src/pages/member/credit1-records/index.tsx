@@ -4,9 +4,10 @@ import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { NavMember, Empty } from "../../../components";
-import { user as member } from "../../../api/index";
+import { user as member, system } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
 import { loginAction } from "../../../store/user/loginUserSlice";
+import { saveConfigAction } from "../../../store/system/systemConfigSlice";
 import { GoodsDetailComp } from "./components/goods-detail";
 
 export const MemberCredit1RecordsPage = () => {
@@ -49,6 +50,7 @@ export const MemberCredit1RecordsPage = () => {
       getOrders();
     }
     getUser();
+    getConfig();
   }, [page, size, refresh, currentTab]);
 
   const getData = () => {
@@ -123,6 +125,13 @@ export const MemberCredit1RecordsPage = () => {
     member.detail().then((res: any) => {
       let loginData = res.data;
       dispatch(loginAction(loginData));
+    });
+  };
+
+  const getConfig = () => {
+    system.config().then((res: any) => {
+      let config = res.data;
+      dispatch(saveConfigAction(config));
     });
   };
 
