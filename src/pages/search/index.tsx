@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { message, Input, Row, Col, Spin, Pagination } from "antd";
+import { message, Input, Row, Col, Spin, Skeleton, Pagination } from "antd";
 import { search as searchApi } from "../../api/index";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -107,6 +107,9 @@ export const SearchPage = () => {
       .then((res: any) => {
         setList(res.data.data);
         setTotal(res.data.total);
+        setLoading(false);
+      })
+      .catch((e) => {
         setLoading(false);
       });
   };
@@ -230,8 +233,39 @@ export const SearchPage = () => {
         <div className={styles["search-box"]}>
           {loading && (
             <Row>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
+              <div className={styles["left-contanier"]}>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 800,
+                    height: 18,
+                    marginTop: 50,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 800,
+                    height: 18,
+                    marginTop: 60,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 800,
+                    height: 18,
+                    marginTop: 60,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 800,
+                    height: 18,
+                    marginTop: 60,
+                  }}
+                ></Skeleton.Button>
               </div>
             </Row>
           )}
