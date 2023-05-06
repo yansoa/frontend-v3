@@ -231,6 +231,9 @@ export const StudyCenterPage = () => {
   };
 
   const onChange = (e: RadioChangeEvent) => {
+    if (loading) {
+      return;
+    }
     setCurrentStatus(e.target.value);
   };
 
