@@ -187,7 +187,11 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       })
       .then((res: any) => {
         setLoading(false);
-        setImagesList(res.data.data);
+        if (res.data.data) {
+          setImagesList(res.data.data);
+        } else {
+          setImagesList([]);
+        }
       });
   };
 
