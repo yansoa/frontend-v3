@@ -13,7 +13,7 @@ import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { ForgetPasswordDialog } from "../forget-password-dialog";
 import { login, home, user as member } from "../../api/index";
-import { clearToken } from "../../utils/index";
+import { clearToken, getToken } from "../../utils/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
 import appConfig from "../../js/config";
 import whiteRoutes from "../../js/whiteRoutes";
@@ -184,7 +184,10 @@ export const Header = () => {
   };
 
   const checkNav: MenuProps["onClick"] = (e) => {
-    if (whiteRoutes.indexOf(e.key) === -1) {
+    if (getToken()) {
+      setCurrent(e.key);
+      navigate(e.key);
+    } else if (whiteRoutes.indexOf(e.key) === -1) {
       window.location.href = "/login";
     } else {
       setCurrent(e.key);
@@ -193,7 +196,10 @@ export const Header = () => {
   };
 
   const onMenuClick = (e: any) => {
-    if (whiteRoutes.indexOf(e) === -1) {
+    if (getToken()) {
+      setCurrent(e);
+      navigate(e);
+    } else if (whiteRoutes.indexOf(e) === -1) {
       window.location.href = "/login";
     } else {
       setCurrent(e);
