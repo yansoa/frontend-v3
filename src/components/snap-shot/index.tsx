@@ -25,6 +25,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const video_ref = useRef(null);
   const capture_video_ref = useRef(null);
   const canvasRef = useRef(null);
+  const myRef = useRef(0);
   const pathname = useLocation().pathname;
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,6 +54,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
 
   useEffect(() => {
     if (open) {
+      intervalId && clearInterval(intervalId);
       setOpenCamera(true);
       getCamera();
     }
@@ -127,7 +129,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const taskHandler = () => {
     console.info("开始拍照啦...");
     let randomInt = random(0, 100);
-    let num = count;
+    let num = myRef.current;
     if (randomInt <= saveConfig.rate && num < saveConfig.max_times) {
       console.info("上传拍照中...");
       uploadShotImage();
@@ -163,9 +165,9 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
         snapshot
           .uploadImages(formData)
           .then(() => {
-            let num = count;
+            let num = myRef.current;
             num++;
-            setCount(num);
+            myRef.current = num;
             getList();
           })
           .catch((e) => {
@@ -213,6 +215,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
       })
       .then((res: any) => {
         setCount(res.data.count);
+        myRef.current = res.data.count;
       });
   };
 
