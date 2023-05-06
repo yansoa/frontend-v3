@@ -39,13 +39,23 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
   const [saveConfig, setSaveConfig] = useState<any>({});
 
   useEffect(() => {
+    setShowList(false);
+    setChangeBox(false);
+    setPreviewStatus(false);
     getCount();
     getConfig();
     return () => {
       intervalId && clearInterval(intervalId);
       stopCamera();
     };
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (open) {
+      setOpenCamera(true);
+      getCamera();
+    }
+  }, [changeBox]);
 
   const getConfig = () => {
     snapshot.config().then((res: any) => {
@@ -113,6 +123,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     let randomInt = random(0, 100);
     let num = count;
     if (randomInt <= saveConfig.rate && num < saveConfig.max_times) {
+      console.info("上传拍照中...");
       uploadShotImage();
     }
 
@@ -356,11 +367,19 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
                 </div>
               )}
               {changeBox && (
-                <Upload {...props}>
+                <Upload {...props} showUploadList={false}>
                   <div className={styles["upload-image-snapshot"]}>
                     手动上传学习照片
                   </div>
                 </Upload>
+              )}
+              {!changeBox && (
+                <div
+                  className={styles["upload-image-snapshot"]}
+                  onClick={() => getList()}
+                >
+                  学习照片管理
+                </div>
               )}
             </div>
           )}
