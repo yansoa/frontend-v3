@@ -228,8 +228,43 @@ export const ExamPaperDetailPage = () => {
       <div className={styles["records-box"]}>
         <div className={styles["tit"]}>考试记录</div>
         <div className={styles["records"]}>
-          {joinRecords.length === 0 && <Empty></Empty>}
-          {joinRecords.length > 0 && (
+          {loading && (
+            <div
+              style={{
+                width: 1140,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1140,
+                  height: 14,
+                  marginBottom: 30,
+                }}
+              ></Skeleton.Button>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1140,
+                  height: 14,
+                  marginBottom: 30,
+                }}
+              ></Skeleton.Button>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 1140,
+                  height: 14,
+                  marginBottom: 30,
+                }}
+              ></Skeleton.Button>
+            </div>
+          )}
+          {!loading && joinRecords.length === 0 && <Empty></Empty>}
+          {!loading && joinRecords.length > 0 && (
             <>
               {joinRecords.map((item: any) => (
                 <div key={item.id} className={styles["record-item"]}>
