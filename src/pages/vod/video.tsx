@@ -20,6 +20,7 @@ var clock: any = null;
 export const VodPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [cid, setCid] = useState(0);
   const [vid, setVid] = useState(Number(result.get("id")));
@@ -69,6 +70,13 @@ export const VodPlayPage = () => {
     setVid(Number(result.get("id")));
     window.player && window.player.destroy();
   }, [result.get("id")]);
+
+  useEffect(() => {
+    clock && clearInterval(clock);
+    timer && clearInterval(timer);
+    window.removeEventListener("scroll", handleTabFix, true);
+    window.player && window.player.destroy();
+  }, [pathname]);
 
   useEffect(() => {
     getDetail();
