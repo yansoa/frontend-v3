@@ -56,7 +56,7 @@ import { WendaPage } from "../pages/wenda/index";
 import { WendaDetailPage } from "../pages/wenda/detail";
 import { SharePage } from "../pages/share";
 import { StudyCenterPage } from "../pages/study/index";
-import whiteRoutes from "../js/whiteRoutes";
+import PrivateRoute from "../components/private-route";
 
 let RootPage: any = null;
 let configFunc = {
@@ -170,9 +170,6 @@ if (getToken()) {
     });
   });
 } else {
-  if (whiteRoutes.indexOf(window.location.pathname) === -1) {
-    window.location.href = "/login";
-  }
   RootPage = lazy(async () => {
     return new Promise<any>((resolve) => {
       system
@@ -236,56 +233,125 @@ const routes: RouteObject[] = [
       },
       { path: "/courses", element: <VodPage /> },
       { path: "/courses/detail", element: <VodDetailPage /> },
-      { path: "/courses/video", element: <VodPlayPage /> },
+      {
+        path: "/courses/video",
+        element: <PrivateRoute Component={<VodPlayPage />} />,
+      },
       { path: "/live", element: <LivePage /> },
       { path: "/live/detail", element: <LiveDetailPage /> },
-      { path: "/live/video", element: <LiveVideoPage /> },
+      {
+        path: "/live/video",
+        element: <PrivateRoute Component={<LiveVideoPage />} />,
+      },
       { path: "/announcement", element: <AnnouncementPage /> },
       { path: "/exam", element: <ExamPage /> },
       { path: "/exam/papers", element: <ExamPaperPage /> },
-      { path: "/exam/papers/detail", element: <ExamPaperDetailPage /> },
-      { path: "/exam/papers/play", element: <ExamPaperPlayPage /> },
+      {
+        path: "/exam/papers/detail",
+        element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
+      },
+      {
+        path: "/exam/papers/play",
+        element: <PrivateRoute Component={<ExamPaperPlayPage />} />,
+      },
       { path: "/exam/mockpaper", element: <ExamMockPaperPage /> },
-      { path: "/exam/mockpaper/detail", element: <ExamMockPaperDetailPage /> },
-      { path: "/exam/mockpaper/play", element: <ExamMockPaperPlayPage /> },
+      {
+        path: "/exam/mockpaper/detail",
+        element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
+      },
+      {
+        path: "/exam/mockpaper/play",
+        element: <PrivateRoute Component={<ExamMockPaperPlayPage />} />,
+      },
       { path: "/exam/practice", element: <ExamPracticePage /> },
-      { path: "/exam/practice/detail", element: <ExamPracticeDetailPage /> },
-      { path: "/exam/practice/play", element: <ExamPracticePlayPage /> },
+      {
+        path: "/exam/practice/detail",
+        element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
+      },
+      {
+        path: "/exam/practice/play",
+        element: <PrivateRoute Component={<ExamPracticePlayPage />} />,
+      },
       { path: "/exam/wrongbook", element: <ExamWrongbookPage /> },
-      { path: "/exam/wrongbook/play", element: <ExamWrongbookPlayPage /> },
+      {
+        path: "/exam/wrongbook/play",
+        element: <PrivateRoute Component={<ExamWrongbookPlayPage />} />,
+      },
       { path: "/exam/collection", element: <ExamCollectionPage /> },
-      { path: "/exam/collection/play", element: <ExamCollectionPlayPage /> },
-      { path: "/member", element: <MemberPage /> },
-      { path: "/member/messages", element: <MemberMessagesPage /> },
-      { path: "/member/orders", element: <MemberOrdersPage /> },
-      { path: "/member/paper", element: <MemberPaperPage /> },
-      { path: "/member/mockpaper", element: <MemberMockPaperPage /> },
-      { path: "/member/practice", element: <MemberPracticePage /> },
-      { path: "/member/questions", element: <MemberQuestionsPage /> },
-      { path: "/member/codeexchanger", element: <MemberExchangerPage /> },
-      { path: "/member/credit1_free", element: <MemberCredit1FreePage /> },
+      {
+        path: "/exam/collection/play",
+        element: <PrivateRoute Component={<ExamCollectionPlayPage />} />,
+      },
+      { path: "/member", element: <PrivateRoute Component={<MemberPage />} /> },
+      {
+        path: "/member/messages",
+        element: <PrivateRoute Component={<MemberMessagesPage />} />,
+      },
+      {
+        path: "/member/orders",
+        element: <PrivateRoute Component={<MemberOrdersPage />} />,
+      },
+      {
+        path: "/member/paper",
+        element: <PrivateRoute Component={<MemberPaperPage />} />,
+      },
+      {
+        path: "/member/mockpaper",
+        element: <PrivateRoute Component={<MemberMockPaperPage />} />,
+      },
+      {
+        path: "/member/practice",
+        element: <PrivateRoute Component={<MemberPracticePage />} />,
+      },
+      {
+        path: "/member/questions",
+        element: <PrivateRoute Component={<MemberQuestionsPage />} />,
+      },
+      {
+        path: "/member/codeexchanger",
+        element: <PrivateRoute Component={<MemberExchangerPage />} />,
+      },
+      {
+        path: "/member/credit1_free",
+        element: <PrivateRoute Component={<MemberCredit1FreePage />} />,
+      },
       {
         path: "/member/credit1_records",
-        element: <MemberCredit1RecordsPage />,
+        element: <PrivateRoute Component={<MemberCredit1RecordsPage />} />,
       },
-      { path: "/member/certs", element: <MemberCertsPage /> },
+      {
+        path: "/member/certs",
+        element: <PrivateRoute Component={<MemberCertsPage />} />,
+      },
       { path: "/vip", element: <RolePage /> },
-      { path: "/order", element: <OrderPage /> },
-      { path: "/order/pay", element: <OrderPayPage /> },
-      { path: "/order/success", element: <OrderSuccessPage /> },
+      { path: "/order", element: <PrivateRoute Component={<OrderPage />} /> },
+      {
+        path: "/order/pay",
+        element: <PrivateRoute Component={<OrderPayPage />} />,
+      },
+      {
+        path: "/order/success",
+        element: <PrivateRoute Component={<OrderSuccessPage />} />,
+      },
       { path: "/search", element: <SearchPage /> },
       { path: "/topic", element: <TopicPage /> },
       { path: "/topic/detail", element: <TopicDetailPage /> },
       { path: "/book", element: <BookPage /> },
       { path: "/book/detail", element: <BookDetailPage /> },
-      { path: "/book/read", element: <BookReadPage /> },
+      {
+        path: "/book/read",
+        element: <PrivateRoute Component={<BookReadPage />} />,
+      },
       { path: "/learnPath", element: <LearnPathPage /> },
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },
-      { path: "/wenda", element: <WendaPage /> },
+      { path: "/wenda", element: <PrivateRoute Component={<WendaPage />} /> },
       { path: "/wenda/detail", element: <WendaDetailPage /> },
-      { path: "/share", element: <SharePage /> },
-      { path: "/study-center", element: <StudyCenterPage /> },
+      { path: "/share", element: <PrivateRoute Component={<SharePage />} /> },
+      {
+        path: "/study-center",
+        element: <PrivateRoute Component={<StudyCenterPage />} />,
+      },
     ],
   },
 ];
