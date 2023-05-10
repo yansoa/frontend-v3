@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Input, Upload, message } from "antd";
+import { Input, Upload, message, Button } from "antd";
 import type { UploadProps } from "antd";
 import styles from "./index.module.scss";
 import { wenda } from "../../api/index";
@@ -20,6 +20,7 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
   onSuccess,
   onCancel,
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
   const [credit1, setCredit1] = useState<any>(null);
@@ -88,6 +89,9 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
   };
 
   const submit = () => {
+    if (loading) {
+      return;
+    }
     if (categoryId === 0) {
       message.error("请选择问题分类");
       return;
@@ -105,6 +109,7 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       message.error("积分余额不足");
       return;
     }
+    setLoading(true);
     wenda
       .store({
         title: title,
@@ -116,7 +121,11 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       })
       .then((res: any) => {
         message.success("发布成功");
+        setLoading(false);
         onSuccess(res.data.id, credit1 || 0);
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -223,12 +232,13 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
                     积分余额：{user.credit1}积分
                   </div>
                   {content.length > 0 && title.length > 0 && categoryId > 0 ? (
-                    <div
+                    <Button
+                      loading={loading}
                       className={styles["active-confirm-button"]}
                       onClick={() => submit()}
                     >
                       发布问题
-                    </div>
+                    </Button>
                   ) : (
                     <div className={styles["confirm-button"]}>发布问题</div>
                   )}
