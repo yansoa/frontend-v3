@@ -131,6 +131,10 @@ export const LoginDialog: React.FC<PropInterface> = ({
           });
         })
         .catch((e: any) => {
+          form.setFieldsValue({
+            captcha: "",
+          });
+          getCaptcha();
           setLoading(false);
         });
     }
