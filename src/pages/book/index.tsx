@@ -121,7 +121,38 @@ export const BookPage = () => {
                       marginRight: 20,
                     }}
                   ></Skeleton.Button>
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 569,
+                        height: 20,
+                        marginTop: 20,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 569,
+                        height: 20,
+                        marginTop: 20,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 100,
+                        height: 25,
+                        marginTop: 56,
+                      }}
+                    ></Skeleton.Button>
+                  </div>
                 </div>
                 <div
                   style={{
