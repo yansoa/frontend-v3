@@ -375,6 +375,7 @@ export const WendaDetailPage = () => {
               )}
               {content !== "" && (
                 <Button
+                  loading={commentLoading}
                   className={styles["confirm-button"]}
                   onClick={() => submitComment()}
                 >
