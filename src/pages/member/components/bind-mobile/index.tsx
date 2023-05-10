@@ -96,6 +96,9 @@ export const BindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         setLoading(false);
+        interval && clearInterval(interval);
+        setCurrent(0);
+        setSmsLoading(false);
       });
   };
 
