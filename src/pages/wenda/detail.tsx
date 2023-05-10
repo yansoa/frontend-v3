@@ -213,6 +213,9 @@ export const WendaDetailPage = () => {
         let arr1 = [...replyAnswers];
         arr1[index] = old;
         setReplyAnswers(arr1);
+        let ant = [...answers];
+        answers[index].reply_count = answers[index].reply_count + 1;
+        setAnswers(ant);
         setReplyContent("");
         setCommentLoading(false);
       })
@@ -486,101 +489,101 @@ export const WendaDetailPage = () => {
                               ? styles["reply-trans-answer"]
                               : styles["reply-answer"]
                           }
-                          onClick={() => showReply(item.id)}
+                          onClick={() => showReply(index)}
                         >
                           回复
                         </div>
                       )}
-                      {(configkey[index] === true ||
-                        configInput[index] === true) && (
-                        <div className={styles["one-class-replybox"]}>
-                          <Input
-                            className={styles["input-box"]}
-                            value={replyContent}
-                            onChange={(e) => {
-                              setReplyContent(e.target.value);
-                            }}
-                            placeholder={"回复" + item.user.nick_name}
-                          ></Input>
-                          {replyContent === "" && (
-                            <Button className={styles["disabled-button"]}>
-                              发表回复
-                            </Button>
-                          )}
-                          {replyContent !== "" && (
-                            <Button
-                              className={styles["confirm-button"]}
-                              onClick={() =>
-                                reply(item.id, 0, item.user.nick_name, index)
-                              }
-                            >
-                              发表回复
-                            </Button>
-                          )}
-                        </div>
-                      )}
-                      {configkey[index] === true && (
-                        <div className={styles["reply-list-box"]}>
-                          {replyAnswers.length > 0 &&
-                            replyAnswers[index].map((replyItem: any) => (
-                              <div
-                                key={replyItem.id}
-                                className={styles["reply-list-item"]}
-                              >
-                                <div className={styles["reply-avatar"]}>
-                                  {replyItem.user && (
-                                    <img src={replyItem.user.avatar} />
-                                  )}
-                                  {!replyItem.user && (
-                                    <img src={defaultAvatar} />
-                                  )}
-                                </div>
-                                <div className={styles["reply-content"]}>
-                                  <div className={styles["top-info"]}>
-                                    {!replyItem.user && (
-                                      <div
-                                        className={styles["red-reply-nickname"]}
-                                      >
-                                        未知用户
-                                      </div>
-                                    )}
-                                    {replyItem.user && (
-                                      <div className={styles["reply-nickname"]}>
-                                        <>
-                                          {replyItem.user.nick_name}
-                                          {replyItem.reply_user_id > 0 && (
-                                            <>
-                                              回复：
-                                              {replyItem.reply_user.nick_name}
-                                            </>
-                                          )}
-                                        </>
-                                      </div>
-                                    )}
-                                    <div className={styles["reply-diff"]}>
-                                      {getCommentTime(replyItem.created_at)}
-                                    </div>
-                                    <div
-                                      className={styles["reply-text"]}
-                                      dangerouslySetInnerHTML={{
-                                        __html: replyItem.render_content,
-                                      }}
-                                    ></div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                        </div>
-                      )}
                     </div>
-                    {question.status === 0 && isAdmin && (
-                      <div
-                        className={styles["set-correct"]}
-                        onClick={() => setCorrect(item)}
-                      >
-                        采纳此回答
+                    {(configkey[index] === true ||
+                      configInput[index] === true) && (
+                      <div className={styles["one-class-replybox"]}>
+                        <Input
+                          className={styles["input-box"]}
+                          value={replyContent}
+                          onChange={(e) => {
+                            setReplyContent(e.target.value);
+                          }}
+                          placeholder={"回复" + item.user.nick_name}
+                        ></Input>
+                        {replyContent === "" && (
+                          <Button className={styles["disabled-button"]}>
+                            发表回复
+                          </Button>
+                        )}
+                        {replyContent !== "" && (
+                          <Button
+                            className={styles["confirm-button"]}
+                            onClick={() =>
+                              reply(item.id, 0, item.user.nick_name, index)
+                            }
+                          >
+                            发表回复
+                          </Button>
+                        )}
                       </div>
                     )}
+                    {configkey[index] === true && (
+                      <div className={styles["reply-list-box"]}>
+                        {replyAnswers.length > 0 &&
+                          replyAnswers[index].map((replyItem: any) => (
+                            <div
+                              key={replyItem.id}
+                              className={styles["reply-list-item"]}
+                            >
+                              <div className={styles["reply-avatar"]}>
+                                {replyItem.user && (
+                                  <img src={replyItem.user.avatar} />
+                                )}
+                                {!replyItem.user && <img src={defaultAvatar} />}
+                              </div>
+                              <div className={styles["reply-content"]}>
+                                <div className={styles["top-info"]}>
+                                  {!replyItem.user && (
+                                    <div
+                                      className={styles["red-reply-nickname"]}
+                                    >
+                                      未知用户
+                                    </div>
+                                  )}
+                                  {replyItem.user && (
+                                    <div className={styles["reply-nickname"]}>
+                                      <>
+                                        {replyItem.user.nick_name}
+                                        {replyItem.reply_user_id > 0 && (
+                                          <>
+                                            回复：
+                                            {replyItem.reply_user.nick_name}
+                                          </>
+                                        )}
+                                      </>
+                                    </div>
+                                  )}
+                                  <div className={styles["reply-diff"]}>
+                                    {getCommentTime(replyItem.created_at)}
+                                  </div>
+                                </div>
+                                <div
+                                  className={styles["reply-text"]}
+                                  dangerouslySetInnerHTML={{
+                                    __html: replyItem.render_content,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                    {question.status === 0 &&
+                      isAdmin &&
+                      item.user_id !== question.user_id && (
+                        <div
+                          className={styles["set-correct"]}
+                          onClick={() => setCorrect(item)}
+                        >
+                          采纳此回答
+                        </div>
+                      )}
                   </div>
                 </div>
               ))}

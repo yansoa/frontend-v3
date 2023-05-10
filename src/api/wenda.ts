@@ -45,14 +45,14 @@ export function vote(params: any) {
 
 export function answerComments(id: number, params: any) {
   return client.get(
-    `/addons/MeeduBooks/api/v2/book/article/${id}/comments`,
+    "/addons/Wenda/api/v1/question/answer/" + id + "/comments",
     params
   );
 }
 
 export function submitComment(id: number, params: any) {
   return client.post(
-    `/addons/MeeduBooks/api/v1/book/article/${id}/comment`,
+    "/addons/Wenda/api/v1/question/answer/" + id + "/comment",
     params
   );
 }
