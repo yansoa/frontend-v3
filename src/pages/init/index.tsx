@@ -65,12 +65,10 @@ export const InitPage = (props: Props) => {
     ) {
       setShowHeader(false);
       setShowFooter(false);
-    }
-    if (pathname === "/book/read") {
+    } else if (pathname === "/book/read") {
       setShowHeader(false);
       setShowFooter(true);
-    }
-    if (pathname === "/login") {
+    } else if (pathname === "/login") {
       setShowHeader(true);
       setShowFooter(false);
     }
