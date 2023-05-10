@@ -7,6 +7,7 @@ interface PropInterface {
 }
 
 const PrivateRoute: React.FC<PropInterface> = ({ Component }) => {
-  return getToken() ? Component : <Navigate to="/login" replace={true} />;
+  let url = "/login?redirect=" + encodeURIComponent(window.location.href);
+  return getToken() ? Component : <Navigate to={url} replace={true} />;
 };
 export default PrivateRoute;

@@ -27,6 +27,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
   changeForget,
   changeWeixin,
 }) => {
+  const result = new URLSearchParams(useLocation().search);
   const params = useParams();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
+  const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     form.setFieldsValue({
@@ -142,9 +144,10 @@ export const LoginDialog: React.FC<PropInterface> = ({
   const redirectHandler = () => {
     interval && clearInterval(interval);
     onCancel();
+
     if (pathname === "/login") {
-      if (params.redirect) {
-        navigate(params.redirect, { replace: true });
+      if (redirect) {
+        window.location.href = decodeURIComponent(redirect);
       } else {
         navigate("/", { replace: true });
       }

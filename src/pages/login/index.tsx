@@ -8,6 +8,7 @@ import {
   WexinBindMobileDialog,
   ForgetPasswordDialog,
 } from "../../components";
+import { useLocation } from "react-router-dom";
 import banner from "../../assets/img/commen/login-banner.png";
 
 const LoginPage = () => {
