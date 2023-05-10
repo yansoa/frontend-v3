@@ -345,7 +345,7 @@ const routes: RouteObject[] = [
       { path: "/learnPath", element: <LearnPathPage /> },
       { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
       { path: "/error", element: <ErrorPage /> },
-      { path: "/wenda", element: <PrivateRoute Component={<WendaPage />} /> },
+      { path: "/wenda", element: <WendaPage /> },
       { path: "/wenda/detail", element: <WendaDetailPage /> },
       { path: "/share", element: <PrivateRoute Component={<SharePage />} /> },
       {
