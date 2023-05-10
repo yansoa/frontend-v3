@@ -43,8 +43,8 @@ export const InitPage = (props: Props) => {
   const dispatch = useDispatch();
   const result = new URLSearchParams(useLocation().search);
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
-  const [showHeader, setShowHeader] = useState<boolean>(true);
-  const [showFooter, setShowFooter] = useState<boolean>(true);
+  const [showHeader, setShowHeader] = useState<boolean>(false);
+  const [showFooter, setShowFooter] = useState<boolean>(false);
   const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
   const [bindNewMobileVisible, setBindNewMobileVisible] =
     useState<boolean>(false);
@@ -52,8 +52,6 @@ export const InitPage = (props: Props) => {
     useState<boolean>(false);
 
   useEffect(() => {
-    setShowHeader(true);
-    setShowFooter(true);
     if (
       pathname === "/live/video" ||
       pathname === "/exam/papers/play" ||
@@ -71,6 +69,9 @@ export const InitPage = (props: Props) => {
     } else if (pathname === "/login") {
       setShowHeader(true);
       setShowFooter(false);
+    } else {
+      setShowHeader(true);
+      setShowFooter(true);
     }
   }, [pathname]);
 
