@@ -40,7 +40,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
             <Skeleton.Button
               active
               style={{
-                width: 1140,
+                width: 1200,
                 height: 34,
                 marginBottom: 10,
               }}
