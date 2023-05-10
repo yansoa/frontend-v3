@@ -10,6 +10,6 @@ const PrivateRoute: React.FC<PropInterface> = ({ Component }) => {
   let url =
     "/login?redirect=" +
     encodeURIComponent(window.location.pathname + window.location.search);
-  return getToken() ? Component : <Navigate to={url} replace={true} />;
+  return getToken() ? Component : <Navigate to={url} replace />;
 };
 export default PrivateRoute;
