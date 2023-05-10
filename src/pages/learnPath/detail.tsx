@@ -327,11 +327,7 @@ export const LearnPathDetailPage = () => {
           </div>
         </div>
         {!isBuy && msData && <MiaoshaList msData={msData} />}
-        {!isBuy && msData && (
-          <div style={{ marginBottom: 30 }}>
-            <TuangouList tgData={tgData} />
-          </div>
-        )}
+        {!isBuy && tgData && <TuangouList tgData={tgData} />}
       </div>
       {steps.length > 0 && (
         <div className={styles["book-chapter-box"]}>
