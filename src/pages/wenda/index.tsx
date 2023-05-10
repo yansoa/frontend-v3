@@ -90,6 +90,28 @@ export const WendaPage = () => {
     setRefresh(!refresh);
   };
 
+  const resetNewList = (scene: any) => {
+    setList([]);
+    let category_id = 0;
+    if (child === 0 || cid == 0) {
+      category_id = cid;
+    } else {
+      category_id = child;
+    }
+    wenda
+      .list({
+        page: 1,
+        size: size,
+        scene: scene,
+        cid: category_id,
+      })
+      .then((res: any) => {
+        setCategories(res.data.categories);
+        setList(res.data.data.data);
+        setTotal(res.data.data.total);
+      });
+  };
+
   const getConfig = () => {
     wenda.config().then((res: any) => {
       setPcDiyContent(res.data.pc_diy_content);
@@ -139,7 +161,7 @@ export const WendaPage = () => {
           } else {
             navigate("/wenda?cid=" + cid + "&child=" + child + "&scene=" + id);
           }
-          resetList();
+          resetNewList(id);
         }}
       />
       <CreateQuestionDialog
