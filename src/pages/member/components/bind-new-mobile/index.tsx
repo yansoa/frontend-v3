@@ -24,6 +24,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
   onCancel,
   success,
 }) => {
+  const result = new URLSearchParams(useLocation().search);
   const params = useParams();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
+  const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     form.setFieldsValue({
@@ -61,6 +63,17 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
     if (smsLoading) {
       return;
     }
+    setSmsLoading(true);
+    let time = 120;
+    interval = setInterval(() => {
+      time--;
+      setCurrent(time);
+      if (time === 0) {
+        interval && clearInterval(interval);
+        setCurrent(0);
+        setSmsLoading(false);
+      }
+    }, 1000);
     system
       .sendSms({
         mobile: form.getFieldValue("mobile"),
@@ -68,19 +81,7 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
         image_captcha: form.getFieldValue("captcha"),
         scene: scene,
       })
-      .then((res: any) => {
-        setSmsLoading(!smsLoading);
-        let time = 120;
-        interval = setInterval(() => {
-          time--;
-          setCurrent(time);
-          if (time === 0) {
-            interval && clearInterval(interval);
-            setCurrent(0);
-            setSmsLoading(false);
-          }
-        }, 1000);
-      })
+      .then((res: any) => {})
       .catch((e: any) => {
         getCaptcha();
       });
@@ -118,8 +119,8 @@ export const BindNewMobileDialog: React.FC<PropInterface> = ({
     interval && clearInterval(interval);
     onCancel();
     if (pathname === "/login") {
-      if (params.redirect) {
-        navigate(params.redirect, { replace: true });
+      if (redirect) {
+        navigate(decodeURIComponent(redirect), { replace: true });
       } else {
         navigate("/", { replace: true });
       }

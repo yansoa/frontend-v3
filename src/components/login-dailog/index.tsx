@@ -147,7 +147,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
 
     if (pathname === "/login") {
       if (redirect) {
-        window.location.href = decodeURIComponent(redirect);
+        navigate(decodeURIComponent(redirect), { replace: true });
       } else {
         navigate("/", { replace: true });
       }

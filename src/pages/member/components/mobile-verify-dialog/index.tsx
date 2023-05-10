@@ -53,6 +53,17 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
     if (smsLoading) {
       return;
     }
+    setSmsLoading(true);
+    let time = 120;
+    interval = setInterval(() => {
+      time--;
+      setCurrent(time);
+      if (time === 0) {
+        interval && clearInterval(interval);
+        setCurrent(0);
+        setSmsLoading(false);
+      }
+    }, 1000);
     system
       .sendSms({
         mobile: mobile,
@@ -60,19 +71,7 @@ export const MobileVerifyDialog: React.FC<PropInterface> = ({
         image_captcha: form.getFieldValue("captcha"),
         scene: scene,
       })
-      .then((res: any) => {
-        setSmsLoading(!smsLoading);
-        let time = 120;
-        interval = setInterval(() => {
-          time--;
-          setCurrent(time);
-          if (time === 0) {
-            interval && clearInterval(interval);
-            setCurrent(0);
-            setSmsLoading(false);
-          }
-        }, 1000);
-      })
+      .then((res: any) => {})
       .catch((e: any) => {
         getCaptcha();
       });

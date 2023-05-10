@@ -22,12 +22,14 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   changeLogin,
   bindMobile,
 }) => {
+  const result = new URLSearchParams(useLocation().search);
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const [qrode, setQrode] = useState<string>("");
   const [code, setCode] = useState<string>("");
+  const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     if (open) {
@@ -72,8 +74,8 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     timer && clearInterval(timer);
     onCancel();
     if (pathname === "/login") {
-      if (params.redirect) {
-        navigate(params.redirect, { replace: true });
+      if (redirect) {
+        navigate(decodeURIComponent(redirect), { replace: true });
       } else {
         navigate("/", { replace: true });
       }
