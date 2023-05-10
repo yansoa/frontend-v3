@@ -507,6 +507,11 @@ export const LiveDetailPage = () => {
             ))}
           </div>
         </div>
+        {loading && (
+          <div className={styles["course-teacher-box"]}>
+            <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+          </div>
+        )}
         {currentTab === 2 && course.teacher && (
           <>
             <div className={styles["course-teacher-box"]}>
