@@ -25,6 +25,7 @@ export const WendaPage = () => {
   const [total, setTotal] = useState(0);
   const [pcDiyContent, setPcDiyContent] = useState<any>("");
   const [visiable, setVisiable] = useState(false);
+  const [status, setStatus] = useState<boolean>(false);
   const result = new URLSearchParams(useLocation().search);
   const [scene, setScene] = useState(result.get("scene") || "default");
   const [cid, setCid] = useState(Number(result.get("cid")) || 0);
@@ -81,6 +82,7 @@ export const WendaPage = () => {
         setList(res.data.data.data);
         setTotal(res.data.data.total);
         setLoading(false);
+        setStatus(true);
       });
   };
 
@@ -254,18 +256,20 @@ export const WendaPage = () => {
         </div>
         <div className={styles["right-contanier"]}>
           <div className={styles["cont"]}>
-            <Button
-              className={styles["create-button"]}
-              onClick={() => {
-                if (!isLogin) {
-                  goLogin();
-                  return;
-                }
-                setVisiable(true);
-              }}
-            >
-              我要提问
-            </Button>
+            {!loading && status && (
+              <Button
+                className={styles["create-button"]}
+                onClick={() => {
+                  if (!isLogin) {
+                    goLogin();
+                    return;
+                  }
+                  setVisiable(true);
+                }}
+              >
+                我要提问
+              </Button>
+            )}
             {loading && (
               <Skeleton
                 style={{ marginTop: 30 }}
