@@ -40,7 +40,10 @@ export const PracticeCourseItem: React.FC<PropInterface> = ({
   };
 
   const goLogin = () => {
-    navigate("/login");
+    let url = encodeURIComponent(
+      window.location.pathname + window.location.search
+    );
+    navigate("/login?redirect=" + url);
   };
 
   return (

@@ -96,7 +96,10 @@ export const ExamPaperDetailPage = () => {
   };
 
   const goLogin = () => {
-    navigate("/login");
+    let url = encodeURIComponent(
+      window.location.pathname + window.location.search
+    );
+    navigate("/login?redirect=" + url);
   };
 
   const payOrder = () => {

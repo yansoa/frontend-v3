@@ -136,7 +136,10 @@ export const OrderPayPage = () => {
 
   const goLogin = () => {
     timer && clearInterval(timer);
-    navigate("/login");
+    let url = encodeURIComponent(
+      window.location.pathname + window.location.search
+    );
+    navigate("/login?redirect=" + url);
   };
 
   const confirm = () => {
