@@ -362,15 +362,17 @@ export const LiveDetailPage = () => {
                   }}
                 ></Skeleton.Button>
               )}
-              <ThumbBar
-                value={course.thumb}
-                width={320}
-                height={240}
-                border={null}
-              />
-              <div className={styles["status"]}>
-                <span>{course.status_text}</span>
-              </div>
+              {!loading && (
+                <>
+                  <ThumbBar
+                    value={course.thumb}
+                    width={320}
+                    height={240}
+                    border={null}
+                  />
+                  <div className={styles["status"]}>{course.status_text}</div>
+                </>
+              )}
             </div>
             <div className={styles["info"]}>
               {loading && (
@@ -400,7 +402,7 @@ export const LiveDetailPage = () => {
                 </div>
               )}
               <div className={styles["course-info-title"]}>{course.title}</div>
-              {isLike && (
+              {!loading && isLike && (
                 <img
                   onClick={() => {
                     likeHit();
@@ -409,7 +411,7 @@ export const LiveDetailPage = () => {
                   src={collectIcon}
                 />
               )}
-              {!isLike && (
+              {!loading && !isLike && (
                 <img
                   onClick={() => {
                     likeHit();
