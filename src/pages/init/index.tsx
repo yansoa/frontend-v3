@@ -296,7 +296,9 @@ export const InitPage = (props: Props) => {
         }}
       />
       {showHeader && <Header></Header>}
-      <Outlet />
+      <div style={{ minHeight: 500 }}>
+        <Outlet />
+      </div>
       {showFooter && <Footer status={true}></Footer>}
       {backTopStatus && <BackTop></BackTop>}
     </main>
