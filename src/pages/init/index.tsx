@@ -66,6 +66,9 @@ export const InitPage = (props: Props) => {
     } else if (pathname === "/book/read") {
       setShowHeader(false);
       setShowFooter(true);
+    } else if (pathname === "/login") {
+      setShowHeader(true);
+      setShowFooter(false);
     } else {
       setShowHeader(true);
       setShowFooter(true);
@@ -295,8 +298,8 @@ export const InitPage = (props: Props) => {
           getUser();
         }}
       />
-      {showHeader && <Header></Header>}
-      <div style={{ minHeight: 500 }}>
+      <div style={{ minHeight: 800 }}>
+        {showHeader && <Header></Header>}
         <Outlet />
       </div>
       {showFooter && <Footer status={true}></Footer>}
