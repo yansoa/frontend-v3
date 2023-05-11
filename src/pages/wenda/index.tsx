@@ -261,6 +261,7 @@ export const WendaPage = () => {
           <div className={styles["cont"]}>
             {!loading && status && (
               <Button
+                type="primary"
                 className={styles["create-button"]}
                 onClick={() => {
                   if (!isLogin) {

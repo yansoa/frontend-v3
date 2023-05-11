@@ -8,6 +8,7 @@ import {
   Button,
   Space,
   Image,
+  Spin,
   Checkbox,
 } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -35,6 +36,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
+  const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
   const [agreeProtocol, setAgreeProtocol] = useState<boolean>(false);
 
   useEffect(() => {
@@ -65,7 +67,15 @@ export const RegisterDialog: React.FC<PropInterface> = ({
     if (smsLoading) {
       return;
     }
+    if (smsLoading2) {
+      return;
+    }
+    if (!form.getFieldValue("captcha")) {
+      message.error("请输入图形验证码");
+      return;
+    }
     setSmsLoading(true);
+    setSmsLoading2(true);
     system
       .sendSms({
         mobile: form.getFieldValue("mobile"),
@@ -74,6 +84,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
         scene: "login",
       })
       .then((res: any) => {
+        setSmsLoading2(false);
         let time = 120;
         interval = setInterval(() => {
           time--;
@@ -86,6 +97,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
         }, 1000);
       })
       .catch((e: any) => {
+        setSmsLoading2(false);
         form.setFieldsValue({
           captcha: "",
         });
@@ -236,10 +248,15 @@ export const RegisterDialog: React.FC<PropInterface> = ({
                 />
               </Form.Item>
               <div className={styles["buttons"]}>
-                {smsLoading && (
+                {smsLoading2 && (
+                  <div style={{ width: 90, textAlign: "center" }}>
+                    <Spin size="small" />
+                  </div>
+                )}
+                {!smsLoading2 && smsLoading && (
                   <div className={styles["send-sms-button"]}>{current}s</div>
                 )}
-                {!smsLoading && (
+                {!smsLoading && !smsLoading2 && (
                   <div
                     className={styles["send-sms-button"]}
                     onClick={() => sendSms()}
