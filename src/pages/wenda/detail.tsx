@@ -381,6 +381,7 @@ export const WendaDetailPage = () => {
               )}
               {content !== "" && (
                 <Button
+                  type="primary"
                   loading={commentLoading}
                   className={styles["confirm-button"]}
                   onClick={() => submitComment()}
@@ -513,6 +514,7 @@ export const WendaDetailPage = () => {
                         )}
                         {replyContent !== "" && (
                           <Button
+                            type="primary"
                             className={styles["confirm-button"]}
                             onClick={() =>
                               reply(item.id, 0, item.user.nick_name, index)

@@ -66,9 +66,6 @@ export const InitPage = (props: Props) => {
     } else if (pathname === "/book/read") {
       setShowHeader(false);
       setShowFooter(true);
-    } else if (pathname === "/login") {
-      setShowHeader(true);
-      setShowFooter(false);
     } else {
       setShowHeader(true);
       setShowFooter(true);
@@ -269,7 +266,7 @@ export const InitPage = (props: Props) => {
   };
 
   return (
-    <>
+    <main>
       <BindNewMobileDialog
         scene="mobile_bind"
         open={bindNewMobileVisible}
@@ -302,6 +299,6 @@ export const InitPage = (props: Props) => {
       <Outlet />
       {showFooter && <Footer status={true}></Footer>}
       {backTopStatus && <BackTop></BackTop>}
-    </>
+    </main>
   );
 };
