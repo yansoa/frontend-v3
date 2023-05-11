@@ -477,9 +477,17 @@ export const LiveVideoPage = () => {
                             )}
                           </div>
                         )}
+
                         <div
                           id="meedu-vod-player"
-                          style={{ width: "100%", height: "100%" }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            display:
+                              record_exists === 1 && vodPlayerStatus
+                                ? "block"
+                                : "none",
+                          }}
                         ></div>
                       </div>
                     </>
