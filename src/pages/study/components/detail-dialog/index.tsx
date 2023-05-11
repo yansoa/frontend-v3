@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { Row, Col, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { dateFormat } from "../../../../utils/index";
 import { study } from "../../../../api/index";
-import { DurationText } from "../../../../components";
+import { DurationText, Empty } from "../../../../components";
 import closeIcon from "../../../../assets/img/commen/icon-close.png";
 
 interface PropInterface {
@@ -22,6 +23,7 @@ export const DetailDialog: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setList([]);
     if (open && id > 0) {
       getData();
     }
@@ -32,15 +34,20 @@ export const DetailDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    study.coursesDetail(id, {}).then((res: any) => {
-      let data = res.data;
-      const arr: any = [];
-      for (let i in data) {
-        arr.push(data[i]);
-      }
-      setList(arr);
-      setLoading(false);
-    });
+    study
+      .coursesDetail(id, {})
+      .then((res: any) => {
+        let data = res.data;
+        const arr: any = [];
+        for (let i in data) {
+          arr.push(data[i]);
+        }
+        setList(arr);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const goPlay = (item: any) => {
@@ -61,7 +68,20 @@ export const DetailDialog: React.FC<PropInterface> = ({
               />
             </div>
             <div className={styles["progress-box"]}>
-              {list.length > 0 &&
+              {loading && (
+                <Row>
+                  <div className="float-left d-j-flex">
+                    <Spin size="large" />
+                  </div>
+                </Row>
+              )}
+              {!loading && list.length === 0 && (
+                <Col span={24}>
+                  <Empty></Empty>
+                </Col>
+              )}
+              {!loading &&
+                list.length > 0 &&
                 list.map((item: any) => (
                   <div
                     className={styles["progress-item"]}
