@@ -55,16 +55,6 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
       return;
     }
     setSmsLoading(true);
-    let time = 120;
-    interval = setInterval(() => {
-      time--;
-      setCurrent(time);
-      if (time === 0) {
-        interval && clearInterval(interval);
-        setCurrent(0);
-        setSmsLoading(false);
-      }
-    }, 1000);
     system
       .sendSms({
         mobile: mobile,
@@ -72,8 +62,22 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
         image_captcha: form.getFieldValue("captcha"),
         scene: scene,
       })
-      .then((res: any) => {})
+      .then((res: any) => {
+        let time = 120;
+        interval = setInterval(() => {
+          time--;
+          setCurrent(time);
+          if (time === 0) {
+            interval && clearInterval(interval);
+            setCurrent(0);
+            setSmsLoading(false);
+          }
+        }, 1000);
+      })
       .catch((e: any) => {
+        form.setFieldsValue({
+          captcha: "",
+        });
         getCaptcha();
         interval && clearInterval(interval);
         setCurrent(0);

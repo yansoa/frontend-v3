@@ -63,16 +63,6 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       return;
     }
     setSmsLoading(true);
-    let time = 120;
-    interval = setInterval(() => {
-      time--;
-      setCurrent(time);
-      if (time === 0) {
-        interval && clearInterval(interval);
-        setCurrent(0);
-        setSmsLoading(false);
-      }
-    }, 1000);
     system
       .sendSms({
         mobile: form.getFieldValue("mobile"),
@@ -80,8 +70,22 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         image_captcha: form.getFieldValue("captcha"),
         scene: "login",
       })
-      .then((res: any) => {})
+      .then((res: any) => {
+        let time = 120;
+        interval = setInterval(() => {
+          time--;
+          setCurrent(time);
+          if (time === 0) {
+            interval && clearInterval(interval);
+            setCurrent(0);
+            setSmsLoading(false);
+          }
+        }, 1000);
+      })
       .catch((e: any) => {
+        form.setFieldsValue({
+          captcha: "",
+        });
         getCaptcha();
         interval && clearInterval(interval);
         setCurrent(0);
