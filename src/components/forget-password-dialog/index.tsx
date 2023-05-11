@@ -73,6 +73,9 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
       .then((res: any) => {})
       .catch((e: any) => {
         getCaptcha();
+        interval && clearInterval(interval);
+        setCurrent(0);
+        setSmsLoading(false);
       });
   };
 
