@@ -87,7 +87,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
           setCurrent(time);
           if (time === 0) {
             interval && clearInterval(interval);
-            setCurrent(0);
+            setCurrent(120);
             setSmsLoading(false);
           }
         }, 1000);
@@ -99,7 +99,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         });
         getCaptcha();
         interval && clearInterval(interval);
-        setCurrent(0);
+        setCurrent(120);
         setSmsLoading(false);
       });
   };
@@ -129,9 +129,6 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       })
       .catch((e: any) => {
         setLoading(false);
-        interval && clearInterval(interval);
-        setCurrent(0);
-        setSmsLoading(false);
       });
   };
 

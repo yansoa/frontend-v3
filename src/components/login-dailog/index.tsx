@@ -155,9 +155,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
           });
           getCaptcha();
           setLoading(false);
-          interval && clearInterval(interval);
-          setCurrent(0);
-          setSmsLoading(false);
         });
     }
   };

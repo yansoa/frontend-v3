@@ -77,7 +77,7 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
           setCurrent(time);
           if (time === 0) {
             interval && clearInterval(interval);
-            setCurrent(0);
+            setCurrent(120);
             setSmsLoading(false);
           }
         }, 1000);
@@ -89,7 +89,7 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
         });
         getCaptcha();
         interval && clearInterval(interval);
-        setCurrent(0);
+        setCurrent(120);
         setSmsLoading(false);
       });
   };
