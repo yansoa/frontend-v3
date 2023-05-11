@@ -317,7 +317,7 @@ export const StudyCenterPage = () => {
           <div className={styles["list-box"]}>
             {loading && (
               <Row>
-                <div className="float-left d-j-flex mt-50">
+                <div className="float-left d-j-flex">
                   <Spin size="large" />
                 </div>
               </Row>
