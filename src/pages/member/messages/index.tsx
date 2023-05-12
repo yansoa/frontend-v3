@@ -125,7 +125,6 @@ export const MemberMessagesPage = () => {
                   setPage(currentPage);
                   window.scrollTo(0, 0);
                 }}
-                pageSize={size}
                 defaultCurrent={page}
                 total={total}
               />

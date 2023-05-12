@@ -8,6 +8,7 @@ import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
+import { saveNavsAction } from "../../store/nav-menu/navMenuConfigSlice";
 import {
   Header,
   Footer,
@@ -35,6 +36,7 @@ interface Props {
   loginData: any;
   config: any;
   configFunc: any;
+  navsData: any;
 }
 
 export const InitPage = (props: Props) => {
@@ -215,6 +217,10 @@ export const InitPage = (props: Props) => {
   }
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));
+  }
+
+  if (props.navsData) {
+    dispatch(saveNavsAction(props.navsData));
   }
 
   useEffect(() => {

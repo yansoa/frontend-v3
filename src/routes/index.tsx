@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import { system, user } from "../api";
+import { system, user, home } from "../api";
 import { getToken } from "../utils/index";
 
 // 页面加载
@@ -83,137 +83,117 @@ let configFunc = {
 
 if (getToken()) {
   RootPage = lazy(async () => {
-    return new Promise<any>((resolve) => {
-      let userLoginToken = getToken();
-      if (!userLoginToken) {
-        system.config().then((res: any) => {
-          let config = res.data;
-          configFunc.live = config.enabled_addons.indexOf("Zhibo") !== -1;
-          configFunc.book = config.enabled_addons.indexOf("MeeduBooks") !== -1;
-          configFunc.topic =
-            config.enabled_addons.indexOf("MeeduTopics") !== -1;
-          configFunc.paper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.mockPaper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wrongBook = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.practice = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wenda = config.enabled_addons.indexOf("Wenda") !== -1;
-          configFunc.share =
-            config.enabled_addons.indexOf("MultiLevelShare") !== -1;
-          configFunc.codeExchanger =
-            config.enabled_addons.indexOf("CodeExchanger") !== -1;
-          configFunc.snapshort =
-            config.enabled_addons.indexOf("Snapshot") !== -1;
-          configFunc.ke = config.enabled_addons.indexOf("XiaoBanKe") !== -1;
-          configFunc.promoCode =
-            config.enabled_addons.indexOf("MultiLevelShar") !== -1;
-          configFunc.daySignIn =
-            config.enabled_addons.indexOf("DaySignIn") !== -1;
-          configFunc.credit1Mall =
-            config.enabled_addons.indexOf("Credit1Mall") !== -1;
-          configFunc.tuangou = config.enabled_addons.indexOf("TuanGou") !== -1;
-          configFunc.miaosha = config.enabled_addons.indexOf("MiaoSha") !== -1;
-          configFunc.cert = config.enabled_addons.indexOf("Cert") !== -1;
+    return new Promise<any>(async (resolve) => {
+      try {
+        let configRes: any = await system.config();
+        let userRes: any = await user.detail();
+        let navsRes: any = await home.headerNav();
 
-          resolve({
-            default: (
-              <InitPage
-                loginData={null}
-                config={config}
-                configFunc={configFunc}
-              />
-            ),
-          });
+        configFunc.live = configRes.data.enabled_addons.indexOf("Zhibo") !== -1;
+        configFunc.book =
+          configRes.data.enabled_addons.indexOf("MeeduBooks") !== -1;
+        configFunc.topic =
+          configRes.data.enabled_addons.indexOf("MeeduTopics") !== -1;
+        configFunc.paper =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.mockPaper =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.wrongBook =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.practice =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.wenda =
+          configRes.data.enabled_addons.indexOf("Wenda") !== -1;
+        configFunc.share =
+          configRes.data.enabled_addons.indexOf("MultiLevelShare") !== -1;
+        configFunc.codeExchanger =
+          configRes.data.enabled_addons.indexOf("CodeExchanger") !== -1;
+        configFunc.snapshort =
+          configRes.data.enabled_addons.indexOf("Snapshot") !== -1;
+        configFunc.ke =
+          configRes.data.enabled_addons.indexOf("XiaoBanKe") !== -1;
+        configFunc.promoCode =
+          configRes.data.enabled_addons.indexOf("MultiLevelShar") !== -1;
+        configFunc.daySignIn =
+          configRes.data.enabled_addons.indexOf("DaySignIn") !== -1;
+        configFunc.credit1Mall =
+          configRes.data.enabled_addons.indexOf("Credit1Mall") !== -1;
+        configFunc.tuangou =
+          configRes.data.enabled_addons.indexOf("TuanGou") !== -1;
+        configFunc.miaosha =
+          configRes.data.enabled_addons.indexOf("MiaoSha") !== -1;
+        configFunc.cert = configRes.data.enabled_addons.indexOf("Cert") !== -1;
+
+        resolve({
+          default: (
+            <InitPage
+              loginData={userRes.data}
+              config={configRes.data}
+              configFunc={configFunc}
+              navsData={navsRes.data}
+            />
+          ),
         });
-        return;
+      } catch (e) {
+        console.error("系统初始化失败", e);
       }
-      user.detail().then((res: any) => {
-        let loginData = res.data;
-        system.config().then((res: any) => {
-          let config = res.data;
-          configFunc.live = config.enabled_addons.indexOf("Zhibo") !== -1;
-          configFunc.book = config.enabled_addons.indexOf("MeeduBooks") !== -1;
-          configFunc.topic =
-            config.enabled_addons.indexOf("MeeduTopics") !== -1;
-          configFunc.paper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.mockPaper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wrongBook = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.practice = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wenda = config.enabled_addons.indexOf("Wenda") !== -1;
-          configFunc.share =
-            config.enabled_addons.indexOf("MultiLevelShare") !== -1;
-          configFunc.codeExchanger =
-            config.enabled_addons.indexOf("CodeExchanger") !== -1;
-          configFunc.snapshort =
-            config.enabled_addons.indexOf("Snapshot") !== -1;
-          configFunc.ke = config.enabled_addons.indexOf("XiaoBanKe") !== -1;
-          configFunc.promoCode =
-            config.enabled_addons.indexOf("MultiLevelShar") !== -1;
-          configFunc.daySignIn =
-            config.enabled_addons.indexOf("DaySignIn") !== -1;
-          configFunc.credit1Mall =
-            config.enabled_addons.indexOf("Credit1Mall") !== -1;
-          configFunc.tuangou = config.enabled_addons.indexOf("TuanGou") !== -1;
-          configFunc.miaosha = config.enabled_addons.indexOf("MiaoSha") !== -1;
-          configFunc.cert = config.enabled_addons.indexOf("Cert") !== -1;
-
-          resolve({
-            default: (
-              <InitPage
-                loginData={loginData}
-                config={config}
-                configFunc={configFunc}
-              />
-            ),
-          });
-        });
-      });
     });
   });
 } else {
   RootPage = lazy(async () => {
-    return new Promise<any>((resolve) => {
-      system
-        .config()
-        .then((res: any) => {
-          let config = res.data;
-          configFunc.live = config.enabled_addons.indexOf("Zhibo") !== -1;
-          configFunc.book = config.enabled_addons.indexOf("MeeduBooks") !== -1;
-          configFunc.topic =
-            config.enabled_addons.indexOf("MeeduTopics") !== -1;
-          configFunc.paper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.mockPaper = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wrongBook = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.practice = config.enabled_addons.indexOf("Paper") !== -1;
-          configFunc.wenda = config.enabled_addons.indexOf("Wenda") !== -1;
-          configFunc.share =
-            config.enabled_addons.indexOf("MultiLevelShare") !== -1;
-          configFunc.codeExchanger =
-            config.enabled_addons.indexOf("CodeExchanger") !== -1;
-          configFunc.snapshort =
-            config.enabled_addons.indexOf("Snapshot") !== -1;
-          configFunc.ke = config.enabled_addons.indexOf("XiaoBanKe") !== -1;
-          configFunc.promoCode =
-            config.enabled_addons.indexOf("MultiLevelShar") !== -1;
-          configFunc.daySignIn =
-            config.enabled_addons.indexOf("DaySignIn") !== -1;
-          configFunc.credit1Mall =
-            config.enabled_addons.indexOf("Credit1Mall") !== -1;
-          configFunc.tuangou = config.enabled_addons.indexOf("TuanGou") !== -1;
-          configFunc.miaosha = config.enabled_addons.indexOf("MiaoSha") !== -1;
-          configFunc.cert = config.enabled_addons.indexOf("Cert") !== -1;
-          resolve({
-            default: (
-              <InitPage
-                loginData={null}
-                config={config}
-                configFunc={configFunc}
-              />
-            ),
-          });
-        })
-        .catch((e) => {
-          console.log(e);
+    return new Promise<any>(async (resolve) => {
+      try {
+        let configRes: any = await system.config();
+        let navsRes: any = await home.headerNav();
+
+        configFunc.live = configRes.data.enabled_addons.indexOf("Zhibo") !== -1;
+        configFunc.book =
+          configRes.data.enabled_addons.indexOf("MeeduBooks") !== -1;
+        configFunc.topic =
+          configRes.data.enabled_addons.indexOf("MeeduTopics") !== -1;
+        configFunc.paper =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.mockPaper =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.wrongBook =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.practice =
+          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.wenda =
+          configRes.data.enabled_addons.indexOf("Wenda") !== -1;
+        configFunc.share =
+          configRes.data.enabled_addons.indexOf("MultiLevelShare") !== -1;
+        configFunc.codeExchanger =
+          configRes.data.enabled_addons.indexOf("CodeExchanger") !== -1;
+        configFunc.snapshort =
+          configRes.data.enabled_addons.indexOf("Snapshot") !== -1;
+        configFunc.ke =
+          configRes.data.enabled_addons.indexOf("XiaoBanKe") !== -1;
+        configFunc.promoCode =
+          configRes.data.enabled_addons.indexOf("MultiLevelShar") !== -1;
+        configFunc.daySignIn =
+          configRes.data.enabled_addons.indexOf("DaySignIn") !== -1;
+        configFunc.credit1Mall =
+          configRes.data.enabled_addons.indexOf("Credit1Mall") !== -1;
+        configFunc.tuangou =
+          configRes.data.enabled_addons.indexOf("TuanGou") !== -1;
+        configFunc.miaosha =
+          configRes.data.enabled_addons.indexOf("MiaoSha") !== -1;
+        configFunc.cert = configRes.data.enabled_addons.indexOf("Cert") !== -1;
+
+        resolve({
+          default: (
+            <InitPage
+              loginData={null}
+              config={configRes.data}
+              configFunc={configFunc}
+              navsData={navsRes.data}
+            />
+          ),
         });
+      } catch (e) {
+        console.error("系统初始化失败", e);
+      }
     });
   });
 }

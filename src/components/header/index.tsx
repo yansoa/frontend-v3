@@ -12,8 +12,7 @@ import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { ForgetPasswordDialog } from "../forget-password-dialog";
-import { login, home, user as member } from "../../api/index";
-import { clearToken, getToken } from "../../utils/index";
+import { login, user as member } from "../../api/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
 import appConfig from "../../js/config";
 
@@ -30,6 +29,7 @@ export const Header = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+  const navs = useSelector((state: any) => state.navsConfig.value.navs);
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [navLoading, setNavLoading] = useState<boolean>(true);
@@ -45,7 +45,6 @@ export const Header = () => {
 
   useEffect(() => {
     setCurrent(pathname);
-    getHeaderNav();
   }, [pathname]);
 
   useEffect(() => {
@@ -54,38 +53,33 @@ export const Header = () => {
     }
   }, [freshUnread, isLogin]);
 
-  const getHeaderNav = () => {
-    home.headerNav().then((res: any) => {
-      let list = res.data;
-      const arr: MenuProps["items"] = [];
-      list.map((item: any) => {
-        if (
-          item.url !== "/" &&
-          pathname !== "/" &&
-          pathname.indexOf(item.url) !== -1
-        ) {
-          setCurrent(item.url);
-        }
+  useEffect(() => {
+    const arr: MenuProps["items"] = [];
+    navs.map((item: any) => {
+      if (
+        item.url !== "/" &&
+        pathname !== "/" &&
+        pathname.indexOf(item.url) !== -1
+      ) {
+        setCurrent(item.url);
+      }
 
-        if (item.children.length > 0) {
-          arr.push({
-            label: (
-              <span onClick={() => onMenuClick(item.url)}>{item.name}</span>
-            ),
-            key: item.url,
-            children: checkArr(item.children),
-          });
-        } else {
-          arr.push({
-            label: item.name,
-            key: item.url,
-          });
-        }
-      });
-      setList(arr);
-      setNavLoading(false);
+      if (item.children.length > 0) {
+        arr.push({
+          label: <span onClick={() => onMenuClick(item.url)}>{item.name}</span>,
+          key: item.url,
+          children: checkArr(item.children),
+        });
+      } else {
+        arr.push({
+          label: item.name,
+          key: item.url,
+        });
+      }
     });
-  };
+    setList(arr);
+    setNavLoading(false);
+  }, [navs]);
 
   const checkArr = (children: any) => {
     const arr: MenuProps["items"] = [];

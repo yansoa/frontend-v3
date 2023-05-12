@@ -525,6 +525,8 @@ export const TopicDetailPage = () => {
                   )}
                   {content !== "" && (
                     <Button
+                      type="primary"
+                      loading={commentLoading}
                       className={styles["confirm-button"]}
                       onClick={() => submitComment()}
                     >
@@ -600,12 +602,17 @@ export const TopicDetailPage = () => {
                               placeholder={"回复" + item.user.nick_name}
                             ></Input>
                             {replyContent === "" && (
-                              <Button className={styles["disabled-button"]}>
+                              <Button
+                                type="primary"
+                                className={styles["disabled-button"]}
+                              >
                                 发表回复
                               </Button>
                             )}
                             {replyContent !== "" && (
                               <Button
+                                type="primary"
+                                loading={commentLoading}
                                 className={styles["confirm-button"]}
                                 onClick={() =>
                                   reply(
@@ -702,6 +709,7 @@ export const TopicDetailPage = () => {
                                           ></Input>
                                           {replyContent === "" && (
                                             <Button
+                                              type="primary"
                                               className={
                                                 styles["disabled-button"]
                                               }
@@ -711,6 +719,8 @@ export const TopicDetailPage = () => {
                                           )}
                                           {replyContent !== "" && (
                                             <Button
+                                              type="primary"
+                                              loading={commentLoading}
                                               className={
                                                 styles["confirm-button"]
                                               }
