@@ -109,7 +109,7 @@ export const ChangePasswordDialog: React.FC<PropInterface> = ({
       .then((res: any) => {
         setLoading(false);
         interval && clearInterval(interval);
-        message.success("修改完成");
+        message.success("密码修改成功");
         success();
       })
       .catch((e: any) => {

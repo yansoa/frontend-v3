@@ -503,7 +503,7 @@ export const MemberPage = () => {
                       )}
                       {user.is_bind_qq === 0 && (
                         <div
-                          className={styles["item-value"]}
+                          className={styles["sp-btn"]}
                           onClick={() => goBindQQ()}
                         >
                           点击绑定
@@ -534,7 +534,7 @@ export const MemberPage = () => {
                       )}
                       {user.is_bind_wechat === 0 && (
                         <div
-                          className={styles["item-value"]}
+                          className={styles["sp-btn"]}
                           onClick={() => goBindWeixin()}
                         >
                           点击绑定

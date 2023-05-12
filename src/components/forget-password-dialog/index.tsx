@@ -107,14 +107,12 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
       })
       .then((res: any) => {
         setLoading(false);
-        message.success("修改完成");
+        interval && clearInterval(interval);
+        message.success("密码重置成功");
         onCancel();
       })
       .catch((e: any) => {
         setLoading(false);
-        interval && clearInterval(interval);
-        setCurrent(0);
-        setSmsLoading(false);
       });
   };
 
