@@ -97,10 +97,6 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
         onCancel={() => {
           onCancel();
         }}
-        okText="立即秒杀"
-        onOk={() => {
-          form.submit();
-        }}
         maskClosable={false}
         closable={false}
         footer={null}
