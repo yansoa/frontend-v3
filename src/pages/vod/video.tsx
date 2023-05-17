@@ -70,6 +70,7 @@ export const VodPlayPage = () => {
   useEffect(() => {
     setVid(Number(result.get("id")));
     window.player && window.player.destroy();
+    myRef.current = 0;
   }, [result.get("id")]);
 
   useEffect(() => {
