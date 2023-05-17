@@ -17,6 +17,7 @@ export const WendaPage = () => {
   document.title = "在线问答";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -117,6 +118,7 @@ export const WendaPage = () => {
   const getConfig = () => {
     wenda.config().then((res: any) => {
       setPcDiyContent(res.data.pc_diy_content);
+      setInit(false);
     });
   };
 
@@ -248,7 +250,7 @@ export const WendaPage = () => {
         </div>
         <div className={styles["right-contanier"]}>
           <div className={styles["cont"]}>
-            {!loading && status && (
+            {!init && status && (
               <Button
                 type="primary"
                 className={styles["create-button"]}
@@ -263,14 +265,14 @@ export const WendaPage = () => {
                 我要提问
               </Button>
             )}
-            {loading && (
+            {init && (
               <Skeleton
                 style={{ marginTop: 30 }}
                 active
                 paragraph={{ rows: 2 }}
               ></Skeleton>
             )}
-            {!loading && (
+            {!init && (
               <>
                 {pcDiyContent && pcDiyContent !== "" && (
                   <div
