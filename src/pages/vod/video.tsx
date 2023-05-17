@@ -55,6 +55,7 @@ export const VodPlayPage = () => {
     (state: any) => state.systemConfig.value.configFunc
   );
   const myRef = useRef(0);
+  const courseRef: any = useRef(null);
   const tabs = [
     {
       name: "课时评论",
@@ -88,6 +89,10 @@ export const VodPlayPage = () => {
       window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [vid]);
+
+  useEffect(() => {
+    courseRef.current = course;
+  }, [course]);
 
   useEffect(() => {
     if (playendedStatus && !isLastpage) {
@@ -330,13 +335,13 @@ export const VodPlayPage = () => {
     if (val === 1) {
       navigate(
         "/order?goods_id=" +
-          cid +
+          courseRef.current.id +
           "&goods_type=vod&goods_charge=" +
-          course.charge +
+          courseRef.current.charge +
           "&goods_label=点播课程&goods_name=" +
-          course.title +
+          courseRef.current.title +
           "&goods_thumb=" +
-          course.thumb
+          courseRef.current.thumb
       );
       return;
     }
