@@ -185,7 +185,7 @@ export const MemberCredit1FreePage = () => {
                 {config.credit1_reward.paid_order !== 0 && (
                   <div className={styles["rules-item"]}>
                     <p>
-                      • 下单成功 +金额*
+                      • 下单成功 +实付金额*
                       {Math.floor(
                         Number(config.credit1_reward.paid_order) * 100
                       )}
