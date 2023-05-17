@@ -403,12 +403,68 @@ export const WendaDetailPage = () => {
           <div className={styles["comment-divider"]}>全部回答</div>
           <div className={styles["line"]}></div>
           <div className={styles["comments-list-box"]}>
-            {answers.length === 0 && (
+            {loading && (
+              <div
+                style={{
+                  width: 1140,
+                  marginTop: 50,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {Array.from({ length: 3 }).map(() => (
+                  <div
+                    style={{
+                      width: 1140,
+                      height: 48,
+                      marginBottom: 30,
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Skeleton.Avatar
+                      active
+                      size={48}
+                      style={{
+                        marginRight: 30,
+                      }}
+                    ></Skeleton.Avatar>
+                    <div
+                      style={{
+                        width: 960,
+                        height: 48,
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 960,
+                          height: 14,
+                          marginTop: 3,
+                          marginBottom: 16,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 960,
+                          height: 14,
+                        }}
+                      ></Skeleton.Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!loading && answers.length === 0 && (
               <Col span={24}>
                 <Empty></Empty>
               </Col>
             )}
-            {answers.length > 0 &&
+            {!loading &&
+              answers.length > 0 &&
               answers.map((item: any, index: number) => (
                 <div className={styles["comment-item"]} key={item.id}>
                   <div className={styles["avatar"]}>
