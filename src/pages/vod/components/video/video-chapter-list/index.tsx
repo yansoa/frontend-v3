@@ -69,15 +69,29 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                     <img className={styles["play-icon"]} src={lockIcon} />
                   )}
                   <div className={styles["video-title"]}>
-                    <div
-                      className={
-                        item.id === video.id
-                          ? styles["active-text"]
-                          : styles["text"]
-                      }
-                    >
-                      {item.title}
-                    </div>
+                    {isBuy === false &&
+                    course.is_free !== 1 &&
+                    item.free_seconds > 0 ? (
+                      <div
+                        className={
+                          item.id === video.id
+                            ? styles["active-text"]
+                            : styles["text"]
+                        }
+                      >
+                        {item.title}
+                      </div>
+                    ) : (
+                      <div
+                        className={
+                          item.id === video.id
+                            ? styles["active-text2"]
+                            : styles["text2"]
+                        }
+                      >
+                        {item.title}
+                      </div>
+                    )}
                     {isBuy === false &&
                       course.is_free !== 1 &&
                       item.free_seconds > 0 && (
@@ -109,15 +123,29 @@ export const VideoChapterListComp: React.FC<PropInterface> = ({
                   <img className={styles["play-icon"]} src={lockIcon} />
                 )}
                 <div className={styles["video-title"]}>
-                  <div
-                    className={
-                      item.id === video.id
-                        ? styles["active-text"]
-                        : styles["text"]
-                    }
-                  >
-                    {item.title}
-                  </div>
+                  {isBuy === false &&
+                  course.is_free !== 1 &&
+                  item.free_seconds > 0 ? (
+                    <div
+                      className={
+                        item.id === video.id
+                          ? styles["active-text"]
+                          : styles["text"]
+                      }
+                    >
+                      {item.title}
+                    </div>
+                  ) : (
+                    <div
+                      className={
+                        item.id === video.id
+                          ? styles["active-text2"]
+                          : styles["text2"]
+                      }
+                    >
+                      {item.title}
+                    </div>
+                  )}
                   {isBuy === false &&
                     course.is_free !== 1 &&
                     item.free_seconds > 0 && (
