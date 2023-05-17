@@ -185,32 +185,21 @@ export const WendaPage = () => {
                   flexDirection: "column",
                 }}
               >
-                <div
-                  style={{
-                    width: 769,
-                    height: 134,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "4px 20px 20px 20px",
-                    boxSizing: "border-box",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                </div>
-                <div
-                  style={{
-                    width: 769,
-                    height: 134,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "4px 20px 20px 20px",
-                    boxSizing: "border-box",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                </div>
+                {Array.from({ length: 10 }).map(() => (
+                  <div
+                    style={{
+                      width: 769,
+                      height: 134,
+                      display: "flex",
+                      flexDirection: "row",
+                      padding: "4px 20px 20px 20px",
+                      boxSizing: "border-box",
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                  </div>
+                ))}
               </div>
             </Row>
           )}
