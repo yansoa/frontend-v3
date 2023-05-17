@@ -327,8 +327,9 @@ export const SharePage = () => {
             </div>
             {loading && projectType === 1 && (
               <div className={styles["goods-box"]}>
-                {Array.from({ length: 3 }).map(() => (
+                {Array.from({ length: 3 }).map((_, i) => (
                   <Skeleton.Button
+                    key={i}
                     active
                     style={{
                       width: 216,
@@ -347,8 +348,9 @@ export const SharePage = () => {
                   flexDirection: "column",
                 }}
               >
-                {Array.from({ length: 3 }).map(() => (
+                {Array.from({ length: 3 }).map((_, i) => (
                   <Skeleton.Button
+                    key={i}
                     active
                     style={{
                       width: 710,
@@ -466,8 +468,9 @@ export const SharePage = () => {
                   flexDirection: "column",
                 }}
               >
-                {Array.from({ length: 3 }).map(() => (
+                {Array.from({ length: 3 }).map((_, i) => (
                   <Skeleton.Button
+                    key={i}
                     active
                     style={{
                       width: 340,

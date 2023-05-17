@@ -109,8 +109,9 @@ export const AnnouncementPage = () => {
           <div className={styles["tit"]}>历史公告</div>
           {loading2 && (
             <Row>
-              {Array.from({ length: 5 }).map(() => (
+              {Array.from({ length: 5 }).map((_, i) => (
                 <div
+                  key={i}
                   style={{
                     width: 264,
                     display: "flex",

@@ -325,8 +325,9 @@ export const StudyCenterPage = () => {
                     flexDirection: "column",
                   }}
                 >
-                  {Array.from({ length: 5 }).map(() => (
+                  {Array.from({ length: 5 }).map((_, i) => (
                     <div
+                      key={i}
                       style={{
                         width: 1200,
                         height: 120,

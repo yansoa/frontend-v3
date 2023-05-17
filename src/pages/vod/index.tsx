@@ -132,8 +132,9 @@ const VodPage = () => {
                 justifyContent: "space-between",
               }}
             >
-              {Array.from({ length: 12 }).map(() => (
+              {Array.from({ length: 12 }).map((_, i) => (
                 <div
+                  key={i}
                   style={{
                     width: 264,
                     display: "flex",

@@ -189,8 +189,9 @@ export const WendaPage = () => {
                   flexDirection: "column",
                 }}
               >
-                {Array.from({ length: 10 }).map(() => (
+                {Array.from({ length: 10 }).map((_, i) => (
                   <div
+                    key={i}
                     style={{
                       width: 769,
                       height: 134,

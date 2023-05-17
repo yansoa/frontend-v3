@@ -102,8 +102,9 @@ export const BookPage = () => {
                   flexDirection: "column",
                 }}
               >
-                {Array.from({ length: 6 }).map(() => (
+                {Array.from({ length: 6 }).map((_, i) => (
                   <div
+                    key={i}
                     style={{
                       width: 769,
                       display: "flex",
@@ -214,8 +215,9 @@ export const BookPage = () => {
                     flexDirection: "column",
                   }}
                 >
-                  {Array.from({ length: 6 }).map(() => (
+                  {Array.from({ length: 6 }).map((_, i) => (
                     <div
+                      key={i}
                       style={{
                         width: 400,
                         display: "flex",

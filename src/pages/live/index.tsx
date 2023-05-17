@@ -86,8 +86,9 @@ export const LivePage = () => {
                 marginTop: 30,
               }}
             >
-              {Array.from({ length: 12 }).map(() => (
+              {Array.from({ length: 12 }).map((_, i) => (
                 <div
+                  key={i}
                   style={{
                     width: 264,
                     display: "flex",

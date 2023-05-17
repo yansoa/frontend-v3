@@ -102,8 +102,9 @@ export const TopicPage = () => {
                   flexDirection: "column",
                 }}
               >
-                {Array.from({ length: 6 }).map(() => (
+                {Array.from({ length: 6 }).map((_, i) => (
                   <div
+                    key={i}
                     style={{
                       width: 769,
                       display: "flex",

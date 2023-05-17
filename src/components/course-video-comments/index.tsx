@@ -99,8 +99,9 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
             flexDirection: "column",
           }}
         >
-          {Array.from({ length: 3 }).map(() => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <div
+              key={i}
               style={{
                 width: 1140,
                 height: 48,
