@@ -256,7 +256,7 @@ export const LiveVideoPage = () => {
   const exitFullscreen = () => {
     let de: any;
     de = document;
-    if (de.exitFullscreen) {
+    if (de.fullscreenElement !== null) {
       de.exitFullscreen();
     } else if (de.mozCancelFullScreen) {
       de.mozCancelFullScreen();
