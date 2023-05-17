@@ -1,0 +1,49 @@
+.chapter-item {
+  width: 100%;
+  height: auto;
+  margin-top: 50px;
+  &:first-child {
+    margin-top: 0px;
+  }
+  .chapter-videos-box {
+    width: 100%;
+    height: auto;
+    margin-top: 0px;
+    .video-item {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      margin-bottom: 30px;
+      cursor: pointer;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      .play-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .video-title {
+        height: 14px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333333;
+        line-height: 14px;
+        margin-left: 15px;
+      }
+      .video-info {
+        position: absolute;
+        height: 14px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 14px;
+        top: 5px;
+        right: 0;
+      }
+    }
+  }
+}

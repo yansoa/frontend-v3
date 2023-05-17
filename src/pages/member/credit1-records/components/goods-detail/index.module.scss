@@ -1,0 +1,197 @@
+.goodsDetail-box {
+  width: 999px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 30px;
+  text-align: left;
+  .btn-title {
+    width: 100px;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 30px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+    .back {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333333;
+    }
+  }
+  .body {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .goods-thumb {
+      width: 200px;
+      height: 200px;
+      margin-right: 30px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center center;
+    }
+    .right {
+      flex: 1;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      .goods-title {
+        width: 709px;
+        height: 30px;
+        font-size: 20px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 30px;
+        margin-top: 15px;
+        margin-bottom: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .goods-content {
+        width: 100%;
+        height: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 30px;
+        .goods-value {
+          height: 20px;
+          font-size: 20px;
+          font-weight: 600;
+          color: #ff4d4f;
+          line-height: 20px;
+          margin-right: 30px;
+        }
+        .goods-type {
+          height: 20px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 20px;
+        }
+      }
+      .goods-info {
+        width: 100%;
+        height: auto;
+        float: left;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .goods-button {
+          width: 104px;
+          height: 56px;
+          background: linear-gradient(90deg, #fbc74b 0%, #fcdc54 100%);
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 500;
+          color: #613400;
+          margin-right: 30px;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+        .address-bar {
+          flex: 1;
+          min-height: 56px;
+          float: left;
+          display: flex;
+          flex-direction: column;
+          .address-item {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 18px;
+            .address-name {
+              height: 14px;
+              font-size: 14px;
+              font-weight: 500;
+              color: #333333;
+              line-height: 14px;
+              margin-right: 15px;
+            }
+            .address-button {
+              height: 14px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #ff4d4f;
+              line-height: 14px;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+          }
+          .address-value {
+            width: 100%;
+            height: auto;
+            float: left;
+            font-size: 14px;
+            font-weight: 400;
+            color: #666666;
+            line-height: 18px;
+          }
+        }
+      }
+    }
+  }
+  .bottom {
+    width: 100%;
+    float: left;
+    height: auto;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    .name {
+      width: 100%;
+      height: 14px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 30px;
+      i {
+        width: 4px;
+        height: 14px;
+        background: linear-gradient(90deg, #fbc74b 0%, #fcdc54 100%);
+        border-radius: 2px;
+        margin-right: 5px;
+      }
+    }
+    .desc {
+      width: 100%;
+      float: left;
+      height: auto;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 24px;
+      p {
+        margin: 0;
+      }
+    }
+  }
+}

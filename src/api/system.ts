@@ -1,9 +1,25 @@
 import client from "./internal/httpClient";
 
 export function config() {
-  return client.post("/api/v1/system/config", {});
+  return client.get("/api/v2/other/config", {});
+}
+
+export function sendSms(params: any) {
+  return client.post("/api/v2/captcha/sms", params);
 }
 
 export function imageCaptcha() {
-  return client.post("/api/v1/system/image-captcha", {});
+  return client.get("/api/v2/captcha/image", {});
+}
+
+export function footerLink() {
+  return client.get(`/api/v2/links`, {});
+}
+
+export function historyRecord(type: string, id: number, title: string) {
+  return client.post("/addons/templateOne/api/v1/history/record", {
+    type: type,
+    id: id,
+    title: title,
+  });
 }

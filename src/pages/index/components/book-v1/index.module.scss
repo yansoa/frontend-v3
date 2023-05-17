@@ -1,0 +1,105 @@
+.index-section-box {
+  width: 100%;
+  margin-top: 40px;
+  .index-section-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 50px;
+    .index-section-title-text {
+      height: 30px;
+      font-size: 30px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 30px;
+    }
+  }
+  .index-section-body {
+    width: 100%;
+    display: grid;
+    row-gap: 30px;
+    column-gap: 48px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding-bottom: 40px;
+    .book-course-item {
+      width: 100%;
+      height: 290px;
+      display: flex;
+      cursor: pointer;
+      box-sizing: border-box;
+      flex-direction: column;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #f1f2fa;
+      background-color: #fff;
+      &:hover {
+        .book-course-thumb {
+          .thumb-bar {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
+      .book-course-thumb {
+        width: 100%;
+        height: 160px;
+        display: flex;
+        justify-content: center;
+        .thumb-bar {
+          transition: all 0.3s;
+        }
+      }
+
+      .book-course-body {
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 20px;
+        .book-course-title {
+          width: 100%;
+          height: 20px;
+          text-align: center;
+          float: left;
+          font-size: 16px;
+          font-weight: 600;
+          color: #333333;
+          line-height: 20px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          margin-bottom: 20px;
+        }
+
+        .book-course-info {
+          width: 100%;
+          height: 20px;
+          float: left;
+          display: flex;
+          align-items: center;
+
+          .book-course-charge {
+            width: 100%;
+            text-align: center;
+            height: 20px;
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: 600;
+
+            .charge-text {
+              color: #ff5858;
+
+              .unit {
+                font-size: 14px;
+              }
+            }
+
+            .free-text {
+              font-size: 14px;
+              color: #04c877;
+            }
+          }
+        }
+      }
+    }
+  }
+}

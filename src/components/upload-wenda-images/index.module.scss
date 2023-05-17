@@ -1,0 +1,35 @@
+.btn-upload-image {
+  width: 160px;
+  height: 90px;
+  background: #f4fafe;
+  box-sizing: border-box;
+  margin-right: 30px;
+  position: relative;
+  img {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 30px;
+    left: 65px;
+  }
+  .input-upload {
+    width: 160px;
+    height: 90px;
+    background: #f4fafe;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+.img-item {
+  width: 160px;
+  height: 90px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  img {
+    width: auto;
+    height: 90px;
+  }
+}

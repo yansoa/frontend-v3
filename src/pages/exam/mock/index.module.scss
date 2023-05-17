@@ -1,0 +1,19 @@
+.content {
+  width: 100%;
+  .filter-two-class {
+    display: flex;
+    width: 1200px;
+    background: #fff;
+    margin: 0 auto;
+    height: auto;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 15px 30px 5px 30px;
+  }
+  .list-box {
+    width: 1200px;
+    min-height: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+}

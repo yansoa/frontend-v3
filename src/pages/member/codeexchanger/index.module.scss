@@ -1,0 +1,114 @@
+.box {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  .right-box {
+    margin-left: 30px;
+    width: 999px;
+    height: auto;
+    box-sizing: border-box;
+    .exchange-box {
+      width: 999px;
+      height: 100px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      padding: 30px;
+      .tit {
+        height: 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 14px;
+        margin-right: 30px;
+      }
+      .input {
+        width: 300px;
+        height: 40px;
+        background: #ffffff;
+        border-radius: 4px;
+        border: 1px solid #dcdfe6;
+        outline: none;
+        padding-left: 15px;
+        margin-right: 30px;
+      }
+      .btn-exchange {
+        width: 104px;
+        height: 40px;
+        background: #3ca7fa;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 16px;
+        outline: none;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .project-box {
+      display: flex;
+      flex-direction: column;
+      width: 999px;
+      height: auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 30px;
+      text-align: left;
+      .btn-title {
+        width: 80px;
+        height: 16px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 16px;
+        margin-bottom: 6px;
+      }
+      .project-item {
+        width: 100%;
+        height: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 28px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+
+        .title {
+          height: 14px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 14px;
+        }
+        .info {
+          height: 14px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 14px;
+          .item {
+            height: 14px;
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
