@@ -9,6 +9,7 @@ export const ExamPaperPage = () => {
   document.title = "在线考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -67,6 +68,7 @@ export const ExamPaperPage = () => {
           setUserpapers(newData);
         }
         setLoading(false);
+        setInit(false);
       });
   };
 
@@ -84,18 +86,18 @@ export const ExamPaperPage = () => {
       </div>
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>
-          {loading && (
+          {loading && init && (
             <Skeleton.Button
               active
               style={{
                 width: 1140,
                 height: 24,
-                marginTop: 20,
-                marginBottom: 10,
+                marginTop: 5,
+                marginBottom: 15,
               }}
             ></Skeleton.Button>
           )}
-          {!loading && (
+          {!init && (
             <FilterCategories
               loading={loading}
               categories={categories}
