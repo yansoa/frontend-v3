@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Spin, Skeleton, Input, Button, message } from "antd";
+import { Row, Col, Skeleton, Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
@@ -361,7 +361,7 @@ export const WendaDetailPage = () => {
           </div>
         )}
         <div className={styles["comments-box"]}>
-          {!loading &&isLogin && question.status !== 1 && (
+          {!loading && isLogin && question.status !== 1 && (
             <div className={styles["reply-box"]}>
               {user && (
                 <div className={styles["avatar"]}>

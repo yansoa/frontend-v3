@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, message, Row, Col, Spin, Button, Pagination } from "antd";
+import { Input, message, Row, Col, Skeleton, Button, Pagination } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { multiLevelShare } from "../../api/index";
@@ -12,6 +12,7 @@ export const SharePage = () => {
   document.title = "推广";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(true);
   const [dialogStatus, setDialogStatus] = useState<boolean>(false);
   const [inviteUrl, setInviteUrl] = useState<string>("");
   const [count, setCount] = useState(0);
@@ -65,6 +66,7 @@ export const SharePage = () => {
       setBalance(res.data.invite_balance);
       let url = getShareHost() + "?msv=" + user.id;
       setInviteUrl(url);
+      setInit(false);
     });
   };
 
@@ -209,42 +211,93 @@ export const SharePage = () => {
               </div>
               <div className={styles["user-info"]}>
                 <div className={styles["user-name"]}>{user.nick_name}</div>
-                <div className={styles["share-box"]}>
-                  <Input
-                    value={inviteUrl}
-                    onChange={(e) => {
-                      setInviteUrl(e.target.value);
+                {init && (
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 344,
+                      height: 34,
                     }}
-                    className={styles["input"]}
-                  ></Input>
-                  <Button className={styles["btn-copy"]} onClick={() => copy()}>
-                    复制您的专属邀请链接
-                  </Button>
-                </div>
+                  ></Skeleton.Button>
+                )}
+                {!init && (
+                  <div className={styles["share-box"]}>
+                    <Input
+                      value={inviteUrl}
+                      onChange={(e) => {
+                        setInviteUrl(e.target.value);
+                      }}
+                      className={styles["input"]}
+                    ></Input>
+                    <Button
+                      className={styles["btn-copy"]}
+                      onClick={() => copy()}
+                    >
+                      复制您的专属邀请链接
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles["item-box"]}>
-              <div className={styles["value"]}>{count}</div>
+              {init && (
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 56,
+                    height: 32,
+                    marginTop: 5,
+                    marginBottom: 30,
+                  }}
+                ></Skeleton.Button>
+              )}
+              {!init && <div className={styles["value"]}>{count}</div>}
               <div className={styles["tit"]}>邀请人数</div>
             </div>
             <div className={styles["item-box"]}>
-              <div className={styles["value"]}>
-                <span>{balance}</span>
-              </div>
+              {init && (
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 56,
+                    height: 32,
+                    marginTop: 5,
+                    marginBottom: 30,
+                  }}
+                ></Skeleton.Button>
+              )}
+              {!init && (
+                <div className={styles["value"]}>
+                  <span>{balance}</span>
+                </div>
+              )}
               <div className={styles["tit"]}>邀请余额</div>
             </div>
-            <div
-              className={styles["withdraw-button"]}
-              onClick={() => {
-                if (balance === 0) {
-                  message.error("余额为0时不可提现");
-                  return;
-                }
-                setDialogStatus(true);
-              }}
-            >
-              提现
-            </div>
+            {init && (
+              <Skeleton.Button
+                active
+                style={{
+                  width: 104,
+                  height: 48,
+                  marginTop: 19,
+                  borderRadius: 4,
+                }}
+              ></Skeleton.Button>
+            )}
+            {!init && (
+              <div
+                className={styles["withdraw-button"]}
+                onClick={() => {
+                  if (balance === 0) {
+                    message.error("余额为0时不可提现");
+                    return;
+                  }
+                  setDialogStatus(true);
+                }}
+              >
+                提现
+              </div>
+            )}
           </div>
         )}
         <div className={styles["bottom-box"]}>
@@ -272,12 +325,39 @@ export const SharePage = () => {
                 </div>
               ))}
             </div>
-            {loading && (
-              <Row>
-                <div className="float-left d-j-flex mt-50">
-                  <Spin size="large" />
-                </div>
-              </Row>
+            {loading && projectType === 1 && (
+              <div className={styles["goods-box"]}>
+                {Array.from({ length: 3 }).map(() => (
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 216,
+                      height: 248,
+                      borderRadius: 8,
+                    }}
+                  ></Skeleton.Button>
+                ))}
+              </div>
+            )}
+            {loading && projectType === 2 && (
+              <div
+                style={{
+                  width: 710,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {Array.from({ length: 3 }).map(() => (
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 710,
+                      height: 14,
+                      marginTop: 20,
+                    }}
+                  ></Skeleton.Button>
+                ))}
+              </div>
             )}
             {!loading && projectType === 1 && courses.length === 0 && (
               <Col span={24}>
@@ -378,10 +458,33 @@ export const SharePage = () => {
           <div className={styles["info-box"]}>
             <div className={styles["tit"]}>分销课程说明</div>
             <div className={styles["line"]}></div>
-            <div
-              className={styles["desc"]}
-              dangerouslySetInnerHTML={{ __html: rules }}
-            ></div>
+            {init && (
+              <div
+                style={{
+                  width: 340,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {Array.from({ length: 3 }).map(() => (
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 340,
+                      height: 14,
+                      marginTop: 8,
+                      marginBottom: 8,
+                    }}
+                  ></Skeleton.Button>
+                ))}
+              </div>
+            )}
+            {!init && (
+              <div
+                className={styles["desc"]}
+                dangerouslySetInnerHTML={{ __html: rules }}
+              ></div>
+            )}
           </div>
         </div>
       </div>
