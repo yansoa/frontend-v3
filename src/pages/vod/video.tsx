@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
-import { Button, message } from "antd";
+import { Button, Skeleton, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
@@ -454,14 +454,27 @@ export const VodPlayPage = () => {
             录播课
           </a>{" "}
           /
-          <a
-            onClick={() => {
-              navigate("/courses/detail?id=" + course.id);
-            }}
-          >
-            {course.title}
-          </a>{" "}
-          /<span>{video.title}</span>
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 400,
+                height: 16,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <>
+              <a
+                onClick={() => {
+                  navigate("/courses/detail?id=" + course.id);
+                }}
+              >
+                {course.title}
+              </a>{" "}
+              /<span>{video.title}</span>
+            </>
+          )}
         </div>
         <HistoryRecord id={video.id} title={video.title} type="video" />
         <div className={styles["course-info"]}>
@@ -554,7 +567,34 @@ export const VodPlayPage = () => {
               )}
             </div>
             <div className="course-chapter-box">
-              {chapters.length > 0 && (
+              {loading &&
+                Array.from({ length: 2 }).map(() => (
+                  <div
+                    style={{
+                      width: 260,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 260,
+                        height: 16,
+                        marginBottom: 30,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 260,
+                        height: 20,
+                        marginBottom: 50,
+                      }}
+                    ></Skeleton.Button>
+                  </div>
+                ))}
+              {!loading && chapters.length > 0 && (
                 <VideoChapterListComp
                   chapters={chapters}
                   course={course}
@@ -565,7 +605,7 @@ export const VodPlayPage = () => {
                   switchVideo={(item: any) => goPlay(item)}
                 />
               )}
-              {chapters.length === 0 && videos[0] && (
+              {!loading && chapters.length === 0 && videos[0] && (
                 <VideoListComp
                   course={course}
                   video={video}
@@ -594,6 +634,7 @@ export const VodPlayPage = () => {
         </div>
         {currentTab === 4 && (
           <CourseVideoComments
+            fresh={loading}
             vid={vid}
             isBuy={isBuy}
             comments={comments}

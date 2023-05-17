@@ -390,7 +390,7 @@ p {
   align-items: center;
   font-size: 14px;
   color: #999999;
-  line-height: 14px;
+  line-height: 16px;
   margin-top: 30px;
   margin-bottom: 30px;
 
@@ -399,7 +399,7 @@ p {
     font-size: 14px;
     font-weight: 400;
     color: #999999;
-    line-height: 14px;
+    line-height: 16px;
     margin-right: 6px;
     &:not(:first-of-type) {
       margin-left: 6px;
@@ -412,7 +412,7 @@ p {
     font-size: 14px;
     font-weight: 400;
     color: #666666;
-    line-height: 14px;
+    line-height: 16px;
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;

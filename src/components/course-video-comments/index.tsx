@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, Button, message } from "antd";
+import { Input, Button, Skeleton, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Empty } from "../../components";
@@ -12,6 +12,7 @@ interface PropInterface {
   comments: any[];
   commentUsers: any;
   isBuy: boolean;
+  fresh: boolean;
   success: () => void;
 }
 
@@ -20,6 +21,7 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
   isBuy,
   comments,
   commentUsers,
+  fresh,
   success,
 }) => {
   const navigate = useNavigate();
@@ -54,7 +56,8 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
     <div className={styles["course-comments-box"]}>
       <div className={styles["comment-divider"]}>全部评论</div>
       <div className={styles["line"]}></div>
-      {isLogin && isBuy && (
+
+      {!fresh && isLogin && isBuy && (
         <div className={styles["replybox"]}>
           <div className={styles["reply"]}>
             <img className={styles["user-avatar"]} src={user.avatar} />
@@ -79,7 +82,8 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
           </div>
         </div>
       )}
-      {!isLogin && (
+
+      {!fresh && !isLogin && (
         <div className={styles["replybox"]}>
           <div className={styles["text"]} onClick={() => navigate("/login")}>
             未登录，请登录后再评论
@@ -87,9 +91,64 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
         </div>
       )}
 
+      {fresh && (
+        <div
+          style={{
+            width: 1140,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {Array.from({ length: 3 }).map(() => (
+            <div
+              style={{
+                width: 1140,
+                height: 48,
+                marginBottom: 30,
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Skeleton.Avatar
+                active
+                size={48}
+                style={{
+                  marginRight: 30,
+                }}
+              ></Skeleton.Avatar>
+              <div
+                style={{
+                  width: 960,
+                  height: 48,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 960,
+                    height: 14,
+                    marginTop: 3,
+                    marginBottom: 16,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 960,
+                    height: 14,
+                  }}
+                ></Skeleton.Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       <div className={styles["comment-top"]}>
-        {comments.length === 0 && <Empty></Empty>}
-        {comments.length > 0 &&
+        {!fresh && comments.length === 0 && <Empty></Empty>}
+        {!fresh &&
+          comments.length > 0 &&
           comments.map((item: any) => (
             <div key={item.id} className={styles["comment-item"]}>
               <div className={styles["user-avatar"]}>
