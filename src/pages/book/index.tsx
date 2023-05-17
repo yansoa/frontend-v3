@@ -102,162 +102,60 @@ export const BookPage = () => {
                   flexDirection: "column",
                 }}
               >
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    boxSizing: "border-box",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Skeleton.Button
-                    active
-                    style={{
-                      width: 120,
-                      height: 160,
-                      borderRadius: 8,
-                      marginRight: 20,
-                    }}
-                  ></Skeleton.Button>
+                {Array.from({ length: 6 }).map(() => (
                   <div
                     style={{
+                      width: 769,
                       display: "flex",
-                      flexDirection: "column",
-                      textAlign: "left",
+                      flexDirection: "row",
+                      padding: "20px 30px",
+                      marginBottom: 10,
+                      boxSizing: "border-box",
                     }}
                   >
                     <Skeleton.Button
                       active
                       style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
+                        width: 120,
+                        height: 160,
+                        borderRadius: 8,
+                        marginRight: 20,
                       }}
                     ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
+                    <div
                       style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
+                        display: "flex",
+                        flexDirection: "column",
+                        textAlign: "left",
                       }}
-                    ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 100,
-                        height: 25,
-                        marginTop: 56,
-                      }}
-                    ></Skeleton.Button>
+                    >
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 569,
+                          height: 20,
+                          marginTop: 20,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 569,
+                          height: 20,
+                          marginTop: 20,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 100,
+                          height: 25,
+                          marginTop: 56,
+                        }}
+                      ></Skeleton.Button>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    marginBottom: 10,
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Skeleton.Button
-                    active
-                    style={{
-                      width: 120,
-                      height: 160,
-                      borderRadius: 8,
-                      marginRight: 20,
-                    }}
-                  ></Skeleton.Button>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "left",
-                    }}
-                  >
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
-                      }}
-                    ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
-                      }}
-                    ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 100,
-                        height: 25,
-                        marginTop: 56,
-                      }}
-                    ></Skeleton.Button>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    marginBottom: 10,
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Skeleton.Button
-                    active
-                    style={{
-                      width: 120,
-                      height: 160,
-                      borderRadius: 8,
-                      marginRight: 20,
-                    }}
-                  ></Skeleton.Button>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      textAlign: "left",
-                    }}
-                  >
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
-                      }}
-                    ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 569,
-                        height: 20,
-                        marginTop: 20,
-                      }}
-                    ></Skeleton.Button>
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 100,
-                        height: 25,
-                        marginTop: 56,
-                      }}
-                    ></Skeleton.Button>
-                  </div>
-                </div>
+                ))}
               </div>
             </Row>
           )}
@@ -316,44 +214,27 @@ export const BookPage = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <div
-                    style={{
-                      width: 400,
-                      display: "flex",
-                      flexDirection: "row",
-                      marginBottom: 30,
-                    }}
-                  >
-                    <Skeleton.Button
-                      active
+                  {Array.from({ length: 6 }).map(() => (
+                    <div
                       style={{
-                        width: 90,
-                        height: 120,
-                        borderRadius: 8,
-                        marginRight: 20,
+                        width: 400,
+                        display: "flex",
+                        flexDirection: "row",
+                        marginBottom: 30,
                       }}
-                    ></Skeleton.Button>
-                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                  </div>
-                  <div
-                    style={{
-                      width: 400,
-                      display: "flex",
-                      flexDirection: "row",
-                      marginBottom: 30,
-                    }}
-                  >
-                    <Skeleton.Button
-                      active
-                      style={{
-                        width: 90,
-                        height: 120,
-                        borderRadius: 8,
-                        marginRight: 20,
-                      }}
-                    ></Skeleton.Button>
-                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                  </div>
+                    >
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 90,
+                          height: 120,
+                          borderRadius: 8,
+                          marginRight: 20,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                    </div>
+                  ))}
                 </div>
               </Row>
             )}

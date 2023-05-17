@@ -22,6 +22,7 @@ export const OrderPage = () => {
   const [paymentScene, setPaymentScene] = useState<string>("pc");
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
+  const [pcCheckLoading, setPcCheckLoading] = useState(false);
   const [aliStatus, setAliStatus] = useState<boolean>(false);
   const [weStatus, setWeStatus] = useState<boolean>(false);
   const [handStatus, setHandStatus] = useState<boolean>(false);
@@ -143,6 +144,7 @@ export const OrderPage = () => {
     if (!promoCode) {
       return;
     }
+    setPcCheckLoading(true);
     if (
       configFunc.share &&
       (promoCode.substr(0, 1) === "u" || promoCode.substr(0, 1) === "U")
@@ -164,10 +166,12 @@ export const OrderPage = () => {
           setDiscount(value);
         }
         setLoading(false);
+        setPcCheckLoading(false);
       })
       .catch((e) => {
         setLoading(false);
         setConfigTip(999);
+        setPcCheckLoading(false);
       });
   };
 
@@ -464,9 +468,11 @@ export const OrderPage = () => {
           <Input
             className={styles["input"]}
             value={promoCode}
+            placeholder="请输入优惠码"
             onChange={(e) => {
               setPromoCode(e.target.value);
             }}
+            disabled={pcCheckLoading}
           ></Input>
           <div
             className={styles["btn-confirm"]}
