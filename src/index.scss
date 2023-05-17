@@ -1180,3 +1180,13 @@ li {
   height: 21px;
   font-size: 16px;
 }
+
+.ant-modal-confirm-btns {
+  .ant-btn-primary {
+    background-color: #3ca7fa;
+    &:hover {
+      background-color: #3ca7fa;
+      opacity: 0.8;
+    }
+  }
+}
