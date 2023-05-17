@@ -485,7 +485,7 @@ export const OrderPage = () => {
           )}
           {configTip === 1 && (
             <div className={styles["tip"]}>
-              此优惠码有效，已减免{discount}元
+              此优惠码有效，已减免{discount <= total ? discount : total}元
             </div>
           )}
         </div>
@@ -510,7 +510,9 @@ export const OrderPage = () => {
         <div className={styles["line"]}></div>
         <div className={styles["price-box"]}>
           <span>优惠码已减</span>
-          <span className={styles["red"]}>{discount}</span>
+          <span className={styles["red"]}>
+            {discount <= total ? discount : total}
+          </span>
           <span>元，需支付</span>
           <span className={styles["red"]}>
             ￥<span className={styles["big"]}>{totalVal}</span>
