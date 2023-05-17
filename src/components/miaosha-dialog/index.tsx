@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, message, Space, Image } from "antd";
+import { Modal, Form, Input, message, Space, Image, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { miaosha, system } from "../../api/index";
@@ -103,6 +103,7 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
         }}
         maskClosable={false}
         closable={false}
+        footer={null}
       >
         <div className={styles["tabs"]}>
           <div className={styles["tab-active-item"]}>秒杀活动</div>
@@ -148,6 +149,21 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
             </Space>
           </Form.Item>
         </Form>
+        <div
+          slot="footer"
+          style={{ display: "flex", flexDirection: "row-reverse" }}
+        >
+          <Button
+            type="primary"
+            onClick={() => form.submit()}
+            loading={loading}
+          >
+            立即秒杀
+          </Button>
+          <Button style={{ marginRight: 15 }} onClick={() => onCancel()}>
+            取消
+          </Button>
+        </div>
       </Modal>
     </>
   );
