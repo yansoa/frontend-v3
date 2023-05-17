@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Skeleton, Spin, message } from "antd";
+import { Row, Col, Skeleton } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { home } from "../../api/index";
 import { changeTime, latexRender, codeRender } from "../../utils/index";
