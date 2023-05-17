@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { order } from "../../api/index";
-import { Input, message } from "antd";
+import { Input, message, Button } from "antd";
 import { ThumbBar } from "../../components";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -517,9 +517,14 @@ export const OrderPage = () => {
           </span>
         </div>
         <div className={styles["order-tip"]}>请在15分钟内支付完成</div>
-        <div className={styles["btn-submit"]} onClick={() => payHandler()}>
+        <Button
+          type="primary"
+          loading={loading}
+          className={styles["btn-submit"]}
+          onClick={() => payHandler()}
+        >
           提交订单
-        </div>
+        </Button>
       </div>
     </div>
   );
