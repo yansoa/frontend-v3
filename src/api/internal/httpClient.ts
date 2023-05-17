@@ -39,6 +39,7 @@ export class HttpClient {
         let msg = response.data.message; //错误消息
 
         if (code === 0) {
+          //请求成功
           return Promise.resolve(response);
         } else if (code === 401) {
           message.error("请重新登录");
@@ -46,11 +47,13 @@ export class HttpClient {
         } else if (code.status === 5) {
           console.log("查询中");
         } else {
-          message.error(msg);
+          if (msg !== "请勿重复绑定") {
+            message.error(msg);
+          }
         }
         return Promise.reject(response);
       },
-      // 当http的状态码非0
+      // 当http的状态码非200
       (error) => {
         let status = error.response.status;
         if (status === 401) {

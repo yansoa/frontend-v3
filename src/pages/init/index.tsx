@@ -136,11 +136,11 @@ export const InitPage = (props: Props) => {
     }
     share
       .bind({ msv: msv })
-      .then((res) => {
+      .then(() => {
         clearMsv();
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((e: any) => {
+        console.error(e);
         clearMsv();
       });
   };
