@@ -96,9 +96,11 @@ const VodPage = () => {
           setChild(child);
           if (id === 0) {
             navigate("/courses?scene=" + scene);
+          } else if (child === 0) {
+            navigate("/courses?cid=" + id + "&scene=" + scene);
           } else {
             navigate(
-              "/courses?cid=" + cid + "&child=" + child + "&scene=" + scene
+              "/courses?cid=" + id + "&child=" + child + "&scene=" + scene
             );
           }
           resetList();

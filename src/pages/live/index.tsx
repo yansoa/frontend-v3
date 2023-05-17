@@ -66,8 +66,10 @@ export const LivePage = () => {
           setChild(child);
           if (id === 0) {
             navigate("/live");
+          } else if (child === 0) {
+            navigate("/live?cid=" + id);
           } else {
-            navigate("/live?cid=" + cid + "&child=" + child);
+            navigate("/live?cid=" + id + "&child=" + child);
           }
           resetList();
         }}

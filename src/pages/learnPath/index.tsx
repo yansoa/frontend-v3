@@ -86,8 +86,10 @@ export const LearnPathPage = () => {
           setChild(child);
           if (id === 0) {
             navigate("/learnPath");
+          } else if (child === 0) {
+            navigate("/learnPath?cid=" + id);
           } else {
-            navigate("/learnPath?cid=" + cid + "&child=" + child);
+            navigate("/learnPath?cid=" + id + "&child=" + child);
           }
           resetList();
         }}

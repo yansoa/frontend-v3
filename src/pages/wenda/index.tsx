@@ -150,6 +150,8 @@ export const WendaPage = () => {
           setChild(child);
           if (id === 0) {
             navigate("/wenda?scene=" + scene);
+          } else if (child === 0) {
+            navigate("/wenda?cid=" + cid + "&scene=" + scene);
           } else {
             navigate(
               "/wenda?cid=" + cid + "&child=" + child + "&scene=" + scene

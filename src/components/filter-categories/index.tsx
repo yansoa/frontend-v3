@@ -30,7 +30,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
       }
     }
     setCateIndex(index);
-  }, [cid]);
+  }, [categories, cid]);
 
   return (
     <div className={styles["category-box"]}>
@@ -55,7 +55,8 @@ export const FilterCategories: React.FC<PropInterface> = ({
                   onClick={() => {
                     setInit(true);
                     setCid(0);
-                    onSelected(0, child);
+                    setChild(0);
+                    onSelected(0, 0);
                   }}
                 >
                   全部
@@ -69,7 +70,8 @@ export const FilterCategories: React.FC<PropInterface> = ({
                     onClick={() => {
                       setInit(true);
                       setCid(item.id);
-                      onSelected(item.id, child);
+                      setChild(0);
+                      onSelected(item.id, 0);
                     }}
                   >
                     <span>{item.name}</span>
