@@ -361,7 +361,7 @@ export const WendaDetailPage = () => {
           </div>
         )}
         <div className={styles["comments-box"]}>
-          {isLogin && question.status !== 1 && (
+          {!loading &&isLogin && question.status !== 1 && (
             <div className={styles["reply-box"]}>
               {user && (
                 <div className={styles["avatar"]}>
