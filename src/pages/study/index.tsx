@@ -26,6 +26,7 @@ export const StudyCenterPage = () => {
   );
 
   useEffect(() => {
+    document.title = "我的学习";
     let types = [
       {
         name: "录播课",
