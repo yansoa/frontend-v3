@@ -291,7 +291,6 @@ export const ExamCollectionPlayPage = () => {
             setShowAnswer(false);
             setShowText("对答案");
             setActiveQid(1);
-            getData();
           }}
         ></FilterExamCategories>
       </div>
