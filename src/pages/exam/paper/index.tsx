@@ -106,6 +106,13 @@ export const ExamPaperPage = () => {
               onSelected={(id: number, child: number) => {
                 setCid(id);
                 setChild(child);
+                if (id === 0) {
+                  navigate("/exam/papers");
+                } else if (child === 0) {
+                  navigate("/exam/papers?cid=" + id);
+                } else {
+                  navigate("/exam/papers?cid=" + id + "&child=" + child);
+                }
                 resetList();
               }}
             />

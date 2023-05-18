@@ -106,6 +106,13 @@ export const ExamMockPaperPage = () => {
               onSelected={(id: number, child: number) => {
                 setCid(id);
                 setChild(child);
+                if (id === 0) {
+                  navigate("/exam/mockpaper");
+                } else if (child === 0) {
+                  navigate("/exam/mockpaper?cid=" + id);
+                } else {
+                  navigate("/exam/mockpaper?cid=" + id + "&child=" + child);
+                }
                 resetList();
               }}
             />

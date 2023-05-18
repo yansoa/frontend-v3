@@ -110,6 +110,13 @@ export const ExamPracticePage = () => {
               onSelected={(id: number, child: number) => {
                 setCid(id);
                 setChild(child);
+                if (id === 0) {
+                  navigate("/exam/practice");
+                } else if (child === 0) {
+                  navigate("/exam/practice?cid=" + id);
+                } else {
+                  navigate("/exam/practice?cid=" + id + "&child=" + child);
+                }
                 resetList();
               }}
             />
