@@ -29,7 +29,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
     <div className={styles["box"]}>
       {currentStatus === 1 &&
         list.map((item: any) => (
-          <div key={item.id + "book-learn"}>
+          <div key={item.id + "book-learn"} className={styles["item-box"]}>
             {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -67,7 +67,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 2 &&
         list.map((item: any) => (
-          <div key={item.id + "book-sub"}>
+          <div key={item.id + "book-sub"} className={styles["item-box"]}>
             {item.book && item.book.id && (
               <div className={styles["item"]}>
                 <div className={styles["left-item"]}>
@@ -110,32 +110,34 @@ export const BookItemComp: React.FC<PropInterface> = ({
         ))}
       {currentStatus === 3 &&
         list.map((item: any) => (
-          <div key={item.id + "book-collect"} className={styles["item"]}>
-            <div className={styles["left-item"]}>
-              <ThumbBar
-                value={item.thumb}
-                border={4}
-                width={90}
-                height={120}
-              ></ThumbBar>
-            </div>
-            <div className={styles["right-item"]}>
-              <div className={styles["item-title"]}>{item.title}</div>
-              <div className={styles["item-info"]}>
-                {item.created_at && (
-                  <div className={styles["item-text"]}>
-                    收藏时间：{dateFormat(item.created_at)}
-                  </div>
-                )}
+          <div key={item.id + "book-collect"} className={styles["item-box"]}>
+            <div className={styles["item"]}>
+              <div className={styles["left-item"]}>
+                <ThumbBar
+                  value={item.thumb}
+                  border={4}
+                  width={90}
+                  height={120}
+                ></ThumbBar>
               </div>
-            </div>
-            <div
-              className={styles["continue-button"]}
-              onClick={() => {
-                goDetail(item.id);
-              }}
-            >
-              详情
+              <div className={styles["right-item"]}>
+                <div className={styles["item-title"]}>{item.title}</div>
+                <div className={styles["item-info"]}>
+                  {item.created_at && (
+                    <div className={styles["item-text"]}>
+                      收藏时间：{dateFormat(item.created_at)}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div
+                className={styles["continue-button"]}
+                onClick={() => {
+                  goDetail(item.id);
+                }}
+              >
+                详情
+              </div>
             </div>
           </div>
         ))}
