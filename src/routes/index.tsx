@@ -1,7 +1,13 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import { system, user, home } from "../api";
-import { getToken } from "../utils/index";
+import {
+  getToken,
+  setFaceCheckKey,
+  clearFaceCheckKey,
+  setBindMobileKey,
+  clearBindMobileKey,
+} from "../utils/index";
 
 // 页面加载
 import { InitPage } from "../pages/init";
@@ -56,6 +62,8 @@ import { WendaPage } from "../pages/wenda/index";
 import { WendaDetailPage } from "../pages/wenda/detail";
 import { SharePage } from "../pages/share";
 import { StudyCenterPage } from "../pages/study/index";
+import { TencentFaceCheckPage } from "../pages/auth/faceCheck";
+import { BindNewMobilePage } from "../pages/auth/bindMobile";
 import PrivateRoute from "../components/private-route";
 
 let RootPage: any = null;
@@ -88,6 +96,25 @@ if (getToken()) {
         let configRes: any = await system.config();
         let userRes: any = await user.detail();
         let navsRes: any = await home.headerNav();
+
+        // 强制绑定手机号
+        if (
+          userRes.data.is_bind_mobile === 0 &&
+          configRes.data.member.enabled_mobile_bind_alert === 1
+        ) {
+          setBindMobileKey();
+        } else {
+          clearBindMobileKey();
+        }
+        //强制实名认证
+        if (
+          userRes.data.is_face_verify === false &&
+          configRes.data.member.enabled_face_verify === true
+        ) {
+          setFaceCheckKey();
+        } else {
+          clearFaceCheckKey();
+        }
 
         configFunc.live = configRes.data.enabled_addons.indexOf("Zhibo") !== -1;
         configFunc.book =
@@ -332,6 +359,8 @@ const routes: RouteObject[] = [
         path: "/study-center",
         element: <PrivateRoute Component={<StudyCenterPage />} />,
       },
+      { path: "/faceCheck", element: <TencentFaceCheckPage /> },
+      { path: "/bindMobile", element: <BindNewMobilePage /> },
     ],
   },
 ];

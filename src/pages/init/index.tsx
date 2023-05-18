@@ -13,10 +13,8 @@ import {
   Header,
   Footer,
   BackTop,
-  TencentFaceCheck,
   CodeLoginBindMobileDialog,
 } from "../../components";
-import { BindNewMobileDialog } from "../member/components/bind-new-mobile";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
@@ -47,9 +45,6 @@ export const InitPage = (props: Props) => {
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
   const [showHeader, setShowHeader] = useState<boolean>(false);
   const [showFooter, setShowFooter] = useState<boolean>(false);
-  const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
-  const [bindNewMobileVisible, setBindNewMobileVisible] =
-    useState<boolean>(false);
   const [codebindmobileVisible, setCodebindmobileVisible] =
     useState<boolean>(false);
 
@@ -223,29 +218,6 @@ export const InitPage = (props: Props) => {
     dispatch(saveNavsAction(props.navsData));
   }
 
-  useEffect(() => {
-    // 强制绑定手机号
-    if (
-      props.config &&
-      props.loginData &&
-      props.loginData.is_bind_mobile === 0 &&
-      props.config.member.enabled_mobile_bind_alert === 1
-    ) {
-      setBindNewMobileVisible(true);
-      return;
-    }
-    //强制实名认证
-    if (
-      props.config &&
-      props.loginData &&
-      props.loginData.is_face_verify === false &&
-      props.config.member.enabled_face_verify === true
-    ) {
-      console.log("实名认证");
-      setFaceCheckVisible(true);
-    }
-  }, [props.loginData, props.config]);
-
   const getHeight = () => {
     let scrollTop =
       window.pageYOffset ||
@@ -262,30 +234,11 @@ export const InitPage = (props: Props) => {
     user.detail().then((res: any) => {
       let loginData = res.data;
       dispatch(loginAction(loginData));
-      //强制实名认证
-      if (
-        props.config &&
-        loginData.is_face_verify === false &&
-        props.config.member.enabled_face_verify === true
-      ) {
-        console.log("实名认证");
-        setFaceCheckVisible(true);
-      }
     });
   };
 
   return (
     <main>
-      <BindNewMobileDialog
-        scene="mobile_bind"
-        open={bindNewMobileVisible}
-        active={false}
-        onCancel={() => setBindNewMobileVisible(false)}
-        success={() => {
-          setBindNewMobileVisible(false);
-          getUser();
-        }}
-      ></BindNewMobileDialog>
       <CodeLoginBindMobileDialog
         scene="mobile_bind"
         open={codebindmobileVisible}
@@ -295,15 +248,6 @@ export const InitPage = (props: Props) => {
           setCodebindmobileVisible(false);
         }}
       ></CodeLoginBindMobileDialog>
-      <TencentFaceCheck
-        open={faceCheckVisible}
-        active={false}
-        onCancel={() => setFaceCheckVisible(false)}
-        success={() => {
-          setFaceCheckVisible(false);
-          getUser();
-        }}
-      />
       <div style={{ minHeight: 800 }}>
         {showHeader && <Header></Header>}
         <Outlet />
