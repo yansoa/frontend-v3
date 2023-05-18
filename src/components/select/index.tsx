@@ -49,7 +49,10 @@ export const SelectComp: React.FC<PropInterface> = ({
   };
 
   useEffect(() => {
-    setActive(reply);
+    if (reply !== undefined) {
+      setActive(reply);
+    }
+
     if (wrongBook) {
       setRemarkStatus(true);
     } else {
@@ -134,7 +137,7 @@ export const SelectComp: React.FC<PropInterface> = ({
             {question["option" + item] && (
               <div
                 className={
-                  active && active.indexOf("option" + item) !== -1
+                  active.indexOf("option" + item) !== -1
                     ? styles["choice-active-item"]
                     : styles["choice-tap-item"]
                 }
