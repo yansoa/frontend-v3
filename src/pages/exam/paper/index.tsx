@@ -92,7 +92,7 @@ export const ExamPaperPage = () => {
               style={{
                 width: 1140,
                 height: 24,
-                marginTop: 5,
+                marginTop: 15,
                 marginBottom: 15,
               }}
             ></Skeleton.Button>
