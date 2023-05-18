@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Skeleton, message } from "antd";
+import { Skeleton, message, Button } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
@@ -215,12 +215,14 @@ export const ExamPaperDetailPage = () => {
                     </div>
                   )}
                   {canJoin && surplus && surplus !== 0 && (
-                    <div
+                    <Button
+                      type="primary"
+                      loading={joinLoading}
                       className={styles["join-button"]}
                       onClick={() => join(undefined)}
                     >
                       立即考试
-                    </div>
+                    </Button>
                   )}
                 </>
               </div>
