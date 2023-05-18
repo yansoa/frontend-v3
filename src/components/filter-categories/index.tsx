@@ -81,7 +81,8 @@ export const FilterCategories: React.FC<PropInterface> = ({
             </>
           )}
         </div>
-        {cid !== 0 &&
+        {(!loading || init) &&
+          cid !== 0 &&
           categories[cateIndex] &&
           categories[cateIndex].children &&
           categories[cateIndex].children.length > 0 && (
@@ -93,6 +94,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
                     child === 0 ? styles["active-item"] : styles["item"]
                   }
                   onClick={() => {
+                    setInit(true);
                     setChild(0);
                     onSelected(cid, 0);
                   }}
@@ -106,6 +108,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
                       child === item.id ? styles["active-item"] : styles["item"]
                     }
                     onClick={() => {
+                      setInit(true);
                       setChild(item.id);
                       onSelected(cid, item.id);
                     }}
