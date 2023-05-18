@@ -223,8 +223,30 @@ export const ExamPracticeDetailPage = () => {
       </div>
       <div className={styles["records-box"]}>
         <div className={styles["records"]}>
-          {chapters.length === 0 && <Empty></Empty>}
-          {chapters.length > 0 && (
+          {loading && (
+            <div
+              style={{
+                width: 1200,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className={styles["record-item"]}>
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 1140,
+                      height: 16,
+                    }}
+                  ></Skeleton.Button>
+                </div>
+              ))}
+            </div>
+          )}
+          {!loading && chapters.length === 0 && <Empty></Empty>}
+          {!loading && chapters.length > 0 && (
             <>
               {chapters.map((item: any) => (
                 <div
