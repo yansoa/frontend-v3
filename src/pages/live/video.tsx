@@ -568,6 +568,7 @@ export const LiveVideoPage = () => {
                 )}
                 {currentTab === 2 && (
                   <AttachDialog
+                    status={video.status}
                     cid={course.id}
                     vid={id}
                     onCancel={() => resetAttachDialog()}

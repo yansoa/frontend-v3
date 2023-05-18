@@ -8,12 +8,14 @@ import { goMeedu } from "../../../../api/index";
 interface PropInterface {
   cid: number;
   vid: number;
+  status: number;
   onCancel: () => void;
 }
 
 export const AttachDialog: React.FC<PropInterface> = ({
   cid,
   vid,
+  status,
   onCancel,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,9 +52,11 @@ export const AttachDialog: React.FC<PropInterface> = ({
 
   return (
     <div className={styles["live-attach-box"]}>
-      <div className={styles["reload"]}>
-        <a onClick={() => onCancel()}>点击刷新课件列表</a>
-      </div>
+      {status !== 2 && (
+        <div className={styles["reload"]}>
+          <a onClick={() => onCancel()}>点击刷新课件列表</a>
+        </div>
+      )}
       {list.length === 0 && <Empty></Empty>}
       {list.length > 0 && (
         <div className={styles["list-box"]}>
