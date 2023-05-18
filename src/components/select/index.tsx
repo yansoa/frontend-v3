@@ -134,7 +134,7 @@ export const SelectComp: React.FC<PropInterface> = ({
             {question["option" + item] && (
               <div
                 className={
-                  active.indexOf("option" + item) !== -1
+                  active && active.indexOf("option" + item) !== -1
                     ? styles["choice-active-item"]
                     : styles["choice-tap-item"]
                 }
@@ -142,18 +142,21 @@ export const SelectComp: React.FC<PropInterface> = ({
               >
                 {isOver && (
                   <>
-                    {question.answer.indexOf("option" + item) !== -1 && (
-                      <div className={styles["answer-index"]}>
-                        <img src={rightIcon} className={styles["icon"]} />
-                      </div>
-                    )}
-                    {question.answer.indexOf("option" + item) === -1 &&
+                    {question.answer &&
+                      question.answer.indexOf("option" + item) !== -1 && (
+                        <div className={styles["answer-index"]}>
+                          <img src={rightIcon} className={styles["icon"]} />
+                        </div>
+                      )}
+                    {question.answer &&
+                      question.answer.indexOf("option" + item) === -1 &&
                       active.indexOf("option" + item) !== -1 && (
                         <div className={styles["answer-index"]}>
                           <img src={wrongIcon} className={styles["icon"]} />
                         </div>
                       )}
-                    {question.answer.indexOf("option" + item) === -1 &&
+                    {question.answer &&
+                      question.answer.indexOf("option" + item) === -1 &&
                       active.indexOf("option" + item) === -1 && (
                         <div className={styles["index"]}>
                           {optionTypeTextMap["option" + item]}
