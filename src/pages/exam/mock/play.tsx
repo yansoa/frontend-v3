@@ -255,7 +255,7 @@ export const ExamMockPaperPlayPage = () => {
         maskClosable={false}
         open={submitTip}
         width={500}
-        onOk={() => submitHandle()}
+        onOk={() => finish()}
         onCancel={() => setSubmitTip(false)}
         cancelText="继续答题"
       >
