@@ -76,28 +76,33 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
                       原价：{item.original_charge}
                     </div>
                   </div>
-                  <div className={styles["ms-progress"]}>
-                    <div className={styles["label"]}>立即抢购</div>
-                    <div className={styles["progress-text"]}>
-                      <div className={styles["progress-render"]}>
-                        <div
-                          className={styles["nowprogress"]}
-                          style={{ width: proWidth(item.num, item.over_num) }}
-                        ></div>
-                      </div>
-                      {item.num >= 0 && item.over_num >= 0 ? (
-                        <div className={styles["progress-text-pure"]}>
-                          {(
-                            ((item.num - item.over_num) * 100) /
-                            item.num
-                          ).toFixed(0)}
-                          %
+                  {(item.is_over || item.num === item.over_num) && (
+                    <div className={styles["over-progress"]}>已结束</div>
+                  )}
+                  {!item.is_over && item.num !== item.over_num && (
+                    <div className={styles["ms-progress"]}>
+                      <div className={styles["label"]}>立即抢购</div>
+                      <div className={styles["progress-text"]}>
+                        <div className={styles["progress-render"]}>
+                          <div
+                            className={styles["nowprogress"]}
+                            style={{ width: proWidth(item.num, item.over_num) }}
+                          ></div>
                         </div>
-                      ) : (
-                        <div className={styles["progress-text-pure"]}>0%</div>
-                      )}
+                        {item.num >= 0 && item.over_num >= 0 ? (
+                          <div className={styles["progress-text-pure"]}>
+                            {(
+                              ((item.num - item.over_num) * 100) /
+                              item.num
+                            ).toFixed(0)}
+                            %
+                          </div>
+                        ) : (
+                          <div className={styles["progress-text-pure"]}>0%</div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
