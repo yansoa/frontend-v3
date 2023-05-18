@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Skeleton, message } from "antd";
+import { Skeleton, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wrongbook } from "../../../api/index";
@@ -69,9 +69,14 @@ export const ExamWrongbookPage = () => {
       <div className={styles["banner"]}>
         <div className={styles["tit"]}>考试错题本</div>
         <div className={styles["btn-box"]}>
-          <div className={styles["btn-all-play"]} onClick={() => run("order")}>
+          <Button
+            type="primary"
+            loading={loading}
+            className={styles["btn-all-play"]}
+            onClick={() => run("order")}
+          >
             全部练习
-          </div>
+          </Button>
         </div>
       </div>
       <div className={styles["question-box"]}>
