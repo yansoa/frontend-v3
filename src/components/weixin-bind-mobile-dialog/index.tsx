@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
@@ -9,6 +9,10 @@ import {
   getLoginCode,
   clearLoginCode,
   setToken,
+  clearBindMobileKey,
+  getFaceCheckKey,
+  setFaceCheckKey,
+  clearFaceCheckKey,
 } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 
@@ -35,6 +39,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
   const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
   const [redirect, setRedirect] = useState(result.get("redirect"));
+  const config = useSelector((state: any) => state.systemConfig.value.config);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -118,14 +123,31 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       .then((res: any) => {
         message.success("绑定成功");
         clearLoginCode();
-        let token = res.data.token;
-        setToken(token);
-        user.detail().then((res: any) => {
-          let loginData = res.data;
-          dispatch(loginAction(loginData));
-          setLoading(false);
-          redirectHandler();
-        });
+        clearBindMobileKey();
+        if (getFaceCheckKey() === "ok") {
+          navigate("/faceCheck");
+        } else {
+          let token = res.data.token;
+          setToken(token);
+          user.detail().then((res: any) => {
+            let loginData = res.data;
+            dispatch(loginAction(loginData));
+            //强制实名认证
+            if (
+              loginData.is_face_verify === false &&
+              config.member.enabled_face_verify === true
+            ) {
+              setFaceCheckKey();
+              interval && clearInterval(interval);
+              onCancel();
+              navigate("/faceCheck", { replace: true });
+            } else {
+              clearFaceCheckKey();
+              setLoading(false);
+              redirectHandler();
+            }
+          });
+        }
       })
       .catch((e: any) => {
         setLoading(false);

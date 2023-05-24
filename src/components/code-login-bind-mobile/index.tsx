@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { login, user, system } from "../../api/index";
 import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
@@ -10,6 +10,10 @@ import {
   getMsv,
   clearLoginCode,
   setToken,
+  clearBindMobileKey,
+  getFaceCheckKey,
+  setFaceCheckKey,
+  clearFaceCheckKey,
 } from "../../utils/index";
 
 interface PropInterface {
@@ -41,6 +45,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
   const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
   const [redirect, setRedirect] = useState(result.get("redirect"));
+  const config = useSelector((state: any) => state.systemConfig.value.config);
 
   useEffect(() => {
     form.setFieldsValue({
@@ -126,14 +131,31 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
         setLoading(false);
         message.success("绑定成功");
         clearLoginCode();
-        let token = res.data.token;
-        setToken(token);
-        user.detail().then((res: any) => {
-          let loginData = res.data;
-          dispatch(loginAction(loginData));
-          success();
-          redirectHandler();
-        });
+        clearBindMobileKey();
+        if (getFaceCheckKey() === "ok") {
+          navigate("/faceCheck");
+        } else {
+          let token = res.data.token;
+          setToken(token);
+          user.detail().then((res: any) => {
+            let loginData = res.data;
+            dispatch(loginAction(loginData));
+            //强制实名认证
+            if (
+              loginData.is_face_verify === false &&
+              config.member.enabled_face_verify === true
+            ) {
+              setFaceCheckKey();
+              interval && clearInterval(interval);
+              onCancel();
+              navigate("/faceCheck", { replace: true });
+            } else {
+              clearFaceCheckKey();
+              success();
+              redirectHandler();
+            }
+          });
+        }
       })
       .catch((e: any) => {
         setLoading(false);

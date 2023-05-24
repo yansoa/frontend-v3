@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./bindMobile.module.scss";
 import { Form, Input, message, Spin, Button, Space, Image } from "antd";
-import { login, user, system } from "../../api/index";
+import { user, system } from "../../api/index";
 import { loginAction } from "../../store/user/loginUserSlice";
-import { clearBindMobileKey } from "../../utils/index";
+import {
+  clearBindMobileKey,
+  getFaceCheckKey,
+  setFaceCheckKey,
+  clearFaceCheckKey,
+} from "../../utils/index";
 
 var interval: any = null;
 export const BindNewMobilePage = () => {
-  const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
   const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
+  const config = useSelector((state: any) => state.systemConfig.value.config);
 
   useEffect(() => {
     document.title = "绑定新手机号";
@@ -102,7 +105,11 @@ export const BindNewMobilePage = () => {
         setLoading(false);
         message.success("绑定成功");
         clearBindMobileKey();
-        getUser();
+        if (getFaceCheckKey() === "ok") {
+          navigate("/faceCheck");
+        } else {
+          getUser();
+        }
       })
       .catch((e: any) => {
         setLoading(false);
@@ -117,7 +124,17 @@ export const BindNewMobilePage = () => {
     user.detail().then((res: any) => {
       let loginData = res.data;
       dispatch(loginAction(loginData));
-      navigate("/", { replace: true });
+      //强制实名认证
+      if (
+        loginData.is_face_verify === false &&
+        config.member.enabled_face_verify === true
+      ) {
+        setFaceCheckKey();
+        navigate("/faceCheck", { replace: true });
+      } else {
+        clearFaceCheckKey();
+        navigate("/", { replace: true });
+      }
     });
   };
 
