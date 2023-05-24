@@ -110,7 +110,11 @@ export const InitPage = (props: Props) => {
             let loginData = res.data;
             dispatch(loginAction(loginData));
             let path = window.location.pathname + window.location.search;
-            navigate(path, { replace: true });
+            if (window.location.pathname === "/login") {
+              navigate("/", { replace: true });
+            } else {
+              navigate(path, { replace: true });
+            }
           });
         } else {
           if (res.data.action === "bind_mobile") {
