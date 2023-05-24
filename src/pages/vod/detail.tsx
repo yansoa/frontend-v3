@@ -262,6 +262,10 @@ export const VodDetailPage = () => {
   };
 
   const openMsDialog = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
     setMsVisible(true);
   };
 

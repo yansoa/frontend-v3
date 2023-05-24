@@ -269,6 +269,10 @@ export const LiveDetailPage = () => {
   };
 
   const openMsDialog = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
     setMsVisible(true);
   };
 

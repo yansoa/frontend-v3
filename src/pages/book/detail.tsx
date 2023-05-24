@@ -210,6 +210,10 @@ export const BookDetailPage = () => {
   };
 
   const openMsDialog = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
     setMsVisible(true);
   };
 

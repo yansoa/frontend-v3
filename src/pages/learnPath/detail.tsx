@@ -94,6 +94,10 @@ export const LearnPathDetailPage = () => {
   };
 
   const openMsDialog = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
     setMsVisible(true);
   };
 
