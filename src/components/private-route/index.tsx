@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { getToken, getFaceCheckKey, getBindMobileKey } from "../../utils/index";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 interface PropInterface {
   Component: any;
