@@ -11,11 +11,10 @@ var timer: any = null;
 export const TencentFaceCheckPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(false);
   const [verifyLoading, setVerifyLoading] = useState<boolean>(false);
-  const [qrode, setQrode] = useState<string>("");
-  const [ruleId, setRuleId] = useState<string>("");
-  const [bizToken, setBizToken] = useState<string>("");
+  const [qrode, setQrode] = useState("loading");
+  const [ruleId, setRuleId] = useState("");
+  const [bizToken, setBizToken] = useState("");
 
   useEffect(() => {
     getQrode();
@@ -75,13 +74,11 @@ export const TencentFaceCheckPage = () => {
   return (
     <div>
       <div className={styles["box"]}>
-        {qrode !== "" && (
-          <QRCode
-            size={250}
-            value={qrode}
-            status={verifyLoading ? "loading" : "active"}
-          />
-        )}
+        <QRCode
+          size={300}
+          value={qrode}
+          status={verifyLoading ? "loading" : "active"}
+        />
       </div>
       <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
     </div>

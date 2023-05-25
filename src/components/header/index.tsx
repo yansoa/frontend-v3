@@ -119,11 +119,12 @@ export const Header = () => {
         return;
       }
       setLoading(true);
-      login.logout().then((res: any) => {
-        message.success("安全退出成功");
+      login.logout().then(() => {
+        message.success("已安全退出");
         dispatch(logoutAction());
-        setLoading(false);
-        location.reload();
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 800);
       });
     } else if (key === "user_info") {
       navigate(`/member`);
