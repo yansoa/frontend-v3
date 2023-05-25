@@ -64,6 +64,7 @@ import { SharePage } from "../pages/share";
 import { StudyCenterPage } from "../pages/study/index";
 import { TencentFaceCheckPage } from "../pages/auth/faceCheck";
 import { BindNewMobilePage } from "../pages/auth/bindMobile";
+import { AuthLoadingPage } from "../pages/auth/loading";
 import PrivateRoute from "../components/private-route";
 
 let RootPage: any = null;
@@ -238,6 +239,7 @@ const routes: RouteObject[] = [
         path: "/login",
         element: <LoginPage />,
       },
+      { path: "/login/callback", element: <AuthLoadingPage /> },
       { path: "/courses", element: <VodPage /> },
       { path: "/courses/detail", element: <VodDetailPage /> },
       {

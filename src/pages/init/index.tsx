@@ -89,14 +89,15 @@ export const InitPage = (props: Props) => {
       // 社交登录回调处理
       let loginCode = result.get("login_code");
       let action = result.get("action");
-
+      let redirectUrl =
+        decodeURIComponent(String(result.get("redirect"))) || "/";
       if (loginCode && action === "login") {
-        codeLogin(String(loginCode));
+        codeLogin(String(loginCode), redirectUrl);
       }
     }
   }, [result]);
 
-  const codeLogin = (code: string) => {
+  const codeLogin = (code: string, redirectUrl: string) => {
     if (getSessionLoginCode(code)) {
       return;
     }
@@ -110,8 +111,8 @@ export const InitPage = (props: Props) => {
             let loginData = res.data;
             dispatch(loginAction(loginData));
             let path = window.location.pathname + window.location.search;
-            if (window.location.pathname === "/login") {
-              navigate("/", { replace: true });
+            if (window.location.pathname === "/login/callback") {
+              navigate(redirectUrl, { replace: true });
             } else {
               navigate(path, { replace: true });
             }
