@@ -552,7 +552,12 @@ export const BookReadPage = () => {
                     placeholder="此处填写你的评论"
                   ></Input>
                   {content === "" && (
-                    <Button   type="primary" className={styles["disabled-button"]}>评论</Button>
+                    <Button
+                      type="primary"
+                      className={styles["disabled-button"]}
+                    >
+                      评论
+                    </Button>
                   )}
                   {content !== "" && (
                     <Button
