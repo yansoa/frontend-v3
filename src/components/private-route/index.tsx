@@ -13,9 +13,9 @@ const PrivateRoute: React.FC<PropInterface> = ({ Component }) => {
 
   return getToken() ? (
     getBindMobileKey() === "ok" ? (
-      <Navigate to={"/bindMobile"} replace />
+      <Navigate to={"/bind-mobile"} replace />
     ) : getFaceCheckKey() === "ok" ? (
-      <Navigate to={"/faceCheck"} replace />
+      <Navigate to={"/face-check"} replace />
     ) : (
       Component
     )

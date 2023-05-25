@@ -106,19 +106,19 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
             {
               name: "兑换课程",
               id: 15,
-              path: "/member/codeexchanger",
+              path: "/member/code-exchanger",
               status: configFunc["codeExchanger"],
             },
             {
               name: "积分商城",
               id: 16,
-              path: "/member/credit1_records",
+              path: "/member/credit1-records",
               status: configFunc["credit1Mall"],
             },
             {
               name: "我的积分",
               id: 18,
-              path: "/member/credit1_free",
+              path: "/member/credit1-free",
               status: !configFunc["credit1Mall"],
             },
           ],

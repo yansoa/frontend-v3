@@ -106,7 +106,7 @@ export const BindNewMobilePage = () => {
         message.success("绑定成功");
         clearBindMobileKey();
         if (getFaceCheckKey() === "ok") {
-          navigate("/faceCheck");
+          navigate("/face-check");
         } else {
           getUser();
         }
@@ -130,7 +130,7 @@ export const BindNewMobilePage = () => {
         config.member.enabled_face_verify === true
       ) {
         setFaceCheckKey();
-        navigate("/faceCheck", { replace: true });
+        navigate("/face-check", { replace: true });
       } else {
         clearFaceCheckKey();
         navigate("/", { replace: true });
