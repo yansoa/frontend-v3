@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./index.module.scss";
 import { ThumbBar } from "../../../../components";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 interface PropInterface {
   items: any;
@@ -11,6 +12,10 @@ interface PropInterface {
 export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
+    if (item.is_over || item.num === item.over_num) {
+      message.error("已结束");
+      return;
+    }
     if (item.goods_type === "course") {
       navigate("/courses/detail?id=" + item.goods_id);
     } else if (item.goods_type === "live") {
@@ -76,28 +81,33 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
                       原价：{item.original_charge}
                     </div>
                   </div>
-                  <div className={styles["ms-progress"]}>
-                    <div className={styles["label"]}>立即抢购</div>
-                    <div className={styles["progress-text"]}>
-                      <div className={styles["progress-render"]}>
-                        <div
-                          className={styles["nowprogress"]}
-                          style={{ width: proWidth(item.num, item.over_num) }}
-                        ></div>
-                      </div>
-                      {item.num >= 0 && item.over_num >= 0 ? (
-                        <div className={styles["progress-text-pure"]}>
-                          {(
-                            ((item.num - item.over_num) * 100) /
-                            item.num
-                          ).toFixed(0)}
-                          %
+                  {(item.is_over || item.num === item.over_num) && (
+                    <div className={styles["over-progress"]}>已结束</div>
+                  )}
+                  {!item.is_over && item.num !== item.over_num && (
+                    <div className={styles["ms-progress"]}>
+                      <div className={styles["label"]}>立即抢购</div>
+                      <div className={styles["progress-text"]}>
+                        <div className={styles["progress-render"]}>
+                          <div
+                            className={styles["nowprogress"]}
+                            style={{ width: proWidth(item.num, item.over_num) }}
+                          ></div>
                         </div>
-                      ) : (
-                        <div className={styles["progress-text-pure"]}>0%</div>
-                      )}
+                        {item.num >= 0 && item.over_num >= 0 ? (
+                          <div className={styles["progress-text-pure"]}>
+                            {(
+                              ((item.num - item.over_num) * 100) /
+                              item.num
+                            ).toFixed(0)}
+                            %
+                          </div>
+                        ) : (
+                          <div className={styles["progress-text-pure"]}>0%</div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}

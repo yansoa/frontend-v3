@@ -251,3 +251,27 @@ export function latexRender(el: any) {
 
   return el;
 }
+
+export function getBindMobileKey(): string {
+  return window.localStorage.getItem("meedu-bind-mobile") || "";
+}
+
+export function setBindMobileKey() {
+  window.localStorage.setItem("meedu-bind-mobile", "ok");
+}
+
+export function clearBindMobileKey() {
+  window.localStorage.removeItem("meedu-bind-mobile");
+}
+
+export function getFaceCheckKey(): string {
+  return window.localStorage.getItem("meedu-face-check") || "";
+}
+
+export function setFaceCheckKey() {
+  window.localStorage.setItem("meedu-face-check", "ok");
+}
+
+export function clearFaceCheckKey() {
+  window.localStorage.removeItem("meedu-face-check");
+}

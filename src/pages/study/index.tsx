@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Spin, Pagination, Radio } from "antd";
+import { Row, Col, Skeleton, Pagination, Radio } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { user as member, study, live } from "../../api/index";
 import { Empty } from "../../components";
@@ -26,6 +26,7 @@ export const StudyCenterPage = () => {
   );
 
   useEffect(() => {
+    document.title = "我的学习";
     let types = [
       {
         name: "录播课",
@@ -317,8 +318,36 @@ export const StudyCenterPage = () => {
           <div className={styles["list-box"]}>
             {loading && (
               <Row>
-                <div className="float-left d-j-flex">
-                  <Spin size="large" />
+                <div
+                  style={{
+                    width: 1200,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        width: 1200,
+                        height: 120,
+                        marginBottom: 30,
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 160,
+                          height: 120,
+                          borderRadius: 4,
+                          marginRight: 30,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                    </div>
+                  ))}
                 </div>
               </Row>
             )}

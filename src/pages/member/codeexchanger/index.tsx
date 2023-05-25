@@ -114,6 +114,7 @@ export const MemberExchangerPage = () => {
               placeholder="请输入兑换码"
             ></Input>
             <Button
+              type="primary"
               className={styles["btn-exchange"]}
               onClick={() => exchange()}
             >

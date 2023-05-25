@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
 import { login, system, user } from "../../api/index";
-import { setToken, getMsv, getAppUrl } from "../../utils/index";
+import { setToken, getMsv, getAppUrl, getHost } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 import iconQQ from "../../assets/img/commen/icon-qq.png";
 import iconWeixin from "../../assets/img/commen/icon-weixin.png";
@@ -163,7 +163,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
     interval && clearInterval(interval);
     onCancel();
 
-    if (pathname === "/login") {
+    if (pathname === "/login" || pathname === "/login/callback") {
       if (redirect) {
         navigate(decodeURIComponent(redirect), { replace: true });
       } else {
@@ -200,8 +200,8 @@ export const LoginDialog: React.FC<PropInterface> = ({
     }
     if (pathname === "/login") {
       let appUrl = getAppUrl();
-      if (params.redirect) {
-        successRedirectUrl = appUrl + params.redirect;
+      if (redirect) {
+        successRedirectUrl = getHost() + "login/callback?redirect=" + redirect;
       } else {
         successRedirectUrl = appUrl;
       }

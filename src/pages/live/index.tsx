@@ -66,8 +66,10 @@ export const LivePage = () => {
           setChild(child);
           if (id === 0) {
             navigate("/live");
+          } else if (child === 0) {
+            navigate("/live?cid=" + id);
           } else {
-            navigate("/live?cid=" + cid + "&child=" + child);
+            navigate("/live?cid=" + id + "&child=" + child);
           }
           resetList();
         }}
@@ -84,146 +86,26 @@ export const LivePage = () => {
                 marginTop: 30,
               }}
             >
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Skeleton.Button
-                  active
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={i}
                   style={{
                     width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: 30,
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: 30,
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: 30,
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
-              <div
-                style={{
-                  width: 264,
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: 30,
-                }}
-              >
-                <Skeleton.Button
-                  active
-                  style={{
-                    width: 264,
-                    height: 198,
-                    borderRadius: "8px 8px 0 0",
-                  }}
-                ></Skeleton.Button>
-                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-              </div>
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 264,
+                      height: 198,
+                      borderRadius: "8px 8px 0 0",
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                </div>
+              ))}
             </div>
           </Row>
         )}

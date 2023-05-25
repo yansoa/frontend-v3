@@ -1,47 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
-import styles from "./index.module.scss";
+import styles from "./bindMobile.module.scss";
+import { Form, Input, message, Spin, Button, Space, Image } from "antd";
 import { user, system } from "../../api/index";
+import { loginAction } from "../../store/user/loginUserSlice";
 import {
-  getMsv,
-  getLoginCode,
-  clearLoginCode,
-  setToken,
   clearBindMobileKey,
   getFaceCheckKey,
   setFaceCheckKey,
   clearFaceCheckKey,
 } from "../../utils/index";
-import { loginAction } from "../../store/user/loginUserSlice";
-
-interface PropInterface {
-  open: boolean;
-  onCancel: () => void;
-}
 
 var interval: any = null;
-
-export const WexinBindMobileDialog: React.FC<PropInterface> = ({
-  open,
-  onCancel,
-}) => {
-  const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
+export const BindNewMobilePage = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const pathname = useLocation().pathname;
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [captcha, setCaptcha] = useState<any>({ key: null, img: null });
   const [current, setCurrent] = useState<number>(0);
   const [smsLoading, setSmsLoading] = useState<boolean>(false);
   const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
-  const [redirect, setRedirect] = useState(result.get("redirect"));
   const config = useSelector((state: any) => state.systemConfig.value.config);
 
   useEffect(() => {
+    document.title = "绑定新手机号";
     form.setFieldsValue({
       mobile: "",
       captcha: "",
@@ -49,14 +33,12 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
     });
     setSmsLoading(false);
     setCurrent(120);
-    if (open) {
-      getCaptcha();
-    }
+    getCaptcha();
 
     return () => {
       interval && clearInterval(interval);
     };
-  }, [form, open]);
+  }, []);
 
   const getCaptcha = () => {
     system.imageCaptcha().then((res: any) => {
@@ -82,7 +64,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         mobile: form.getFieldValue("mobile"),
         image_key: captcha.key,
         image_captcha: form.getFieldValue("captcha"),
-        scene: "login",
+        scene: "mobile_bind",
       })
       .then((res: any) => {
         setSmsLoading2(false);
@@ -108,45 +90,25 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         setSmsLoading(false);
       });
   };
+
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
     setLoading(true);
     user
-      .wechatCodeBindMobile({
+      .newMobile({
         mobile: values.mobile,
-        code: getLoginCode(),
         mobile_code: values.sms,
-        msv: getMsv(),
       })
       .then((res: any) => {
+        setLoading(false);
         message.success("绑定成功");
-        clearLoginCode();
         clearBindMobileKey();
         if (getFaceCheckKey() === "ok") {
           navigate("/face-check");
         } else {
-          let token = res.data.token;
-          setToken(token);
-          user.detail().then((res: any) => {
-            let loginData = res.data;
-            dispatch(loginAction(loginData));
-            //强制实名认证
-            if (
-              loginData.is_face_verify === false &&
-              config.member.enabled_face_verify === true
-            ) {
-              setFaceCheckKey();
-              interval && clearInterval(interval);
-              onCancel();
-              navigate("/face-check", { replace: true });
-            } else {
-              clearFaceCheckKey();
-              setLoading(false);
-              redirectHandler();
-            }
-          });
+          getUser();
         }
       })
       .catch((e: any) => {
@@ -158,50 +120,31 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
     console.log("Failed:", errorInfo);
   };
 
-  const redirectHandler = () => {
-    interval && clearInterval(interval);
-    onCancel();
-    if (pathname === "/login") {
-      if (redirect) {
-        navigate(decodeURIComponent(redirect), { replace: true });
+  const getUser = () => {
+    user.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+      //强制实名认证
+      if (
+        loginData.is_face_verify === false &&
+        config.member.enabled_face_verify === true
+      ) {
+        setFaceCheckKey();
+        navigate("/face-check", { replace: true });
       } else {
+        clearFaceCheckKey();
         navigate("/", { replace: true });
       }
-    } else {
-      location.reload();
-    }
+    });
   };
 
   return (
-    <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          interval && clearInterval(interval);
-          onCancel();
-        }}
-        maskClosable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>请绑定手机号</div>
-          {/* <a
-            className={styles["linkTab"]}
-            onClick={() => {
-              interval && clearInterval(interval);
-              onCancel();
-            }}
-          >
-            取消绑定&gt;&gt;
-          </a> */}
-        </div>
+    <div>
+      <div className={styles["box"]}>
+        <div className={styles["title"]}>请绑定手机号</div>
         <Form
           form={form}
-          name="weixin-bind-mobile-dialog"
+          name="bind-new-mobile-page"
           labelCol={{ span: 0 }}
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
@@ -212,7 +155,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         >
           <Form.Item
             name="mobile"
-            rules={[{ required: true, message: "请输入手机号!" }]}
+            rules={[{ required: true, message: "请输入手机号" }]}
           >
             <Input
               style={{ width: 440, height: 54 }}
@@ -224,7 +167,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
             <Space align="baseline" style={{ height: 54 }}>
               <Form.Item
                 name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
+                rules={[{ required: true, message: "请输入图形验证码" }]}
               >
                 <Input
                   style={{ width: 310, height: 54, marginRight: 10 }}
@@ -247,12 +190,12 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
             <Space align="baseline" style={{ height: 54 }}>
               <Form.Item
                 name="sms"
-                rules={[{ required: true, message: "请输入手机验证码!" }]}
+                rules={[{ required: true, message: "请输入短信验证码" }]}
               >
                 <Input
                   style={{ width: 310, height: 54, marginRight: 30 }}
                   autoComplete="off"
-                  placeholder="请输入手机验证码"
+                  placeholder="请输入短信验证码"
                 />
               </Form.Item>
               <div className={styles["buttons"]}>
@@ -286,7 +229,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
             </Button>
           </Form.Item>
         </Form>
-      </Modal>
-    </>
+      </div>
+    </div>
   );
 };

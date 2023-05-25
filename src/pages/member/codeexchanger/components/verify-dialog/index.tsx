@@ -132,12 +132,14 @@ export const VerifyDialog: React.FC<PropInterface> = ({
                 </div>
               )}
               {!status && (
-                <div
+                <Button
+                  loading={loading}
+                  type="primary"
                   className={styles["btn-submit"]}
                   onClick={() => withdraw()}
                 >
                   确认
-                </div>
+                </Button>
               )}
               <div className={styles["btn-cancel"]} onClick={() => onCancel()}>
                 取消

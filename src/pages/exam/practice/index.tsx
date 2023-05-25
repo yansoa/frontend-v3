@@ -13,6 +13,7 @@ export const ExamPracticePage = () => {
   document.title = "练习模式";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [init, setInit] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -71,6 +72,7 @@ export const ExamPracticePage = () => {
           setUserpapers(newData);
         }
         setLoading(false);
+        setInit(false);
       });
   };
 
@@ -88,17 +90,37 @@ export const ExamPracticePage = () => {
       </div>
       <div className={styles["content"]}>
         <div className={styles["filter-two-class"]}>
-          <FilterCategories
-            loading={loading}
-            categories={categories}
-            defaultKey={cid}
-            defaultChild={child}
-            onSelected={(id: number, child: number) => {
-              setCid(id);
-              setChild(child);
-              resetList();
-            }}
-          />
+          {loading && init && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 1140,
+                height: 24,
+                marginTop: 15,
+                marginBottom: 15,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!init && (
+            <FilterCategories
+              loading={loading}
+              categories={categories}
+              defaultKey={cid}
+              defaultChild={child}
+              onSelected={(id: number, child: number) => {
+                setCid(id);
+                setChild(child);
+                if (id === 0) {
+                  navigate("/exam/practice");
+                } else if (child === 0) {
+                  navigate("/exam/practice?cid=" + id);
+                } else {
+                  navigate("/exam/practice?cid=" + id + "&child=" + child);
+                }
+                resetList();
+              }}
+            />
+          )}
         </div>
         {loading && (
           <Row style={{ width: 1200 }}>

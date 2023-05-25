@@ -1,4 +1,5 @@
 import React from "react";
+import { message } from "antd";
 import styles from "./index.module.scss";
 import { ThumbBar } from "../../../../components";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,10 @@ interface PropInterface {
 export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
+    if (item.is_over) {
+      message.error("已结束");
+      return;
+    }
     if (item.goods_type === "course") {
       navigate("/courses/detail?id=" + item.other_id);
     } else if (item.goods_type === "live") {
@@ -73,12 +78,17 @@ export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
                       原价：{item.original_charge}
                     </div>
                   </div>
-                  <div className={styles["tg-progress"]}>
-                    <div className={styles["label"]}>立即抢购</div>
-                    <div className={styles["progress-text"]}>
-                      {item.people_num}人团
+                  {item.is_over && (
+                    <div className={styles["over-progress"]}>已结束</div>
+                  )}
+                  {!item.is_over && (
+                    <div className={styles["tg-progress"]}>
+                      <div className={styles["label"]}>立即抢购</div>
+                      <div className={styles["progress-text"]}>
+                        {item.people_num}人团
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}

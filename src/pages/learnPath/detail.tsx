@@ -94,6 +94,10 @@ export const LearnPathDetailPage = () => {
   };
 
   const openMsDialog = () => {
+    if (!isLogin) {
+      goLogin();
+      return;
+    }
     setMsVisible(true);
   };
 
@@ -281,14 +285,15 @@ export const LearnPathDetailPage = () => {
                             已获得秒杀资格，请尽快支付
                           </div>
                         )}
-                        {!msData.data.is_over && (
-                          <div
-                            className={styles["buy-button"]}
-                            onClick={() => openMsDialog()}
-                          >
-                            立即秒杀￥{msData.data.charge}
-                          </div>
-                        )}
+                        {(!msData.order || msData.order.status !== 0) &&
+                          !msData.data.is_over && (
+                            <div
+                              className={styles["buy-button"]}
+                              onClick={() => openMsDialog()}
+                            >
+                              立即秒杀￥{msData.data.charge}
+                            </div>
+                          )}
                       </>
                     )}
                     {(!msData || !msData.data) && (

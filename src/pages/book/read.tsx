@@ -228,9 +228,10 @@ export const BookReadPage = () => {
       goLogin();
       return;
     }
-    let arr = [...configInput];
+    let arr = [];
     arr[id] = true;
     setConfigInput(arr);
+    setReplyContent("");
   };
 
   const goLogin = () => {
@@ -552,12 +553,19 @@ export const BookReadPage = () => {
                     placeholder="此处填写你的评论"
                   ></Input>
                   {content === "" && (
-                    <Button className={styles["disabled-button"]}>评论</Button>
+                    <Button
+                      type="primary"
+                      className={styles["disabled-button"]}
+                    >
+                      评论
+                    </Button>
                   )}
                   {content !== "" && (
                     <Button
+                      type="primary"
                       className={styles["btn-submit"]}
                       onClick={() => submitComment()}
+                      loading={commentLoading}
                     >
                       评论
                     </Button>
@@ -632,12 +640,16 @@ export const BookReadPage = () => {
                             placeholder={"回复" + item.user.nick_name}
                           ></Input>
                           {replyContent === "" && (
-                            <Button className={styles["disabled-button"]}>
+                            <Button
+                              type="primary"
+                              className={styles["disabled-button"]}
+                            >
                               发表回复
                             </Button>
                           )}
                           {replyContent !== "" && (
                             <Button
+                              type="primary"
                               className={styles["confirm-button"]}
                               onClick={() =>
                                 reply(
@@ -647,6 +659,7 @@ export const BookReadPage = () => {
                                   index
                                 )
                               }
+                              loading={commentLoading}
                             >
                               发表回复
                             </Button>
@@ -656,6 +669,7 @@ export const BookReadPage = () => {
                       {configkey[index] === true && (
                         <div className={styles["reply-list-box"]}>
                           {replyAnswers.length > 0 &&
+                            replyAnswers[index] &&
                             replyAnswers[index].map((replyItem: any) => (
                               <div
                                 key={replyItem.id}
@@ -722,6 +736,7 @@ export const BookReadPage = () => {
                                       ></Input>
                                       {replyContent === "" && (
                                         <Button
+                                          type="primary"
                                           className={styles["disabled-button"]}
                                         >
                                           发表回复
@@ -729,6 +744,7 @@ export const BookReadPage = () => {
                                       )}
                                       {replyContent !== "" && (
                                         <Button
+                                          type="primary"
                                           className={styles["confirm-button"]}
                                           onClick={() =>
                                             reply(
@@ -738,6 +754,7 @@ export const BookReadPage = () => {
                                               index
                                             )
                                           }
+                                          loading={commentLoading}
                                         >
                                           发表回复
                                         </Button>

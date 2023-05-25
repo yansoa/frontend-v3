@@ -43,9 +43,16 @@ export const FilterExamCategories: React.FC<PropInterface> = ({
                 <div
                   key={item.id}
                   className={
-                    cid === item.id ? styles["active-item"] : styles["item"]
+                    item.name.indexOf("(0)") !== -1
+                      ? styles["disabled-item"]
+                      : cid === item.id
+                      ? styles["active-item"]
+                      : styles["item"]
                   }
                   onClick={() => {
+                    if (item.name.indexOf("(0)") !== -1) {
+                      return;
+                    }
                     setCid(item.id);
                     setChild(0);
                     onSelected(item.id, 0, sceneId);
@@ -66,11 +73,16 @@ export const FilterExamCategories: React.FC<PropInterface> = ({
                     <div
                       key={item.id}
                       className={
-                        child === item.id
+                        item.name.indexOf("(0)") !== -1
+                          ? styles["disabled-item"]
+                          : child === item.id
                           ? styles["active-item"]
                           : styles["item"]
                       }
                       onClick={() => {
+                        if (item.name.indexOf("(0)") !== -1) {
+                          return;
+                        }
                         setChild(item.id);
                         onSelected(cid, item.id, sceneId);
                       }}

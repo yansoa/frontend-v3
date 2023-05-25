@@ -102,69 +102,30 @@ export const TopicPage = () => {
                   flexDirection: "column",
                 }}
               >
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    boxSizing: "border-box",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Skeleton.Button
-                    active
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
                     style={{
-                      width: 133,
-                      height: 100,
-                      borderRadius: 8,
-                      marginRight: 20,
+                      width: 769,
+                      display: "flex",
+                      flexDirection: "row",
+                      padding: "20px 30px",
+                      boxSizing: "border-box",
+                      marginBottom: 10,
                     }}
-                  ></Skeleton.Button>
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                </div>
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    marginBottom: 10,
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Skeleton.Button
-                    active
-                    style={{
-                      width: 133,
-                      height: 100,
-                      borderRadius: 8,
-                      marginRight: 20,
-                    }}
-                  ></Skeleton.Button>
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                </div>
-                <div
-                  style={{
-                    width: 769,
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "20px 30px",
-                    marginBottom: 10,
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Skeleton.Button
-                    active
-                    style={{
-                      width: 133,
-                      height: 100,
-                      borderRadius: 8,
-                      marginRight: 20,
-                    }}
-                  ></Skeleton.Button>
-                  <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
-                </div>
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 133,
+                        height: 100,
+                        borderRadius: 8,
+                        marginRight: 20,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
+                  </div>
+                ))}
               </div>
             </Row>
           )}

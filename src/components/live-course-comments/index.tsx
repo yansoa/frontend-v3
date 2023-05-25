@@ -73,6 +73,7 @@ export const LiveCourseComments: React.FC<PropInterface> = ({
               onClick={() => {
                 submitComment();
               }}
+              loading={loading}
             >
               评论
             </Button>

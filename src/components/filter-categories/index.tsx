@@ -30,56 +30,59 @@ export const FilterCategories: React.FC<PropInterface> = ({
       }
     }
     setCateIndex(index);
-  }, [cid]);
+  }, [categories, cid]);
 
   return (
     <div className={styles["category-box"]}>
       <div className={styles["categories"]}>
-        <div className={styles["box"]}>
-          {loading && !init && (
+        {loading && !init && (
+          <div style={{ width: 1140, textAlign: "left" }}>
             <Skeleton.Button
               active
               style={{
-                width: 1200,
+                width: 1140,
                 height: 34,
                 marginBottom: 10,
               }}
             ></Skeleton.Button>
-          )}
-          {(!loading || init) && (
-            <>
-              <div className={styles["label"]}>分类：</div>
-              <div className={styles["item-box"]}>
+          </div>
+        )}
+        {(!loading || init) && (
+          <div className={styles["box"]}>
+            <div className={styles["label"]}>分类：</div>
+            <div className={styles["item-box"]}>
+              <div
+                className={cid === 0 ? styles["active-item"] : styles["item"]}
+                onClick={() => {
+                  setInit(true);
+                  setCid(0);
+                  setChild(0);
+                  onSelected(0, 0);
+                }}
+              >
+                全部
+              </div>
+              {categories.map((item: any) => (
                 <div
-                  className={cid === 0 ? styles["active-item"] : styles["item"]}
+                  key={item.id}
+                  className={
+                    cid === item.id ? styles["active-item"] : styles["item"]
+                  }
                   onClick={() => {
                     setInit(true);
-                    setCid(0);
-                    onSelected(0, child);
+                    setCid(item.id);
+                    setChild(0);
+                    onSelected(item.id, 0);
                   }}
                 >
-                  全部
+                  <span>{item.name}</span>
                 </div>
-                {categories.map((item: any) => (
-                  <div
-                    key={item.id}
-                    className={
-                      cid === item.id ? styles["active-item"] : styles["item"]
-                    }
-                    onClick={() => {
-                      setInit(true);
-                      setCid(item.id);
-                      onSelected(item.id, child);
-                    }}
-                  >
-                    <span>{item.name}</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-        {cid !== 0 &&
+              ))}
+            </div>
+          </div>
+        )}
+        {(!loading || init) &&
+          cid !== 0 &&
           categories[cateIndex] &&
           categories[cateIndex].children &&
           categories[cateIndex].children.length > 0 && (
@@ -91,6 +94,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
                     child === 0 ? styles["active-item"] : styles["item"]
                   }
                   onClick={() => {
+                    setInit(true);
                     setChild(0);
                     onSelected(cid, 0);
                   }}
@@ -104,6 +108,7 @@ export const FilterCategories: React.FC<PropInterface> = ({
                       child === item.id ? styles["active-item"] : styles["item"]
                     }
                     onClick={() => {
+                      setInit(true);
                       setChild(item.id);
                       onSelected(cid, item.id);
                     }}

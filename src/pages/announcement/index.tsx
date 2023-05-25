@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, Spin, message } from "antd";
+import { Row, Col, Skeleton } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { home } from "../../api/index";
 import { changeTime, latexRender, codeRender } from "../../utils/index";
@@ -64,8 +64,24 @@ export const AnnouncementPage = () => {
         <div className={styles["announcement-box"]}>
           {loading && (
             <Row>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
+              <div className={styles["notice"]}>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 806,
+                    height: 18,
+                    marginBottom: 30,
+                  }}
+                ></Skeleton.Button>
+                <Skeleton.Button
+                  active
+                  style={{
+                    width: 200,
+                    height: 14,
+                  }}
+                ></Skeleton.Button>
+                <div className={styles["line"]}></div>
+                <Skeleton active paragraph={{ rows: 1 }}></Skeleton>
               </div>
             </Row>
           )}
@@ -93,9 +109,33 @@ export const AnnouncementPage = () => {
           <div className={styles["tit"]}>历史公告</div>
           {loading2 && (
             <Row>
-              <div className="float-left d-j-flex mt-50">
-                <Spin size="large" />
-              </div>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: 264,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 200,
+                      height: 24,
+                      marginBottom: 10,
+                    }}
+                  ></Skeleton.Button>
+                  <Skeleton.Button
+                    active
+                    style={{
+                      width: 200,
+                      height: 12,
+                      marginBottom: 30,
+                    }}
+                  ></Skeleton.Button>
+                </div>
+              ))}
             </Row>
           )}
           {!loading2 &&

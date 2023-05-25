@@ -303,12 +303,12 @@ export const ExamWrongbookPlayPage = () => {
           scenes={[]}
           scene={""}
           onSelected={(id: number, child: number, sceneId: string) => {
+            console.log(id, child);
             setCid(id);
             setChild(child);
             setShowAnswer(false);
             setShowText("对答案");
             setActiveQid(1);
-            getData();
           }}
         ></FilterExamCategories>
       </div>

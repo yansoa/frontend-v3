@@ -256,7 +256,7 @@ export const LiveVideoPage = () => {
   const exitFullscreen = () => {
     let de: any;
     de = document;
-    if (de.exitFullscreen) {
+    if (de.fullscreenElement !== null) {
       de.exitFullscreen();
     } else if (de.mozCancelFullScreen) {
       de.mozCancelFullScreen();
@@ -568,6 +568,7 @@ export const LiveVideoPage = () => {
                 )}
                 {currentTab === 2 && (
                   <AttachDialog
+                    status={video.status}
                     cid={course.id}
                     vid={id}
                     onCancel={() => resetAttachDialog()}

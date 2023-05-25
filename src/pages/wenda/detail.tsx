@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Spin, Skeleton, Input, Button, message } from "antd";
+import { Row, Col, Skeleton, Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
@@ -15,7 +15,7 @@ import noLikeIcon from "../../assets/img/commen/icon-like.png";
 export const WendaDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [question, setQuestion] = useState<any>({});
   const [answers, setAnswers] = useState<any>([]);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -35,7 +35,7 @@ export const WendaDetailPage = () => {
   const [size, setSize] = useState(10000);
   const [total, setTotal] = useState(0);
   const [id, setId] = useState(Number(result.get("id")));
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
+  const [commentLoading, setCommentLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -49,10 +49,6 @@ export const WendaDetailPage = () => {
   }, [document.getElementById("desc")]);
 
   const getData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
     wenda.detail(id).then((res: any) => {
       document.title = res.data.question.title;
       setQuestion(res.data.question);
@@ -60,6 +56,7 @@ export const WendaDetailPage = () => {
       setIsAdmin(res.data.is_admin);
       setIsVote(res.data.is_vote);
       setLoading(false);
+      setCommentLoading(false);
     });
   };
 
@@ -127,18 +124,22 @@ export const WendaDetailPage = () => {
       goLogin();
       return;
     }
-    let arr = [...configInput];
+    let arr = [];
     arr[id] = true;
+    setReplyContent("");
     setConfigInput(arr);
+    setConfigkey([]);
   };
 
   const getAnswer = (index: number, id: number) => {
     if (id === 0) {
       return;
     }
-    let keys = [...configkey];
+    let keys: any = [];
     keys[index] = !keys[index];
     setConfigkey(keys);
+    setReplyContent("");
+    setConfigInput([]);
     setCommentId(id);
     wenda
       .answerComments(id, {
@@ -361,7 +362,7 @@ export const WendaDetailPage = () => {
           </div>
         )}
         <div className={styles["comments-box"]}>
-          {isLogin && question.status !== 1 && (
+          {!loading && isLogin && question.status !== 1 && (
             <div className={styles["reply-box"]}>
               {user && (
                 <div className={styles["avatar"]}>
@@ -403,12 +404,69 @@ export const WendaDetailPage = () => {
           <div className={styles["comment-divider"]}>全部回答</div>
           <div className={styles["line"]}></div>
           <div className={styles["comments-list-box"]}>
-            {answers.length === 0 && (
+            {commentLoading && (
+              <div
+                style={{
+                  width: 1140,
+                  marginTop: 50,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 1140,
+                      height: 48,
+                      marginBottom: 30,
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Skeleton.Avatar
+                      active
+                      size={48}
+                      style={{
+                        marginRight: 30,
+                      }}
+                    ></Skeleton.Avatar>
+                    <div
+                      style={{
+                        width: 960,
+                        height: 48,
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 960,
+                          height: 14,
+                          marginTop: 3,
+                          marginBottom: 16,
+                        }}
+                      ></Skeleton.Button>
+                      <Skeleton.Button
+                        active
+                        style={{
+                          width: 960,
+                          height: 14,
+                        }}
+                      ></Skeleton.Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!commentLoading && answers.length === 0 && (
               <Col span={24}>
                 <Empty></Empty>
               </Col>
             )}
-            {answers.length > 0 &&
+            {!commentLoading &&
+              answers.length > 0 &&
               answers.map((item: any, index: number) => (
                 <div className={styles["comment-item"]} key={item.id}>
                   <div className={styles["avatar"]}>
@@ -528,6 +586,7 @@ export const WendaDetailPage = () => {
                     {configkey[index] === true && (
                       <div className={styles["reply-list-box"]}>
                         {replyAnswers.length > 0 &&
+                          replyAnswers[index] &&
                           replyAnswers[index].map((replyItem: any) => (
                             <div
                               key={replyItem.id}

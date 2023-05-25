@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { message } from "antd";
+import { Skeleton, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wrongbook } from "../../../api/index";
@@ -69,43 +69,112 @@ export const ExamWrongbookPage = () => {
       <div className={styles["banner"]}>
         <div className={styles["tit"]}>考试错题本</div>
         <div className={styles["btn-box"]}>
-          <div className={styles["btn-all-play"]} onClick={() => run("order")}>
+          <Button
+            type="primary"
+            loading={loading}
+            className={styles["btn-all-play"]}
+            onClick={() => run("order")}
+          >
             全部练习
-          </div>
+          </Button>
         </div>
       </div>
       <div className={styles["question-box"]}>
-        {list[1] > 0 && (
+        {loading && (
+          <>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>单选题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>多选题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>判断题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>填空题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>问答题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+            <div className={styles["question-item"]}>
+              <div className={styles["question-item-type"]}>题帽题</div>
+              <Skeleton.Button
+                active
+                style={{
+                  width: 80,
+                  height: 20,
+                }}
+              ></Skeleton.Button>
+            </div>
+          </>
+        )}
+        {!loading && list[1] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(1)}>
             <div className={styles["question-item-type"]}>单选题</div>
             <div className={styles["question-item-num"]}>共{list[1]}题错题</div>
           </div>
         )}
-        {list[2] > 0 && (
+        {!loading && list[2] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(2)}>
             <div className={styles["question-item-type"]}>多选题</div>
             <div className={styles["question-item-num"]}>共{list[2]}题错题</div>
           </div>
         )}
-        {list[5] > 0 && (
+        {!loading && list[5] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(5)}>
             <div className={styles["question-item-type"]}>判断题</div>
             <div className={styles["question-item-num"]}>共{list[5]}题错题</div>
           </div>
         )}
-        {list[3] > 0 && (
+        {!loading && list[3] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(3)}>
             <div className={styles["question-item-type"]}>填空题</div>
             <div className={styles["question-item-num"]}>共{list[3]}题错题</div>
           </div>
         )}
-        {list[4] > 0 && (
+        {!loading && list[4] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(4)}>
             <div className={styles["question-item-type"]}>问答题</div>
             <div className={styles["question-item-num"]}>共{list[4]}题错题</div>
           </div>
         )}
-        {list[6] > 0 && (
+        {!loading && list[6] > 0 && (
           <div className={styles["question-item"]} onClick={() => goDetail(6)}>
             <div className={styles["question-item-type"]}>题帽题</div>
             <div className={styles["question-item-num"]}>共{list[1]}题错题</div>

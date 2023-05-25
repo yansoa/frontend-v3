@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
-import { Button, message } from "antd";
+import { Button, Skeleton, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
@@ -55,6 +55,7 @@ export const VodPlayPage = () => {
     (state: any) => state.systemConfig.value.configFunc
   );
   const myRef = useRef(0);
+  const courseRef: any = useRef(null);
   const tabs = [
     {
       name: "课时评论",
@@ -69,6 +70,7 @@ export const VodPlayPage = () => {
   useEffect(() => {
     setVid(Number(result.get("id")));
     window.player && window.player.destroy();
+    myRef.current = 0;
   }, [result.get("id")]);
 
   useEffect(() => {
@@ -88,6 +90,10 @@ export const VodPlayPage = () => {
       window.removeEventListener("scroll", handleTabFix, true);
     };
   }, [vid]);
+
+  useEffect(() => {
+    courseRef.current = course;
+  }, [course]);
 
   useEffect(() => {
     if (playendedStatus && !isLastpage) {
@@ -330,13 +336,13 @@ export const VodPlayPage = () => {
     if (val === 1) {
       navigate(
         "/order?goods_id=" +
-          cid +
+          courseRef.current.id +
           "&goods_type=vod&goods_charge=" +
-          course.charge +
+          courseRef.current.charge +
           "&goods_label=点播课程&goods_name=" +
-          course.title +
+          courseRef.current.title +
           "&goods_thumb=" +
-          course.thumb
+          courseRef.current.thumb
       );
       return;
     }
@@ -449,14 +455,27 @@ export const VodPlayPage = () => {
             录播课
           </a>{" "}
           /
-          <a
-            onClick={() => {
-              navigate("/courses/detail?id=" + course.id);
-            }}
-          >
-            {course.title}
-          </a>{" "}
-          /<span>{video.title}</span>
+          {loading && (
+            <Skeleton.Button
+              active
+              style={{
+                width: 400,
+                height: 16,
+              }}
+            ></Skeleton.Button>
+          )}
+          {!loading && (
+            <>
+              <a
+                onClick={() => {
+                  navigate("/courses/detail?id=" + course.id);
+                }}
+              >
+                {course.title}
+              </a>{" "}
+              /<span>{video.title}</span>
+            </>
+          )}
         </div>
         <HistoryRecord id={video.id} title={video.title} type="video" />
         <div className={styles["course-info"]}>
@@ -549,7 +568,34 @@ export const VodPlayPage = () => {
               )}
             </div>
             <div className="course-chapter-box">
-              {chapters.length > 0 && (
+              {loading &&
+                Array.from({ length: 2 }).map(() => (
+                  <div
+                    style={{
+                      width: 260,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 260,
+                        height: 16,
+                        marginBottom: 30,
+                      }}
+                    ></Skeleton.Button>
+                    <Skeleton.Button
+                      active
+                      style={{
+                        width: 260,
+                        height: 20,
+                        marginBottom: 50,
+                      }}
+                    ></Skeleton.Button>
+                  </div>
+                ))}
+              {!loading && chapters.length > 0 && (
                 <VideoChapterListComp
                   chapters={chapters}
                   course={course}
@@ -560,7 +606,7 @@ export const VodPlayPage = () => {
                   switchVideo={(item: any) => goPlay(item)}
                 />
               )}
-              {chapters.length === 0 && videos[0] && (
+              {!loading && chapters.length === 0 && videos[0] && (
                 <VideoListComp
                   course={course}
                   video={video}
@@ -589,6 +635,7 @@ export const VodPlayPage = () => {
         </div>
         {currentTab === 4 && (
           <CourseVideoComments
+            fresh={loading}
             vid={vid}
             isBuy={isBuy}
             comments={comments}

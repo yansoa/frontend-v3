@@ -136,8 +136,14 @@ export class HttpClient {
   }
 }
 
-const APP_URL = import.meta.env.VITE_APP_GO_MEEDU_URL || "";
+let appUrl = import.meta.env.VITE_APP_GO_MEEDU_URL || "";
+if (
+  typeof (window as any).meedu_api_go_url !== "undefined" &&
+  (window as any).meedu_api_go_url
+) {
+  appUrl = (window as any).meedu_api_go_url;
+}
 
-const client = new HttpClient(APP_URL);
+const client = new HttpClient(appUrl);
 
 export default client;

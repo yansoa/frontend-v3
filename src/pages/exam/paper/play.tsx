@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./play.module.scss";
-import { Modal, message } from "antd";
+import { Modal, message, Button } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { paper as examPaper, practice } from "../../../api/index";
@@ -38,6 +38,7 @@ export const ExamPaperPlayPage = () => {
     min: 0,
     sec: 0,
   });
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")) || 0);
   const [pid, setPid] = useState(Number(result.get("pid")) || 0);
   const configFunc = useSelector(
@@ -142,11 +143,16 @@ export const ExamPaperPlayPage = () => {
   };
 
   const submitHandle = () => {
+    if (submitLoading) {
+      return;
+    }
+    setSubmitLoading(true);
     examPaper
       .paperSubmit(id, {
         pid: pid,
       })
       .then((res: any) => {
+        setSubmitLoading(false);
         let status = res.data.status;
         let totalScore = res.data.total_score;
         setSubmitTip(false);
@@ -156,6 +162,9 @@ export const ExamPaperPlayPage = () => {
         } else {
           setReadTip(true);
         }
+      })
+      .catch((e) => {
+        setSubmitLoading(false);
       });
   };
 
@@ -289,9 +298,8 @@ export const ExamPaperPlayPage = () => {
         maskClosable={false}
         open={submitTip}
         width={500}
-        onOk={() => submitHandle()}
         onCancel={() => setSubmitTip(false)}
-        cancelText="继续答题"
+        footer={null}
       >
         {surplus !== 0 && (
           <div className={styles["text"]}>
@@ -299,6 +307,24 @@ export const ExamPaperPlayPage = () => {
           </div>
         )}
         {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
+        <div
+          slot="footer"
+          style={{ display: "flex", flexDirection: "row-reverse" }}
+        >
+          <Button
+            type="primary"
+            onClick={() => finish()}
+            loading={submitLoading}
+          >
+            确定
+          </Button>
+          <Button
+            style={{ marginRight: 15 }}
+            onClick={() => setSubmitTip(false)}
+          >
+            继续答题
+          </Button>
+        </div>
       </Modal>
       <Modal
         title="交卷提示"

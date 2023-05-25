@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { order } from "../../api/index";
-import { Input, message } from "antd";
+import { Input, message, Button } from "antd";
 import { ThumbBar } from "../../components";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -22,6 +22,7 @@ export const OrderPage = () => {
   const [paymentScene, setPaymentScene] = useState<string>("pc");
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
+  const [pcCheckLoading, setPcCheckLoading] = useState(false);
   const [aliStatus, setAliStatus] = useState<boolean>(false);
   const [weStatus, setWeStatus] = useState<boolean>(false);
   const [handStatus, setHandStatus] = useState<boolean>(false);
@@ -143,6 +144,7 @@ export const OrderPage = () => {
     if (!promoCode) {
       return;
     }
+    setPcCheckLoading(true);
     if (
       configFunc.share &&
       (promoCode.substr(0, 1) === "u" || promoCode.substr(0, 1) === "U")
@@ -164,10 +166,12 @@ export const OrderPage = () => {
           setDiscount(value);
         }
         setLoading(false);
+        setPcCheckLoading(false);
       })
       .catch((e) => {
         setLoading(false);
         setConfigTip(999);
+        setPcCheckLoading(false);
       });
   };
 
@@ -464,9 +468,11 @@ export const OrderPage = () => {
           <Input
             className={styles["input"]}
             value={promoCode}
+            placeholder="请输入优惠码"
             onChange={(e) => {
               setPromoCode(e.target.value);
             }}
+            disabled={pcCheckLoading}
           ></Input>
           <div
             className={styles["btn-confirm"]}
@@ -479,7 +485,7 @@ export const OrderPage = () => {
           )}
           {configTip === 1 && (
             <div className={styles["tip"]}>
-              此优惠码有效，已减免{discount}元
+              此优惠码有效，已减免{discount <= total ? discount : total}元
             </div>
           )}
         </div>
@@ -504,16 +510,23 @@ export const OrderPage = () => {
         <div className={styles["line"]}></div>
         <div className={styles["price-box"]}>
           <span>优惠码已减</span>
-          <span className={styles["red"]}>{discount}</span>
+          <span className={styles["red"]}>
+            {discount <= total ? discount : total}
+          </span>
           <span>元，需支付</span>
           <span className={styles["red"]}>
             ￥<span className={styles["big"]}>{totalVal}</span>
           </span>
         </div>
         <div className={styles["order-tip"]}>请在15分钟内支付完成</div>
-        <div className={styles["btn-submit"]} onClick={() => payHandler()}>
+        <Button
+          type="primary"
+          loading={loading}
+          className={styles["btn-submit"]}
+          onClick={() => payHandler()}
+        >
           提交订单
-        </div>
+        </Button>
       </div>
     </div>
   );

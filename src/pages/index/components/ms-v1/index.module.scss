@@ -115,6 +115,24 @@
           text-align: left;
         }
       }
+
+      .over-progress {
+        position: absolute;
+        right: 10px;
+        bottom: 15px;
+        width: 137px;
+        height: 48px;
+        background: linear-gradient(90deg, #fa1b1b 0%, #ff7946 100%);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 16px;
+        opacity: 0.5;
+      }
       .ms-progress {
         position: absolute;
         right: 10px;
