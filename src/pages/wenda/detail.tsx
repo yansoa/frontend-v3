@@ -126,6 +126,7 @@ export const WendaDetailPage = () => {
     }
     let arr = [];
     arr[id] = true;
+    setReplyContent("");
     setConfigInput(arr);
     setConfigkey([]);
   };
@@ -137,6 +138,7 @@ export const WendaDetailPage = () => {
     let keys: any = [];
     keys[index] = !keys[index];
     setConfigkey(keys);
+    setReplyContent("");
     setConfigInput([]);
     setCommentId(id);
     wenda
