@@ -222,9 +222,10 @@ export const TopicDetailPage = () => {
       goLogin();
       return;
     }
-    let arr = [...configInput];
+    let arr = [];
     arr[id] = true;
     setConfigInput(arr);
+    setReplyContent("");
   };
 
   const getAnswer = (index: number, id: number) => {
@@ -631,6 +632,7 @@ export const TopicDetailPage = () => {
                         {configkey[index] === true && (
                           <div className={styles["reply-list-box"]}>
                             {replyAnswers.length > 0 &&
+                              replyAnswers[index] &&
                               replyAnswers[index].map((replyItem: any) => (
                                 <div
                                   key={replyItem.id}

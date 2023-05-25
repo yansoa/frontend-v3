@@ -664,6 +664,7 @@ export const BookReadPage = () => {
                       {configkey[index] === true && (
                         <div className={styles["reply-list-box"]}>
                           {replyAnswers.length > 0 &&
+                            replyAnswers[index] &&
                             replyAnswers[index].map((replyItem: any) => (
                               <div
                                 key={replyItem.id}
