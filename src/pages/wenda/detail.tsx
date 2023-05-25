@@ -15,7 +15,7 @@ import noLikeIcon from "../../assets/img/commen/icon-like.png";
 export const WendaDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [question, setQuestion] = useState<any>({});
   const [answers, setAnswers] = useState<any>([]);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -35,7 +35,7 @@ export const WendaDetailPage = () => {
   const [size, setSize] = useState(10000);
   const [total, setTotal] = useState(0);
   const [id, setId] = useState(Number(result.get("id")));
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
+  const [commentLoading, setCommentLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -49,10 +49,6 @@ export const WendaDetailPage = () => {
   }, [document.getElementById("desc")]);
 
   const getData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
     wenda.detail(id).then((res: any) => {
       document.title = res.data.question.title;
       setQuestion(res.data.question);
@@ -60,6 +56,7 @@ export const WendaDetailPage = () => {
       setIsAdmin(res.data.is_admin);
       setIsVote(res.data.is_vote);
       setLoading(false);
+      setCommentLoading(false);
     });
   };
 
@@ -403,7 +400,7 @@ export const WendaDetailPage = () => {
           <div className={styles["comment-divider"]}>全部回答</div>
           <div className={styles["line"]}></div>
           <div className={styles["comments-list-box"]}>
-            {loading && (
+            {commentLoading && (
               <div
                 style={{
                   width: 1140,
@@ -459,12 +456,12 @@ export const WendaDetailPage = () => {
                 ))}
               </div>
             )}
-            {!loading && answers.length === 0 && (
+            {!commentLoading && answers.length === 0 && (
               <Col span={24}>
                 <Empty></Empty>
               </Col>
             )}
-            {!loading &&
+            {!commentLoading &&
               answers.length > 0 &&
               answers.map((item: any, index: number) => (
                 <div className={styles["comment-item"]} key={item.id}>
