@@ -124,18 +124,20 @@ export const WendaDetailPage = () => {
       goLogin();
       return;
     }
-    let arr = [...configInput];
+    let arr = [];
     arr[id] = true;
     setConfigInput(arr);
+    setConfigkey([]);
   };
 
   const getAnswer = (index: number, id: number) => {
     if (id === 0) {
       return;
     }
-    let keys = [...configkey];
+    let keys: any = [];
     keys[index] = !keys[index];
     setConfigkey(keys);
+    setConfigInput([]);
     setCommentId(id);
     wenda
       .answerComments(id, {
@@ -582,6 +584,7 @@ export const WendaDetailPage = () => {
                     {configkey[index] === true && (
                       <div className={styles["reply-list-box"]}>
                         {replyAnswers.length > 0 &&
+                          replyAnswers[index] &&
                           replyAnswers[index].map((replyItem: any) => (
                             <div
                               key={replyItem.id}
