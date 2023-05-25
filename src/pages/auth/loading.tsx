@@ -1,13 +1,7 @@
-import { useState } from "react";
 import { Spin } from "antd";
-import { useLocation } from "react-router-dom";
 
 export const AuthLoadingPage = () => {
   document.title = "加载中";
-  const result = new URLSearchParams(useLocation().search);
-  const [redirect, setRedirect] = useState<string>(
-    String(result.get("redirect")) || "/"
-  );
 
   return (
     <div
