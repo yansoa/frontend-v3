@@ -141,7 +141,7 @@ export const BindNewMobilePage = () => {
   return (
     <div>
       <div className={styles["box"]}>
-        <div className={styles["title"]}>绑定新手机号</div>
+        <div className={styles["title"]}>请绑定手机号</div>
         <Form
           form={form}
           name="bind-new-mobile-page"
@@ -155,19 +155,19 @@ export const BindNewMobilePage = () => {
         >
           <Form.Item
             name="mobile"
-            rules={[{ required: true, message: "请输入新手机号码!" }]}
+            rules={[{ required: true, message: "请输入手机号" }]}
           >
             <Input
               style={{ width: 440, height: 54 }}
               autoComplete="off"
-              placeholder="请输入新手机号码"
+              placeholder="请输入手机号"
             />
           </Form.Item>
           <Form.Item>
             <Space align="baseline" style={{ height: 54 }}>
               <Form.Item
                 name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
+                rules={[{ required: true, message: "请输入图形验证码" }]}
               >
                 <Input
                   style={{ width: 310, height: 54, marginRight: 10 }}
@@ -190,12 +190,12 @@ export const BindNewMobilePage = () => {
             <Space align="baseline" style={{ height: 54 }}>
               <Form.Item
                 name="sms"
-                rules={[{ required: true, message: "请输入手机验证码!" }]}
+                rules={[{ required: true, message: "请输入短信验证码" }]}
               >
                 <Input
                   style={{ width: 310, height: 54, marginRight: 30 }}
                   autoComplete="off"
-                  placeholder="请输入手机验证码"
+                  placeholder="请输入短信验证码"
                 />
               </Form.Item>
               <div className={styles["buttons"]}>
