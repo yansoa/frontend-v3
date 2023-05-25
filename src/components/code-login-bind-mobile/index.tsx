@@ -151,7 +151,6 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
               navigate("/face-check", { replace: true });
             } else {
               clearFaceCheckKey();
-              success();
               redirectHandler();
             }
           });
@@ -169,7 +168,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
   const redirectHandler = () => {
     interval && clearInterval(interval);
     onCancel();
-    if (pathname === "/login") {
+    if (pathname === "/login" || pathname === "/login/callback") {
       if (redirect) {
         navigate(decodeURIComponent(redirect), { replace: true });
       } else {

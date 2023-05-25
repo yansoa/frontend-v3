@@ -163,7 +163,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
     interval && clearInterval(interval);
     onCancel();
 
-    if (pathname === "/login") {
+    if (pathname === "/login" || pathname === "/login/callback") {
       if (redirect) {
         navigate(decodeURIComponent(redirect), { replace: true });
       } else {
