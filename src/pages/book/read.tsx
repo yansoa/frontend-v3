@@ -228,9 +228,10 @@ export const BookReadPage = () => {
       goLogin();
       return;
     }
-    let arr = [...configInput];
+    let arr = [];
     arr[id] = true;
     setConfigInput(arr);
+    setReplyContent("");
   };
 
   const goLogin = () => {
