@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, message, Upload } from "antd";
+import { message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import styles from "./index.module.scss";
 import { useLocation } from "react-router-dom";
