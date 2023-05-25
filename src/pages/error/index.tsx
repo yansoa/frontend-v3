@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./index.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import errorIcon from "../../assets/img/commen/img-wrong.png";

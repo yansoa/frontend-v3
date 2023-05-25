@@ -65,6 +65,7 @@ import { StudyCenterPage } from "../pages/study/index";
 import { TencentFaceCheckPage } from "../pages/auth/faceCheck";
 import { BindNewMobilePage } from "../pages/auth/bindMobile";
 import PrivateRoute from "../components/private-route";
+import { Error404 } from "../pages/error/404";
 
 let RootPage: any = null;
 let configFunc = {
@@ -363,6 +364,7 @@ const routes: RouteObject[] = [
       { path: "/bind-mobile", element: <BindNewMobilePage /> },
     ],
   },
+  { path: "/*", element: <Error404 /> },
 ];
 
 export default routes;
