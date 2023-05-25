@@ -7,7 +7,7 @@ import { SnaoShotPreview } from "../snapshot-preview";
 import { random, getToken } from "../../utils/index";
 import { snapshot } from "../../api/index";
 import tabIcon from "../../assets/img/commen/icon-camera.png";
-const APP_URL = import.meta.env.VITE_APP_URL || "";
+import configApp from "../../js/config";
 
 interface PropInterface {
   id: number;
@@ -216,7 +216,7 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     multiple: false,
     method: "POST",
     action:
-      APP_URL +
+      configApp.app_url +
       "/addons/Snapshot/api/v1/upload/image?duration=" +
       duration +
       "&resource_id=" +
