@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
-import { Modal, Image } from "antd";
+import { Modal, Image, QRCode } from "antd";
 import { user } from "../../api/index";
 import { setToken, saveLoginCode } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
@@ -27,8 +27,9 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
-  const [qrode, setQrode] = useState<string>("");
-  const [code, setCode] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [qrode, setQrode] = useState("");
+  const [code, setCode] = useState("");
   const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
@@ -41,10 +42,15 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   }, [open]);
 
   const getQrode = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     user.wechatLogin().then((res: any) => {
       setQrode(res.data.image);
       setCode(res.data.code);
       timer = setInterval(() => checkWechatLogin(res.data.code), 1000);
+      setLoading(false);
     });
   };
 
@@ -112,7 +118,11 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
           </a>
         </div>
         <div className={styles["box"]}>
-          <Image width={300} height={300} src={qrode} preview={false} />
+          {loading ? (
+            <QRCode value="loading" size={300} status="loading" />
+          ) : (
+            <Image width={300} height={300} src={qrode} preview={false} />
+          )}
         </div>
       </Modal>
     </>
