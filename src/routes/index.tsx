@@ -66,6 +66,7 @@ import { TencentFaceCheckPage } from "../pages/auth/faceCheck";
 import { BindNewMobilePage } from "../pages/auth/bindMobile";
 import { AuthLoadingPage } from "../pages/auth/loading";
 import PrivateRoute from "../components/private-route";
+import { Error404 } from "../pages/error/404";
 
 let RootPage: any = null;
 let configFunc = {
@@ -317,15 +318,15 @@ const routes: RouteObject[] = [
         element: <PrivateRoute Component={<MemberQuestionsPage />} />,
       },
       {
-        path: "/member/codeexchanger",
+        path: "/member/code-exchanger",
         element: <PrivateRoute Component={<MemberExchangerPage />} />,
       },
       {
-        path: "/member/credit1_free",
+        path: "/member/credit1-free",
         element: <PrivateRoute Component={<MemberCredit1FreePage />} />,
       },
       {
-        path: "/member/credit1_records",
+        path: "/member/credit1-records",
         element: <PrivateRoute Component={<MemberCredit1RecordsPage />} />,
       },
       {
@@ -361,10 +362,11 @@ const routes: RouteObject[] = [
         path: "/study-center",
         element: <PrivateRoute Component={<StudyCenterPage />} />,
       },
-      { path: "/faceCheck", element: <TencentFaceCheckPage /> },
-      { path: "/bindMobile", element: <BindNewMobilePage /> },
+      { path: "/face-check", element: <TencentFaceCheckPage /> },
+      { path: "/bind-mobile", element: <BindNewMobilePage /> },
     ],
   },
+  { path: "/*", element: <Error404 /> },
 ];
 
 export default routes;

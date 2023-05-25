@@ -125,7 +125,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
         clearLoginCode();
         clearBindMobileKey();
         if (getFaceCheckKey() === "ok") {
-          navigate("/faceCheck");
+          navigate("/face-check");
         } else {
           let token = res.data.token;
           setToken(token);
@@ -140,7 +140,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
               setFaceCheckKey();
               interval && clearInterval(interval);
               onCancel();
-              navigate("/faceCheck", { replace: true });
+              navigate("/face-check", { replace: true });
             } else {
               clearFaceCheckKey();
               setLoading(false);
