@@ -564,6 +564,7 @@ export const BookReadPage = () => {
                       type="primary"
                       className={styles["btn-submit"]}
                       onClick={() => submitComment()}
+                      loading={commentLoading}
                     >
                       评论
                     </Button>
