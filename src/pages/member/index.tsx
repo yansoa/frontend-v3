@@ -53,6 +53,10 @@ export const MemberPage = () => {
   const systemConfig = useSelector(
     (state: any) => state.systemConfig.value.config
   );
+  const configFunc = useSelector(
+    (state: any) => state.systemConfig.value.configFunc
+  );
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const [currentTab, setCurrentTab] = useState(1);
   const [nickName, setNickName] = useState<string>(user && user.nick_name);
   const loginCode = result.get("login_code");
@@ -70,8 +74,10 @@ export const MemberPage = () => {
   ];
 
   useEffect(() => {
+    if (isLogin) {
     getSignStatus();
-  }, []);
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     if (loginCode && action === "bind") {
@@ -83,6 +89,9 @@ export const MemberPage = () => {
   }, [loginCode, action, errMsg]);
 
   const getSignStatus = () => {
+    if (!configFunc.daySignIn) {
+      return;
+    }
     sign.user().then((res: any) => {
       let is_submit = res.data.is_submit;
       if (is_submit === 0) {

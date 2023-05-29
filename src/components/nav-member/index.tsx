@@ -159,31 +159,33 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
         用户中心
       </div>
       {menus.map((item: any, index: number) => (
-        <div className={styles["menus-item"]} key={index}>
+        <div key={index}>
           {item.status && (
-            <div className={styles["item"]}>
-              <span className={styles["title"]}>{item.name}</span>
-              <div className={styles["children"]}>
-                {item.childrens.length > 0 &&
-                  item.childrens.map((child: any) => (
-                    <div key={child.id}>
-                      {child.status && (
-                        <div
-                          className={
-                            id === child.id
-                              ? styles["active-item-children"]
-                              : styles["item-children"]
-                          }
-                          onClick={() => setScene(child.path)}
-                        >
-                          {child.name}
-                          {hasMessage && child.id === 7 && (
-                            <div className={styles["point"]}></div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+            <div className={styles["menus-item"]}>
+              <div className={styles["item"]}>
+                <span className={styles["title"]}>{item.name}</span>
+                <div className={styles["children"]}>
+                  {item.childrens.length > 0 &&
+                    item.childrens.map((child: any) => (
+                      <div key={child.id}>
+                        {child.status && (
+                          <div
+                            className={
+                              id === child.id
+                                ? styles["active-item-children"]
+                                : styles["item-children"]
+                            }
+                            onClick={() => setScene(child.path)}
+                          >
+                            {child.name}
+                            {hasMessage && child.id === 7 && (
+                              <div className={styles["point"]}></div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
           )}
