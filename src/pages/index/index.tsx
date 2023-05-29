@@ -23,6 +23,9 @@ const IndexPage = () => {
   const [blocks, setBlocks] = useState<any>([]);
   const [notice, setNotice] = useState<any>({});
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const configFunc = useSelector(
+    (state: any) => state.systemConfig.value.configFunc
+  );
 
   useEffect(() => {
     if (isLogin) {
@@ -34,6 +37,9 @@ const IndexPage = () => {
   }, [isLogin]);
 
   const getSignStatus = () => {
+    if (!configFunc.daySignIn) {
+      return;
+    }
     sign.user().then((res: any) => {
       let is_submit = res.data.is_submit;
       if (is_submit === 0) {
